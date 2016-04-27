@@ -115,7 +115,7 @@ public class IndexableCategoryView extends IndexableView {
     }
 
     private String getThreadUrl(final DiscussionThread thread) {
-        return application.getDataSource().getPathRoot() + "#"
+        return application.getDataSource().getPathRoot() + "/forum/#"
                 + ApplicationView.THREADS.getUrl() + "/" + thread.getId();
     }
 

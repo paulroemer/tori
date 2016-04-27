@@ -229,7 +229,7 @@ public class Breadcrumbs extends CustomComponent implements ViewChangeListener {
     }
 
     private Component getDashboardLink() {
-        Link link = new Link(getDashboardTitle(), new ExternalResource("#"
+        Link link = new Link(getDashboardTitle(), new ExternalResource("/forum/#"
                 + ToriNavigator.ApplicationView.DASHBOARD.getUrl()));
         link.setHeight(100.0f, Unit.PERCENTAGE);
         return link;
@@ -245,7 +245,7 @@ public class Breadcrumbs extends CustomComponent implements ViewChangeListener {
         result.setHeight(100.0f, Unit.PERCENTAGE);
         result.addStyleName("categorylink");
         final Link crumb = new Link(category.getName(), new ExternalResource(
-                "#" + ToriNavigator.ApplicationView.CATEGORIES.getUrl() + "/"
+                "/forum/#" + ToriNavigator.ApplicationView.CATEGORIES.getUrl() + "/"
                         + category.getId()));
         crumb.setHeight(100.0f, Unit.PERCENTAGE);
         result.addComponent(crumb);

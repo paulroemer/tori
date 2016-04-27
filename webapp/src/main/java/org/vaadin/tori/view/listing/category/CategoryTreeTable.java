@@ -110,7 +110,7 @@ public class CategoryTreeTable extends TreeTable {
 
     private class CategoryLayout extends CssLayout {
 
-        private final String categoryUrl = "#"
+        private final String categoryUrl = "/forum/#"
                 + ToriNavigator.ApplicationView.CATEGORIES.getUrl() + "/";
 
         public CategoryLayout(final CategoryData category) {

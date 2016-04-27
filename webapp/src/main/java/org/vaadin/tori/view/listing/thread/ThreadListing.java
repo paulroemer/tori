@@ -80,7 +80,7 @@ public class ThreadListing extends AbstractComponentContainer implements
         data.isFollowed = thread.isFollowing();
         data.mayFollow = thread.mayFollow();
         data.isRead = thread.userHasRead();
-        data.url = "#" + ToriNavigator.ApplicationView.THREADS.getUrl() + "/"
+        data.url = "/forum/#" + ToriNavigator.ApplicationView.THREADS.getUrl() + "/"
                 + thread.getId();
         if (thread.getPostCount() > 1) {
             data.latestPostUrl = data.url + "/" + thread.getLatestPostId();

@@ -144,7 +144,7 @@ public class ToriUI extends UI implements ToriUIServerRpc {
 
             String fragment = Page.getCurrent().getUriFragment();
             StringBuilder sb = new StringBuilder(apiLoader.getDataSource()
-                    .getPathRoot() + "#");
+                    .getPathRoot() + "/forum/#");
             sb.append(fragment != null ? fragment : "");
             if (action != null) {
                 sb.append("/" + action);

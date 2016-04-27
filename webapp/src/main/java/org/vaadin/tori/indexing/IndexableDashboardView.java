@@ -69,7 +69,7 @@ public class IndexableDashboardView extends IndexableView {
     }
 
     private static String getLink(final Category category, final DataSource ds) {
-        return ds.getPathRoot() + "#"
+        return ds.getPathRoot() + "/forum/#"
                 + ToriNavigator.ApplicationView.CATEGORIES.getUrl() + "/"
                 + category.getId();
     }

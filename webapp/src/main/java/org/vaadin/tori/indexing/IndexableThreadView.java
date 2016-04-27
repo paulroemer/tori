@@ -105,7 +105,7 @@ public class IndexableThreadView extends IndexableView {
     }
 
     private String getCategoryLink(final DiscussionThread thread) {
-        return application.getDataSource().getPathRoot() + "#"
+        return application.getDataSource().getPathRoot() + "/forum/#"
                 + ApplicationView.CATEGORIES.getUrl() + "/"
                 + thread.getCategory().getId();
     }

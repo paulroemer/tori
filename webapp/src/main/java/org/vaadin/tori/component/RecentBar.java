@@ -98,7 +98,7 @@ public class RecentBar extends CustomComponent implements UserAuthoredListener {
     }
 
     private void addMyPostsLink(final HorizontalLayout barLayout) {
-        Link link = new Link("My Posts", new ExternalResource("#"
+        Link link = new Link("My Posts", new ExternalResource("/forum/#"
                 + ToriNavigator.ApplicationView.CATEGORIES.getUrl() + "/"
                 + SpecialCategory.MY_POSTS.getId().toLowerCase()));
         link.addStyleName("mypostslink");
@@ -107,7 +107,7 @@ public class RecentBar extends CustomComponent implements UserAuthoredListener {
     }
 
     private void addRecentLink(final HorizontalLayout barLayout) {
-        Link link = new Link("Recent Posts", new ExternalResource("#"
+        Link link = new Link("Recent Posts", new ExternalResource("/forum/#"
                 + ToriNavigator.ApplicationView.CATEGORIES.getUrl() + "/"
                 + SpecialCategory.RECENT_POSTS.getId().toLowerCase()));
         link.addStyleName("recentlink");
