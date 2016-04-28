@@ -141,7 +141,7 @@
 				</dependency>
 			</dependencies>
 			<build>
-				<finalName>tori-portlet-6.2.${version}</finalName>
+				<finalName>tori-portlet-6.2.${project.version}</finalName>
 			</build>
 		</profile>
 	</profiles>
@@ -221,11 +221,6 @@
 			<version>2.1.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
