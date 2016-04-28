@@ -11,24 +11,24 @@ import org.openqa.selenium.WebElement;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.TestBenchTestCase;
 
-public class ITInitialView extends TestBenchTestCase {
+public class ITInitialView /* extends TestBenchTestCase */ {
 
     protected static WebDriver driver;
 
-    @BeforeClass
+//    @BeforeClass
     public static void setUp() {
         driver = TBUtils.getFirefoxDriver();
         driver.get(TBUtils.TARGET_URL);
     }
 
-    @Test
+//    @Test
     public void checkMostRecent() {
         WebElement mostRecentLink = driver.findElement(By
                 .cssSelector(".recentbar .current .v-link span"));
         assertEquals("Discussion thread 298", mostRecentLink.getText());
     }
 
-    @AfterClass
+//    @AfterClass
     public static void tearDown() {
         driver.quit();
     }

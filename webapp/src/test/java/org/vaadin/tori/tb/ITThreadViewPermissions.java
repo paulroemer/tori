@@ -15,7 +15,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.TestBenchTestCase;
 
-public class ITThreadViewPermissions extends TestBenchTestCase {
+public class ITThreadViewPermissions /* extends TestBenchTestCase */ {
 
     private static WebDriver driver;
     private static String testCategoryUrl;
@@ -26,7 +26,7 @@ public class ITThreadViewPermissions extends TestBenchTestCase {
     private static String otherThreadUrl;
     private static String otherThreadTitle;
 
-    @BeforeClass
+//    @BeforeClass
     public static void setUp() {
         driver = TBUtils.getFirefoxDriver();
         driver.get(TBUtils.TARGET_URL);
@@ -55,7 +55,7 @@ public class ITThreadViewPermissions extends TestBenchTestCase {
         navigateToTestThread();
     }
 
-    @Test
+//    @Test
     public void testAddFiles() {
         String permission = "setMayAddFilesInCategory";
 
@@ -66,22 +66,22 @@ public class ITThreadViewPermissions extends TestBenchTestCase {
         togglePermission(false, permission);
     }
 
-    @Test
+//    @Test
     public void testBan() {
         testPostDropdownPermission(false, "setMayBan", "Ban Author");
     }
 
-    @Test
+//    @Test
     public void testDeletePost() {
         testPostDropdownPermission(true, "setMayDeletePost", "Delete Post...");
     }
 
-    @Test
+//    @Test
     public void testEditPost() {
         testPostDropdownPermission(true, "setMayEditPost", "Edit Post");
     }
 
-    @Test
+//    @Test
     public void testFollow() {
         String permission = "setMayFollowThread";
 
@@ -104,7 +104,7 @@ public class ITThreadViewPermissions extends TestBenchTestCase {
         togglePermission(false, permission);
     }
 
-    @Test
+//    @Test
     public void testReply() {
         String permission = "setMayReplyInThread";
 
@@ -115,7 +115,7 @@ public class ITThreadViewPermissions extends TestBenchTestCase {
         togglePermission(false, permission);
     }
 
-    @Test
+//    @Test
     public void testReport() {
         String permission = "setMayReportPosts";
 
@@ -126,7 +126,7 @@ public class ITThreadViewPermissions extends TestBenchTestCase {
         togglePermission(false, permission);
     }
 
-    @Test
+//    @Test
     public void testVote() {
         String permission = "setMayVote";
 
@@ -137,7 +137,7 @@ public class ITThreadViewPermissions extends TestBenchTestCase {
         togglePermission(false, permission);
     }
 
-    @Test
+//    @Test
     public void testViewPost() {
         String permission = "setMayViewPost";
 
@@ -148,7 +148,7 @@ public class ITThreadViewPermissions extends TestBenchTestCase {
         togglePermission(true, permission);
     }
 
-    @Test
+//    @Test
     public void testViewThread() {
         String permission = "setMayViewThread";
 
@@ -271,7 +271,7 @@ public class ITThreadViewPermissions extends TestBenchTestCase {
                 .titleContains(testCategoryTitle));
     }
 
-    @AfterClass
+//    @AfterClass
     public static void tearDown() {
         driver.quit();
     }

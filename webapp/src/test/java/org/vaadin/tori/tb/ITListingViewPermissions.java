@@ -14,7 +14,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.TestBenchTestCase;
 
-public class ITListingViewPermissions extends TestBenchTestCase {
+public class ITListingViewPermissions /* extends TestBenchTestCase */ {
 
     private static WebDriver driver;
     private static String testCategoryUrl;
@@ -23,7 +23,7 @@ public class ITListingViewPermissions extends TestBenchTestCase {
     private static String otherCategoryUrl;
     private static String otherCategoryTitle;
 
-    @BeforeClass
+//    @BeforeClass
     public static void setUp() {
         driver = TBUtils.getFirefoxDriver();
         driver.get(TBUtils.TARGET_URL);
@@ -48,19 +48,19 @@ public class ITListingViewPermissions extends TestBenchTestCase {
                 .titleContains(testCategoryTitle));
     }
 
-    @Test
+//    @Test
     public void testLockThread() {
         testThreadRowDropdownPermission("setMayLockThreadInCategory",
                 "Lock Topic");
     }
 
-    @Test
+//    @Test
     public void testStickyThread() {
         testThreadRowDropdownPermission("setMayStickyThreadInCategory",
                 "Pin Topic");
     }
 
-    @Test
+//    @Test
     public void testMoveThread() {
         testThreadRowDropdownPermission("setMayMoveThreadInCategory",
                 "Move Topic");
@@ -89,7 +89,7 @@ public class ITListingViewPermissions extends TestBenchTestCase {
         TBUtils.openFirstDropdown(driver, ".categoryTree");
     }
 
-    @Test
+//    @Test
     public void testCreateThread() {
         String permission = "setMayCreateThreadInCategory";
         String newThreadButtonSelector = ".threadlistingview .headerlayout .v-button";
@@ -106,7 +106,7 @@ public class ITListingViewPermissions extends TestBenchTestCase {
         togglePermission(permission);
     }
 
-    @Test
+//    @Test
     public void testCreateCategory() {
         String permission = "setMayEditCategories";
         String newCategoryButtonSelector = ".categorylistingview .headerlayout .v-button";
@@ -123,13 +123,13 @@ public class ITListingViewPermissions extends TestBenchTestCase {
         togglePermission(permission);
     }
 
-    @Test
+//    @Test
     public void testDeleteCategory() {
         testCategoryDropdownPermission("setMayDeleteCategory",
                 "Delete Category");
     }
 
-    @Test
+//    @Test
     public void testEditCategory() {
         testCategoryDropdownPermission("setMayEditCategory", "Edit Category");
     }
@@ -157,7 +157,7 @@ public class ITListingViewPermissions extends TestBenchTestCase {
         togglePermission(permission);
     }
 
-    @Test
+//    @Test
     public void testViewCategory() {
         driver.get(otherCategoryUrl);
         new WebDriverWait(driver, 10).until(ExpectedConditions
@@ -178,7 +178,7 @@ public class ITListingViewPermissions extends TestBenchTestCase {
         debugPopupButton.click();
     }
 
-    @AfterClass
+//    @AfterClass
     public static void tearDown() {
         driver.quit();
     }
