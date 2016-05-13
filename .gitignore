@@ -21,3 +21,5 @@ styles.css
 addons.scss
 derby.log
 *.versionsBackup
+**/*.iml
+.idea
