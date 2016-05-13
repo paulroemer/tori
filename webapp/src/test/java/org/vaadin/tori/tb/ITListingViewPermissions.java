@@ -2,10 +2,8 @@ package org.vaadin.tori.tb;
 
 import java.util.List;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import com.vaadin.testbench.TestBench;
+import org.junit.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -23,6 +21,7 @@ public class ITListingViewPermissions /* extends TestBenchTestCase */ {
     private static String otherCategoryUrl;
     private static String otherCategoryTitle;
 
+	// TODO: Enable TestBench tests
 //    @BeforeClass
     public static void setUp() {
         driver = TBUtils.getFirefoxDriver();
