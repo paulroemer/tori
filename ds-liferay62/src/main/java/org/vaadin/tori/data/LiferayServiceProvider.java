@@ -16,6 +16,7 @@
 
 package org.vaadin.tori.data;
 
+import org.vaadin.tori.Configuration;
 import org.vaadin.tori.data.spi.ServiceProvider;
 import org.vaadin.tori.service.AuthorizationService;
 import org.vaadin.tori.service.LiferayAuthorizationService;
@@ -30,7 +31,13 @@ public class LiferayServiceProvider implements ServiceProvider {
 
     @Override
     public DataSource createDataSource() {
-        return new LiferayDataSource();
+        return new LiferayDataSource() {
+            private Configuration configuration = new Configuration();
+            @Override
+            public Configuration getConfiguration() {
+                return configuration;
+            }
+        };
     }
 
     @Override

@@ -1,0 +1,18 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+	<persistence-unit name="lportal" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<!--<mapping-file>META-INF/custom-portal-orm.xml</mapping-file>-->
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.DefaultNamingStrategy" />
+			<property name="hibernate.hbm2ddl.auto" value="validate" />
+			<!-- <property name="hibernate.show_sql" value="true" />-->
+
+			<!-- Second level cache disabled for now. See https://github.com/iPROFS/liferay-ehcache -->
+			<!-- <property name="hibernate.cache.use_second_level_cache" value="true" />
+			<property name="hibernate.cache.use_query_cache" value="true" />
+			<property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory" />-->
+		</properties>
+	</persistence-unit>
+</persistence>

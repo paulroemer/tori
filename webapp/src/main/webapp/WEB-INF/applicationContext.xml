@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context
+                            http://www.springframework.org/schema/context/spring-context-4.1.xsd
+                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+    <bean class="com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil">
+        <property name="defaultCacheKeyGenerator">
+            <bean class="com.liferay.portal.cache.key.SimpleCacheKeyGenerator"/>
+        </property>
+    </bean>
+
+    <bean name="com.liferay.portlet.messageboards.service.MBCategoryLocalService"
+          class="com.liferay.portlet.messageboards.service.impl.MBCategoryLocalServiceImpl"
+          p:MBCategoryPersistence-ref="MBCategoryPersistence"/>
+    <bean name="MBCategoryPersistence"
+          class="com.liferay.portlet.messageboards.service.persistence.MBCategoryPersistenceImpl"/>
+    <bean name="classLoaderRef" class="org.vaadin.tori.PortalClassLoaderInitializer"/>
+    <bean class="com.liferay.portal.kernel.executor.PortalExecutorManagerUtil"
+          p:portalExecutorManager-ref="portalExecutorManager"/>
+    <bean name="portalExecutorManager" class="com.liferay.portal.executor.PortalExecutorManagerImpl"/>
+    <bean class="com.liferay.portal.kernel.dao.orm.FinderCacheUtil" p:finderCache-ref="finderCache"/>
+    <bean id="finderCache" class="com.liferay.portal.dao.orm.common.FinderCacheImpl">
+        <property name="multiVMPool">
+            <bean class="com.liferay.portal.cache.MultiVMPoolImpl">
+                <property name="portalCacheManager" ref="portalCacheManager"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="portalCacheManager" class="com.liferay.portal.patch.MemoryPortalCacheManagerPatch"/>
+    <bean class="com.liferay.portal.kernel.cache.CacheRegistryUtil">
+        <property name="cacheRegistry">
+            <bean class="com.liferay.portal.cache.CacheRegistryImpl"/>
+        </property>
+    </bean>
+    <bean id="userPersistence" class="com.liferay.portlet.messageboards.service.persistence.MBCategoryPersistenceImpl">
+        <property name="sessionFactory" ref="userSessionFactory"/>
+    </bean>
+    <bean id="userSessionFactory" class="com.liferay.portal.dao.orm.jpa.SessionFactoryImpl">
+        <property name="entityManagerFactory" ref="portalEntityManagerFactoryBean"/>
+        <property name="session" ref="userSession"/>
+    </bean>
+    <bean id="portalEntityManagerFactoryBean" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+          p:persistenceUnitName="lportal" p:persistenceXmlLocation="classpath:/META-INF/persistence.xml">
+        <property name="dataSource">
+            <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+                <!-- Remember to change these: -->
+                <property name="url" value="jdbc:mysql://localhost:3306/lportal"/>
+                <property name="username" value="root"/>
+                <property name="password" value=""/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="portalEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
+        <property name="entityManagerFactory" ref="portalEntityManagerFactoryBean"/>
+    </bean>
+
+    <bean id="userSession" class="com.UserSession" autowire="no" autowire-candidate="false">
+        <property name="entityManager" ref="portalEntityManager"/>
+    </bean>
+
+</beans>

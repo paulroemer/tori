@@ -23,6 +23,10 @@
 			<param-name>widgetset</param-name>
 			<param-value>org.vaadin.tori.widgetset.ToriWidgetset</param-value>
 		</init-param>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>WEB-INF/applicationContext.xml</param-value>
+		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Tori</servlet-name>

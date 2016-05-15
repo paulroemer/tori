@@ -18,6 +18,7 @@ package org.vaadin.tori;
 
 import javax.portlet.PortletMode;
 
+import com.vaadin.server.VaadinServletRequest;
 import org.apache.log4j.Logger;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;

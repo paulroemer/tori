@@ -23,15 +23,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.liferay.portal.bean.BeanLocatorImpl;
+import com.liferay.portal.kernel.bean.BeanLocator;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.util.InitUtil;
 import com.vaadin.server.DeploymentConfiguration;
 import com.vaadin.server.RequestHandler;
 import com.vaadin.server.ServiceException;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinServletService;
+import org.springframework.context.ApplicationContext;
+import ru.xpoft.vaadin.SpringApplicationContext;
+import ru.xpoft.vaadin.SpringVaadinServlet;
 
 @SuppressWarnings("serial")
-public class ToriServlet extends VaadinServlet {
+public class ToriServlet extends SpringVaadinServlet {
 
     public class ToriServletService extends VaadinServletService {
 
@@ -77,6 +84,10 @@ public class ToriServlet extends VaadinServlet {
     protected void servletInitialized() {
         getService()
                 .setSystemMessagesProvider(ToriSystemMessagesProvider.get());
+//        InitUtil.initWithSpring();
+        ApplicationContext springContext = SpringApplicationContext.getApplicationContext();
+        BeanLocator beanLocator = new BeanLocatorImpl(Thread.currentThread().getContextClassLoader(), springContext);
+        PortalBeanLocatorUtil.setBeanLocator(beanLocator);
     }
 
 }
