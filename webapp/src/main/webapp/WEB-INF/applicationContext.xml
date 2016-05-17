@@ -39,7 +39,12 @@
             <bean class="com.liferay.portal.cache.CacheRegistryImpl"/>
         </property>
     </bean>
-    <bean id="userPersistence" class="com.liferay.portlet.messageboards.service.persistence.MBCategoryPersistenceImpl">
+    <bean class="com.liferay.portal.kernel.dao.db.DBFactoryUtil">
+        <property name="dBFactory">
+            <bean class="com.liferay.portal.dao.db.DBFactoryImpl"/>
+        </property>
+    </bean>
+    <bean id="categoryPersistence" class="com.liferay.portlet.messageboards.service.persistence.MBCategoryPersistenceImpl">
         <property name="sessionFactory" ref="userSessionFactory"/>
     </bean>
     <bean id="userSessionFactory" class="com.liferay.portal.dao.orm.jpa.SessionFactoryImpl">
