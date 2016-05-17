@@ -28,6 +28,11 @@
 @mixin tori {
 	@include post;
 	@include ckeditorcontent;
+
+        .v-generated-body {
+             overflow: auto;
+        }
+                                        }  
 	
 	.v-app {
 	    @include base;
