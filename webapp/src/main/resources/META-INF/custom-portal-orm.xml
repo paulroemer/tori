@@ -3086,7 +3086,7 @@
 			<transient name="userUuid" />
 			<transient name="expandoBridge" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBThreadModelImpl">
 		<attributes>
 			<id name="threadId" />
@@ -3131,7 +3131,7 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBThreadFlagModelImpl">
+	<!--mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBThreadFlagModelImpl">
 		<attributes>
 			<id name="threadFlagId" />
 			<basic name="uuid">
@@ -4844,12 +4844,12 @@
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBStatsUserImpl" name="MBStatsUser">
 		<table name="MBStatsUser" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBThreadImpl" name="MBThread">
 		<table name="MBThread" />
 		<attributes />
 	</entity>
-	<entity class="com.liferay.portlet.messageboards.model.impl.MBThreadFlagImpl" name="MBThreadFlag">
+	<!--entity class="com.liferay.portlet.messageboards.model.impl.MBThreadFlagImpl" name="MBThreadFlag">
 		<table name="MBThreadFlag" />
 		<attributes />
 	</entity>

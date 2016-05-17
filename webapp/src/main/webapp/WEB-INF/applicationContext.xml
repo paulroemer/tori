@@ -26,6 +26,11 @@
             </bean>
         </property>
     </bean>
+    <bean class="com.liferay.portal.security.permission.PermissionThreadLocal">
+        <property name="permissionChecker">
+            <bean class="com.liferay.portal.security.permission.SimplePermissionChecker"/>
+        </property>
+    </bean>
     <bean name="com.liferay.portlet.messageboards.service.MBCategoryLocalService"
           class="com.liferay.portlet.messageboards.service.impl.MBCategoryLocalServiceImpl"
           p:MBCategoryPersistence-ref="MBCategoryPersistence"/>
@@ -73,6 +78,14 @@
 
     <bean id="userSession" class="com.UserSession" autowire="no" autowire-candidate="false">
         <property name="entityManager" ref="portalEntityManager"/>
+    </bean>
+
+    <bean name="com.liferay.portlet.messageboards.service.MBThreadLocalService"
+          class="com.liferay.portlet.messageboards.service.impl.MBThreadLocalServiceImpl">
+        <property name="MBThreadPersistence">
+            <bean class="com.liferay.portlet.messageboards.service.persistence.MBThreadPersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
+        </property>
     </bean>
 
 </beans>
