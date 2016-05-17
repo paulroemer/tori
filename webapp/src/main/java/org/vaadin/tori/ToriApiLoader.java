@@ -234,7 +234,7 @@ public class ToriApiLoader implements Serializable, SessionDestroyListener {
 
             @Override
             public boolean mayCreateThreadInCategory(Long categoryId) {
-                return false;
+                return true;
             }
 
             @Override

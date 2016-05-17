@@ -3113,7 +3113,7 @@
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="priority" />
-			<basic name="question" />
+			<basic name="question"><column column-definition="TINYINT"/> </basic>
 			<basic name="status" />
 			<basic name="statusByUserId" />
 			<basic name="statusByUserName" />
@@ -3123,12 +3123,44 @@
 			<transient name="containerModelId" />
 			<transient name="lastPostByUserUuid" />
 			<transient name="modelAttributes" />
+			<transient name="modelClass" />
 			<transient name="parentContainerModelId" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="rootMessageUserUuid" />
 			<transient name="statusByUserUuid" />
 			<transient name="userUuid" />
+			<transient name="expandoBridge" />
+			<transient name="originalCategoryId" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalLastPostDate" />
+			<transient name="originalPriority" />
+			<transient name="originalRootMessageId" />
+			<transient name="originalStatus" />
+			<transient name="originalUuid" />
+			<transient name="stagedModelType" />
+			<transient name="trashHandler" />
+			<transient name="approved" />
+			<transient name="denied" />
+			<transient name="draft" />
+			<transient name="expired" />
+			<transient name="inactive" />
+			<transient name="incomplete" />
+			<transient name="pending" />
+			<transient name="scheduled" />
+			<transient name="columnBitmask" />
+			<transient name="containerModelName" />
+			<transient name="inTrash" />
+			<transient name="inTrashContainer" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalUuid" />
+			<transient name="originalStatus" />
+			<transient name="trashEntry" />
+			<transient name="trashEntryClassPK" />
 		</attributes>
 	</mapped-superclass>
 	<!--mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBThreadFlagModelImpl">
@@ -4847,7 +4879,14 @@
 	</entity-->
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBThreadImpl" name="MBThread">
 		<table name="MBThread" />
-		<attributes />
+		<attributes>
+			<transient name="attachmentsFolderId" />
+			<transient name="category" />
+			<transient name="lock" />
+			<transient name="locked" />
+			<transient name="participantUserIds" />
+
+		</attributes>
 	</entity>
 	<!--entity class="com.liferay.portlet.messageboards.model.impl.MBThreadFlagImpl" name="MBThreadFlag">
 		<table name="MBThreadFlag" />
