@@ -31,11 +31,12 @@
                     <groupId>${project.groupId}</groupId>
                     <artifactId>ds-test</artifactId>
                 </dependency>
-                <dependency>
-                    <groupId>org.eclipse.persistence</groupId>
-                    <artifactId>javax.persistence</artifactId>
-                    <scope>compile</scope>
-                </dependency>
+                <!--<dependency>-->
+                    <!--<groupId>org.eclipse.persistence</groupId>-->
+                    <!--<artifactId>javax.persistence</artifactId>-->
+                    <!--<version>2.0.0</version>-->
+                    <!--<scope>compile</scope>-->
+                <!--</dependency>-->
             </dependencies>
             <build>
                 <finalName>webapp</finalName>
@@ -301,8 +302,8 @@
         <!-- http://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.0-api -->
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.0-api</artifactId>
-            <version>1.0.1.Final</version>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <version>1.0.0.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>javax.persistence</groupId>

@@ -10,17 +10,25 @@
                             http://www.springframework.org/schema/context
                             http://www.springframework.org/schema/context/spring-context-4.1.xsd
                             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
     <bean class="com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil">
         <property name="defaultCacheKeyGenerator">
             <bean class="com.liferay.portal.cache.key.SimpleCacheKeyGenerator"/>
         </property>
     </bean>
 
+    <bean class="com.liferay.portal.kernel.dao.db.DBFactoryUtil">
+        <property name="dBFactory">
+            <bean class="com.liferay.portal.patch.DBFactoryImplPatch">
+                <constructor-arg name="dialect">
+                    <bean class="org.hibernate.dialect.MySQLDialect"/>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
     <bean name="com.liferay.portlet.messageboards.service.MBCategoryLocalService"
           class="com.liferay.portlet.messageboards.service.impl.MBCategoryLocalServiceImpl"
           p:MBCategoryPersistence-ref="MBCategoryPersistence"/>
-    <bean name="MBCategoryPersistence"
-          class="com.liferay.portlet.messageboards.service.persistence.MBCategoryPersistenceImpl"/>
     <bean name="classLoaderRef" class="org.vaadin.tori.PortalClassLoaderInitializer"/>
     <bean class="com.liferay.portal.kernel.executor.PortalExecutorManagerUtil"
           p:portalExecutorManager-ref="portalExecutorManager"/>
@@ -39,14 +47,9 @@
             <bean class="com.liferay.portal.cache.CacheRegistryImpl"/>
         </property>
     </bean>
-    <bean class="com.liferay.portal.kernel.dao.db.DBFactoryUtil">
-        <property name="dBFactory">
-            <bean class="com.liferay.portal.dao.db.DBFactoryImpl"/>
-        </property>
-    </bean>
-    <bean id="categoryPersistence" class="com.liferay.portlet.messageboards.service.persistence.MBCategoryPersistenceImpl">
-        <property name="sessionFactory" ref="userSessionFactory"/>
-    </bean>
+    <bean name="MBCategoryPersistence"
+          class="com.liferay.portlet.messageboards.service.persistence.MBCategoryPersistenceImpl"
+          p:sessionFactory-ref="userSessionFactory"/>
     <bean id="userSessionFactory" class="com.liferay.portal.dao.orm.jpa.SessionFactoryImpl">
         <property name="entityManagerFactory" ref="portalEntityManagerFactoryBean"/>
         <property name="session" ref="userSession"/>
