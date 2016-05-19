@@ -19,11 +19,7 @@
 
     <bean class="com.liferay.portal.kernel.dao.db.DBFactoryUtil">
         <property name="dBFactory">
-            <bean class="com.liferay.portal.patch.DBFactoryImplPatch">
-                <constructor-arg name="dialect">
-                    <bean class="org.hibernate.dialect.MySQLDialect"/>
-                </constructor-arg>
-            </bean>
+            <bean class="com.liferay.portal.patch.DBFactoryImplPatch" c:dialect-ref="dialect"/>
         </property>
     </bean>
     <bean class="com.liferay.portal.security.permission.PermissionThreadLocal">
@@ -55,21 +51,39 @@
     <bean name="MBCategoryPersistence"
           class="com.liferay.portlet.messageboards.service.persistence.MBCategoryPersistenceImpl"
           p:sessionFactory-ref="userSessionFactory"/>
-    <bean id="userSessionFactory" class="com.liferay.portal.dao.orm.jpa.SessionFactoryImpl">
+
+    <bean id="userSessionFactory" class="com.liferay.portal.patch.SessionFactoryImplPatch" c:dialect-ref="dialect">
         <property name="entityManagerFactory" ref="portalEntityManagerFactoryBean"/>
         <property name="session" ref="userSession"/>
     </bean>
+
+    <bean id="mbThreadSessionFactory" class="com.liferay.portal.patch.SessionFactoryImplPatch" c:dialect-ref="dialect">
+        <property name="entityManagerFactory" ref="portalEntityManagerFactoryBean"/>
+    </bean>
+
+    <bean name="hibernateJpaSessionaFactoryBean"
+          class="org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean">
+        <property name="entityManagerFactory" ref="portalEntityManagerFactoryBean"/>
+    </bean>
+
+
+    <bean name="dialect" class="com.liferay.portal.dao.orm.hibernate.DialectImpl">
+        <constructor-arg>
+            <bean class="org.hibernate.dialect.MySQLDialect"/>
+        </constructor-arg>
+    </bean>
+
     <bean id="portalEntityManagerFactoryBean" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:persistenceUnitName="lportal" p:persistenceXmlLocation="classpath:/META-INF/persistence.xml">
-        <property name="dataSource">
-            <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-                <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-                <!-- Remember to change these: -->
-                <property name="url" value="jdbc:mysql://localhost:3306/lportal"/>
-                <property name="username" value="root"/>
-                <property name="password" value=""/>
-            </bean>
-        </property>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <!-- Remember to change these: -->
+        <property name="url" value="jdbc:mysql://localhost:3306/lportal"/>
+        <property name="username" value="root"/>
+        <property name="password" value=""/>
     </bean>
 
     <bean id="portalEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
@@ -78,14 +92,108 @@
 
     <bean id="userSession" class="com.UserSession" autowire="no" autowire-candidate="false">
         <property name="entityManager" ref="portalEntityManager"/>
+        <property name="hibernateSessionFactory" ref="hibernateJpaSessionaFactoryBean"/>
     </bean>
 
     <bean name="com.liferay.portlet.messageboards.service.MBThreadLocalService"
           class="com.liferay.portlet.messageboards.service.impl.MBThreadLocalServiceImpl">
-        <property name="MBThreadPersistence">
-            <bean class="com.liferay.portlet.messageboards.service.persistence.MBThreadPersistenceImpl"
+        <property name="MBThreadPersistence" ref="threadPersistence"/>
+    </bean>
+    <bean name="threadPersistence" class="com.liferay.portlet.messageboards.service.persistence.MBThreadPersistenceImpl"
+          p:sessionFactory-ref="userSessionFactory"/>
+    <bean class="com.liferay.portal.kernel.staging.permission.StagingPermissionUtil">
+        <property name="stagingPermission">
+            <bean class="com.liferay.portal.staging.permission.StagingPermissionImpl"/>
+        </property>
+    </bean>
+    <bean name="com.liferay.portal.service.GroupLocalService"
+          class="com.liferay.portal.service.impl.GroupLocalServiceImpl">
+        <property name="groupPersistence">
+            <bean class="com.liferay.portal.service.persistence.GroupPersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
+        </property>
+    </bean>
+    <bean name="com.liferay.portlet.messageboards.service.MBThreadService"
+          class="com.liferay.portlet.messageboards.service.impl.MBThreadServiceImpl">
+        <property name="MBCategoryService" ref="com.liferay.portlet.messageboards.service.MBCategoryService"/>
+        <property name="MBThreadPersistence" ref="threadPersistence"/>
+        <property name="MBMessageFinder">
+            <bean class="com.liferay.portlet.messageboards.service.persistence.MBMessageFinderImpl"
                   p:sessionFactory-ref="userSessionFactory"/>
         </property>
     </bean>
 
+    <bean name="com.liferay.portlet.messageboards.service.MBCategoryService"
+          class="com.liferay.portlet.messageboards.service.impl.MBCategoryServiceImpl">
+        <property name="MBCategoryPersistence" ref="MBCategoryPersistence"/>
+    </bean>
+
+    <bean class="com.liferay.portal.security.permission.InlineSQLHelperUtil">
+        <property name="inlineSQLHelper">
+            <bean class="com.liferay.portal.security.permission.InlineSQLHelperImpl"/>
+        </property>
+    </bean>
+
+    <bean class="com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil">
+        <property name="dynamicQueryFactory">
+            <bean class="com.liferay.portal.dao.orm.hibernate.DynamicQueryFactoryImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil">
+        <property name="propertyFactory">
+            <bean class="com.liferay.portal.dao.orm.hibernate.PropertyFactoryImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.dao.orm.EntityCacheUtil">
+        <property name="entityCache">
+            <bean class="com.liferay.portal.dao.orm.common.EntityCacheImpl">
+                <property name="multiVMPool">
+                    <bean class="com.liferay.portal.cache.MultiVMPoolImpl">
+                        <property name="portalCacheManager" ref="portalCacheManager"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean name="com.liferay.portal.service.ResourceBlockLocalService"
+          class="com.liferay.portal.service.impl.ResourceBlockLocalServiceImpl"/>
+
+    <bean class="com.liferay.portal.kernel.dao.orm.OrderFactoryUtil">
+        <property name="orderFactory">
+            <bean class="com.liferay.portal.dao.orm.hibernate.OrderFactoryImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil">
+        <property name="persistedModelLocalServiceRegistry">
+            <bean class="com.liferay.portal.service.PersistedModelLocalServiceRegistryImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.util.PropsUtil">
+        <property name="props">
+            <bean class="com.liferay.portal.util.PropsImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.util.PortalUtil">
+        <property name="portal">
+            <bean class="com.liferay.portal.util.PortalImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.util.InfrastructureUtil" p:dataSource-ref="dataSource"/>
+    <bean name="com.liferay.portal.service.ClassNameLocalService"
+          class="com.liferay.portal.service.impl.ClassNameLocalServiceImpl">
+        <property name="classNamePersistence" ref="classNamePersistence"/>
+        <property name="classNameLocalService">
+            <bean class="com.liferay.portal.service.impl.ClassNameLocalServiceImpl">
+                <property name="classNamePersistence" ref="classNamePersistence"/>
+            </bean>
+        </property>
+    </bean>
+    <bean name="classNamePersistence" class="com.liferay.portal.service.persistence.ClassNamePersistenceImpl"
+          p:sessionFactory-ref="userSessionFactory"/>
+    <bean class="com.liferay.portal.kernel.xml.SAXReaderUtil">
+        <property name="SAXReader">
+            <bean class="com.liferay.portal.xml.SAXReaderImpl"/>
+        </property>
+    </bean>
 </beans>

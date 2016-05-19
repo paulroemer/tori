@@ -140,7 +140,7 @@
 			<transient name="userUuid" />
 			<transient name="expandoBridge" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.ClassNameModelImpl">
 		<attributes>
 			<id name="classNameId" />
@@ -149,9 +149,14 @@
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="expandoBridge" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalValue" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portal.model.impl.ClusterGroupModelImpl">
+	<!--mapped-superclass class="com.liferay.portal.model.impl.ClusterGroupModelImpl">
 		<attributes>
 			<id name="clusterGroupId" />
 			<basic name="name" />
@@ -4120,12 +4125,12 @@
 	<entity class="com.liferay.portal.model.impl.BrowserTrackerImpl" name="BrowserTracker">
 		<table name="BrowserTracker" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.ClassNameImpl" name="ClassName">
 		<table name="ClassName_" />
 		<attributes />
 	</entity>
-	<entity class="com.liferay.portal.model.impl.ClusterGroupImpl" name="ClusterGroup">
+	<!--entity class="com.liferay.portal.model.impl.ClusterGroupImpl" name="ClusterGroup">
 		<table name="ClusterGroup" />
 		<attributes />
 	</entity>

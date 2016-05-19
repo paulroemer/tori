@@ -156,7 +156,7 @@ public class ToriApiLoader implements Serializable, SessionDestroyListener {
     }
 
     private AuthorizationService createAuthorizationService() {
-        AuthorizationService fakeService = new AuthorizationService() {
+    /*    AuthorizationService fakeService = new AuthorizationService() {
             @Override
             public boolean mayEditCategories() {
                 return false;
@@ -257,8 +257,7 @@ public class ToriApiLoader implements Serializable, SessionDestroyListener {
                 return false;
             }
         };
-        return fakeService;
-        /*
+        return fakeService;*/
         final AuthorizationService authorizationService = spi
                 .createAuthorizationService();
         getLogger().debug(
@@ -266,7 +265,6 @@ public class ToriApiLoader implements Serializable, SessionDestroyListener {
                         PostFormatter.class.getSimpleName(),
                         authorizationService.getClass().getName()));
         return authorizationService;
-        */
     }
 
     private ToriActivityMessaging createToriActivityMessaging() {
