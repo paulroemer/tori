@@ -2869,7 +2869,7 @@
 			<transient name="statusByUserUuid" />
 			<transient name="userUuid" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBBanModelImpl">
 		<attributes>
 			<id name="banId" />
@@ -2892,8 +2892,19 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
+			<transient name="expandoBridge" />
+			<transient name="stagedModelType" />
+
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalUuid" />
+			<transient name="originalBanUserId" />
+			<transient name="originalUserId" />
 		</attributes>
-	</mapped-superclass-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBCategoryModelImpl">
 		<attributes>
 			<id name="categoryId" />
@@ -4848,11 +4859,11 @@
 	<entity class="com.liferay.portlet.journal.model.impl.JournalFolderImpl" name="JournalFolder">
 		<table name="JournalFolder" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBBanImpl" name="MBBan">
 		<table name="MBBan" />
 		<attributes />
-	</entity-->
+	</entity>
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBCategoryImpl" name="MBCategory">
 		<table name="MBCategory" />
 		<attributes>

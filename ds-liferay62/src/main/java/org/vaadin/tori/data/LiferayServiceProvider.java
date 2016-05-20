@@ -32,6 +32,10 @@ public class LiferayServiceProvider implements ServiceProvider {
     @Override
     public DataSource createDataSource() {
         return new LiferayDataSource() {
+            {
+                // TODO # # # # ugly hack. Use parameters passed by session
+                scopeGroupId = 10187L;
+            }
             private Configuration configuration = new Configuration();
             @Override
             public Configuration getConfiguration() {

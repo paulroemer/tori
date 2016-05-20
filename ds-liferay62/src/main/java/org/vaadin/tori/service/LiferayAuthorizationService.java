@@ -34,7 +34,7 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.PermissionThreadLocal;
+import com.liferay.portal.security.permission.PermissionThreadLocalPatch;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.messageboards.model.MBThread;
 import com.liferay.portlet.messageboards.service.MBBanLocalServiceUtil;
@@ -45,7 +45,9 @@ public class LiferayAuthorizationService implements AuthorizationService,
 
     private static final Logger LOG = Logger
             .getLogger(LiferayAuthorizationService.class);
-    private long scopeGroupId = -1;
+//    private long scopeGroupId = -1;
+    private long scopeGroupId = 10187L; // TODO use parameters passed by session (see: <code>setRequest>/code>)
+
     private String currentUser;
     private boolean banned;
 
@@ -157,7 +159,7 @@ public class LiferayAuthorizationService implements AuthorizationService,
     }
 
     private PermissionChecker getPermissionChecker() {
-        final PermissionChecker pc = PermissionThreadLocal
+        final PermissionChecker pc = PermissionThreadLocalPatch
                 .getPermissionChecker();
         if (pc == null) {
             throw new IllegalStateException(

@@ -22,10 +22,10 @@
             <bean class="com.liferay.portal.patch.DBFactoryImplPatch" c:dialect-ref="dialect"/>
         </property>
     </bean>
-    <bean class="com.liferay.portal.security.permission.PermissionThreadLocal">
-        <property name="permissionChecker">
-            <bean class="com.liferay.portal.security.permission.SimplePermissionChecker"/>
-        </property>
+    <bean class="com.liferay.portal.security.permission.PermissionThreadLocalPatch">
+        <constructor-arg name="permissionChecker">
+            <bean class="com.NoPermissionChecker"/>
+        </constructor-arg>
     </bean>
     <bean name="com.liferay.portlet.messageboards.service.MBCategoryLocalService"
           class="com.liferay.portlet.messageboards.service.impl.MBCategoryLocalServiceImpl"
@@ -194,6 +194,13 @@
     <bean class="com.liferay.portal.kernel.xml.SAXReaderUtil">
         <property name="SAXReader">
             <bean class="com.liferay.portal.xml.SAXReaderImpl"/>
+        </property>
+    </bean>
+    <bean name="com.liferay.portlet.messageboards.service.MBBanLocalService"
+          class="com.liferay.portlet.messageboards.service.impl.MBBanLocalServiceImpl">
+        <property name="MBBanPersistence">
+            <bean class="com.liferay.portlet.messageboards.service.persistence.MBBanPersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
         </property>
     </bean>
 </beans>
