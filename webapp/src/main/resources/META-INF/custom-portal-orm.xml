@@ -569,7 +569,7 @@
 			<transient name="titleMap" />
 			<transient name="userUuid" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.LayoutSetModelImpl">
 		<attributes>
 			<id name="layoutSetId" />
@@ -581,28 +581,36 @@
 			<basic name="modifiedDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
-			<basic name="privateLayout" />
-			<basic name="logo" />
+			<basic name="privateLayout"><column column-definition="TINYINT"/> </basic>
+			<basic name="logo"><column column-definition="TINYINT"/> </basic>
 			<basic name="logoId" />
 			<basic name="themeId" />
 			<basic name="colorSchemeId" />
 			<basic name="wapThemeId" />
 			<basic name="wapColorSchemeId" />
-			<basic name="css" />
+			<basic name="css"><lob/></basic>
 			<basic name="pageCount" />
 			<basic name="settings">
-				<column name="SETTINGS_" />
+				<column name="SETTINGS_"></column>
+				<lob/>
 			</basic>
-			<basic name="layoutSetPrototypeUuid" />
-			<basic name="layoutSetPrototypeLinkEnabled" />
+			<basic name="layoutSetPrototypeUuid"></basic>
+			<basic name="layoutSetPrototypeLinkEnabled"><column column-definition="TINYINT"/> </basic>
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="virtualHostname" />
 			<transient name="expandoBridge" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalGroupId" />
+			<transient name="originalLayoutSetPrototypeUuid" />
+			<transient name="originalPrivateLayout" />
+
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portal.model.impl.LayoutSetBranchModelImpl">
+	<!--mapped-superclass class="com.liferay.portal.model.impl.LayoutSetBranchModelImpl">
 		<attributes>
 			<id name="layoutSetBranchId" />
 			<basic name="groupId" />
@@ -3039,7 +3047,7 @@
 			<transient name="userUuid" />
 			<transient name="expandoBridge" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBMessageModelImpl">
 		<attributes>
 			<id name="messageId" />
@@ -3063,12 +3071,12 @@
 			<basic name="rootMessageId" />
 			<basic name="parentMessageId" />
 			<basic name="subject" />
-			<basic name="body" />
+			<basic name="body"><lob/></basic>
 			<basic name="format" />
-			<basic name="anonymous" />
+			<basic name="anonymous"><column column-definition="TINYINT"/> </basic>
 			<basic name="priority" />
-			<basic name="allowPingbacks" />
-			<basic name="answer" />
+			<basic name="allowPingbacks"><column column-definition="TINYINT"/> </basic>
+			<basic name="answer"><column column-definition="TINYINT"/> </basic>
 			<basic name="status" />
 			<basic name="statusByUserId" />
 			<basic name="statusByUserName" />
@@ -3084,9 +3092,39 @@
 			<transient name="expandoBridge" />
 			<transient name="stagedModelType" />
 			<transient name="trashHandler" />
+			<transient name="approved" />
+			<transient name="denied" />
+			<transient name="draft" />
+			<transient name="expired" />
+			<transient name="inactive" />
+			<transient name="incomplete" />
+			<transient name="pending" />
+			<transient name="scheduled" />
+			<transient name="columnBitmask" />
+			<transient name="inTrash" />
+			<transient name="inTrashContainer" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalUuid" />
+			<transient name="originalStatus" />
+			<transient name="trashEntry" />
+			<transient name="trashEntryClassPK" />
+			<transient name="originalAnswer" />
+			<transient name="originalCategoryId" />
+			<transient name="originalClassNameId" />
+			<transient name="originalClassPK" />
+			<transient name="originalCompanyId" />
+			<transient name="originalUserId" />
+			<transient name="originalUuid" />
+			<transient name="stagedModelType" />
+			<transient name="originalParentMessageId" />
+			<transient name="originalThreadId" />
+
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBStatsUserModelImpl">
+	<!--mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBStatsUserModelImpl">
 		<attributes>
 			<id name="statsUserId" />
 			<basic name="groupId" />
@@ -4244,15 +4282,26 @@
 		<attributes>
 			<transient name="typeSettingsProperties" />
 		</attributes>
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.LayoutSetImpl" name="LayoutSet">
 		<table name="LayoutSet" />
 		<attributes>
 			<transient name="settingsProperties" />
 			<transient name="virtualHostname" />
+			<transient name="settings" />
+			<transient name="colorScheme" />
+			<transient name="group" />
+			<transient name="layoutSetPrototypeId" />
+			<transient name="liveLogoId" />
+			<transient name="settingsProperties" />
+			<transient name="theme" />
+			<transient name="wapColorScheme" />
+			<transient name="wapTheme" />
+			<transient name="layoutSetPrototypeLinkActive"></transient>
+
 		</attributes>
 	</entity>
-	<entity class="com.liferay.portal.model.impl.LayoutSetBranchImpl" name="LayoutSetBranch">
+	<!--entity class="com.liferay.portal.model.impl.LayoutSetBranchImpl" name="LayoutSetBranch">
 		<table name="LayoutSetBranch" />
 		<attributes>
 			<transient name="settingsProperties" />
@@ -4880,16 +4929,28 @@
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBMailingListImpl" name="MBMailingList">
 		<table name="MBMailingList" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBMessageImpl" name="MBMessage">
 		<table name="MBMessage" />
 		<attributes>
 			<transient name="attachmentsFolderId" />
 			<transient name="attachmentsFileEntries" />
+			<transient name="assetTagNames" />
+			<transient name="attachmentsFileEntriesCount" />
+			<transient name="attachmentsFolderId" />
+			<transient name="category" />
 			<transient name="deletedAttachmentsFileEntries" />
+			<transient name="deletedAttachmentsFileEntriesCount" />
+			<transient name="thread" />
+			<transient name="threadAttachmentsFolderId" />
+			<transient name="workflowClassName" />
+			<transient name="discussion" />
+			<transient name="formatBBCode" />
+			<transient name="reply" />
+			<transient name="root" />
 		</attributes>
 	</entity>
-	<entity class="com.liferay.portlet.messageboards.model.impl.MBStatsUserImpl" name="MBStatsUser">
+	<!--entity class="com.liferay.portlet.messageboards.model.impl.MBStatsUserImpl" name="MBStatsUser">
 		<table name="MBStatsUser" />
 		<attributes />
 	</entity-->

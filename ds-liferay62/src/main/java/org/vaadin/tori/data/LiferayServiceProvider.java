@@ -36,7 +36,12 @@ public class LiferayServiceProvider implements ServiceProvider {
                 // TODO # # # # ugly hack. Use parameters passed by session
                 scopeGroupId = 10187L;
             }
-            private Configuration configuration = new Configuration();
+            private Configuration configuration = new Configuration() {
+				@Override
+				public boolean isShowThreadsOnDashboard() {
+					return true;
+				}
+			};
             @Override
             public Configuration getConfiguration() {
                 return configuration;

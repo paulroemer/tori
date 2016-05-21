@@ -203,4 +203,32 @@
                   p:sessionFactory-ref="userSessionFactory"/>
         </property>
     </bean>
+    <bean name="com.liferay.portlet.messageboards.service.MBMessageLocalService"
+          class="com.liferay.portlet.messageboards.service.impl.MBMessageLocalServiceImpl">
+        <property name="MBMessagePersistence">
+            <bean class="com.liferay.portlet.messageboards.service.persistence.MBMessagePersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
+        </property>
+    </bean>
+    <bean name="com.liferay.portal.service.UserLocalService"
+          class="com.liferay.portal.service.impl.UserLocalServiceImpl">
+        <property name="userPersistence">
+            <bean class="com.liferay.portal.service.persistence.UserPersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
+        </property>
+    </bean>
+    <bean name="com.liferay.portal.service.LayoutLocalService"
+          class="com.liferay.portal.service.impl.LayoutLocalServiceImpl">
+        <property name="classNameLocalService">
+            <bean class="com.liferay.portal.service.impl.ClassNameLocalServiceImpl"/>
+        </property>
+        <property name="groupPersistence">
+            <bean class="com.liferay.portal.service.persistence.GroupPersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
+        </property>
+        <property name="layoutSetPersistence">
+            <bean class="com.liferay.portal.service.persistence.LayoutSetPersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
+        </property>
+    </bean>
 </beans>
