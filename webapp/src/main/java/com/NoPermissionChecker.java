@@ -19,7 +19,7 @@ public class NoPermissionChecker extends BasePermissionChecker {
 	}
 
 	public NoPermissionChecker() {
-		System.out.println("# # # #");
+		System.out.println("# # # # No permissions are checked");
 	}
 
 	@Override

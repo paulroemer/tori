@@ -349,6 +349,21 @@
             <version>1.8.4</version>
             <scope>test</scope>
         </dependency>
+        <!-- http://mvnrepository.com/artifact/commons-httpclient/commons-httpclient -->
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <!-- http://mvnrepository.com/artifact/org.jodd/jodd -->
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd</artifactId>
+            <version>3.3.8</version>
+        </dependency>
+
+
+
     </dependencies>
 
     <build>

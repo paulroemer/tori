@@ -24,8 +24,10 @@ import java.util.Map.Entry;
 import java.util.regex.PatternSyntaxException;
 
 import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.vaadin.tori.HttpServletRequestAware;
 import org.vaadin.tori.PortletRequestAware;
 import org.vaadin.tori.data.entity.Post;
 import org.vaadin.tori.util.PostFormatter.FontsInfo.FontFace;
@@ -36,7 +38,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 
-public class LiferayPostFormatter implements PostFormatter, PortletRequestAware {
+public class LiferayPostFormatter implements PostFormatter, HttpServletRequestAware {
 
     private static final Logger LOG = Logger
             .getLogger(LiferayPostFormatter.class);
@@ -114,7 +116,7 @@ public class LiferayPostFormatter implements PostFormatter, PortletRequestAware 
     }
 
     @Override
-    public void setRequest(final PortletRequest request) {
+    public void setRequest(final HttpServletRequest request) {
         themeDisplay = (ThemeDisplay) request
                 .getAttribute(WebKeys.THEME_DISPLAY);
     }

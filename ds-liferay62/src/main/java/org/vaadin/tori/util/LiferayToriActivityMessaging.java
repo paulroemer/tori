@@ -21,8 +21,10 @@ import java.util.Date;
 import java.util.HashSet;
 
 import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.vaadin.tori.HttpServletRequestAware;
 import org.vaadin.tori.PortletRequestAware;
 
 import com.liferay.portal.kernel.messaging.Destination;
@@ -32,7 +34,7 @@ import com.liferay.portal.kernel.messaging.MessageListener;
 import com.liferay.portal.kernel.messaging.ParallelDestination;
 
 public class LiferayToriActivityMessaging implements
-        ToriActivityMessaging, PortletRequestAware, MessageListener {
+        ToriActivityMessaging, HttpServletRequestAware, MessageListener {
 
     private static final String TORI_DESTINATION = "tori/activity";
 
@@ -47,7 +49,7 @@ public class LiferayToriActivityMessaging implements
     private static final String STARTED_TYPING = "STARTED_TYPING";
     private static final String POST_ID = "POST_ID";
 
-    private PortletRequest request;
+    private HttpServletRequest request;
     private long currentUserId;
 
     private final Collection<UserTypingListener> userTypingListeners = new HashSet<UserTypingListener>();
@@ -87,7 +89,7 @@ public class LiferayToriActivityMessaging implements
     }
 
     private String getSenderId() {
-        return request.getPortletSession().getId();
+        return request.getSession().getId();
     }
 
     private boolean isThisSender(final Message message) {
@@ -118,7 +120,7 @@ public class LiferayToriActivityMessaging implements
     private boolean isSessionAlive() {
         boolean result = true;
         try {
-            request.getPortletSession().getAttribute("test");
+            request.getSession().getAttribute("test");
         } catch (IllegalStateException e) {
             result = false;
         }
@@ -126,7 +128,7 @@ public class LiferayToriActivityMessaging implements
     }
 
     @Override
-    public void setRequest(final PortletRequest request) {
+    public void setRequest(final HttpServletRequest request) {
         this.request = request;
         if (currentUserId == 0 && request.getRemoteUser() != null) {
             currentUserId = Long.valueOf(request.getRemoteUser());

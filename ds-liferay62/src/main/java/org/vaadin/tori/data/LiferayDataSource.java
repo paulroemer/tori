@@ -39,9 +39,11 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.ReadOnlyException;
 import javax.portlet.ValidatorException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import org.vaadin.tori.Configuration;
+import org.vaadin.tori.HttpServletRequestAware;
 import org.vaadin.tori.PortletRequestAware;
 import org.vaadin.tori.data.entity.Attachment;
 import org.vaadin.tori.data.entity.Category;
@@ -50,6 +52,8 @@ import org.vaadin.tori.data.entity.LiferayEntityFactoryUtil;
 import org.vaadin.tori.data.entity.Post;
 import org.vaadin.tori.data.entity.User;
 import org.vaadin.tori.exception.DataSourceException;
+import org.vaadin.tori.patch.PortletPreferencesFactoryUtilPatch;
+import org.vaadin.tori.patch.ServiceContextFactoryPatch;
 import org.vaadin.tori.service.post.PostReport.Reason;
 
 import com.liferay.portal.NoSuchUserException;
@@ -104,7 +108,7 @@ import com.liferay.portlet.ratings.service.RatingsEntryLocalServiceUtil;
 import com.liferay.portlet.ratings.service.RatingsEntryServiceUtil;
 import com.liferay.portlet.ratings.service.RatingsStatsLocalServiceUtil;
 
-public class LiferayDataSource implements DataSource, PortletRequestAware {
+public class LiferayDataSource implements DataSource, HttpServletRequestAware {
 
     private static final Logger LOG = Logger.getLogger(LiferayDataSource.class);
     private static final boolean INCLUDE_SUBSCRIBED = false;
@@ -125,7 +129,7 @@ public class LiferayDataSource implements DataSource, PortletRequestAware {
     protected ServiceContext mbMessageServiceContext;
 
     protected ThemeDisplay themeDisplay;
-    private PortletRequest request;
+    private HttpServletRequest request;
 
     private static final String PREFS_ANALYTICS_ID = "analytics";
     private static final String PREFS_REPLACE_MESSAGE_BOARDS_LINKS = "toriReplaceMessageBoardsLinks";
@@ -857,7 +861,7 @@ public class LiferayDataSource implements DataSource, PortletRequestAware {
     }
 
     @Override
-    public void setRequest(final PortletRequest request) {
+    public void setRequest(final HttpServletRequest request) {
         this.request = request;
         themeDisplay = (ThemeDisplay) request
                 .getAttribute(WebKeys.THEME_DISPLAY);
@@ -882,13 +886,13 @@ public class LiferayDataSource implements DataSource, PortletRequestAware {
         }
 
         try {
-            mbBanServiceContext = ServiceContextFactory.getInstance(
+            mbBanServiceContext = ServiceContextFactoryPatch.getInstance(
                     MBBan.class.getName(), request);
-            flagsServiceContext = ServiceContextFactory.getInstance(
+            flagsServiceContext = ServiceContextFactoryPatch.getInstance(
                     "com.liferay.portlet.flags.model.FlagsEntry", request);
-            mbCategoryServiceContext = ServiceContextFactory.getInstance(
+            mbCategoryServiceContext = ServiceContextFactoryPatch.getInstance(
                     MBCategory.class.getName(), request);
-            mbMessageServiceContext = ServiceContextFactory.getInstance(
+            mbMessageServiceContext = ServiceContextFactoryPatch.getInstance(
                     MBMessage.class.getName(), request);
         } catch (final NestableException e) {
             LOG.error("Couldn't create ServiceContext.", e);
@@ -962,7 +966,7 @@ public class LiferayDataSource implements DataSource, PortletRequestAware {
                     + entry.getValue();
         }
         try {
-            PortletPreferences portletPreferences = PortletPreferencesFactoryUtil
+            PortletPreferences portletPreferences = PortletPreferencesFactoryUtilPatch
                     .getPortletSetup(request);
             portletPreferences.setValues(PREFS_REPLACEMENTS_KEY, values);
 
@@ -1105,12 +1109,12 @@ public class LiferayDataSource implements DataSource, PortletRequestAware {
         return toriConfiguration;
     }
 
-    private Configuration mapConfiguration(final PortletRequest request) {
+    private Configuration mapConfiguration(final HttpServletRequest request) {
 
         Configuration configuration = new Configuration();
 
         try {
-            PortletPreferences portletPreferences = PortletPreferencesFactoryUtil
+            PortletPreferences portletPreferences = PortletPreferencesFactoryUtilPatch
                     .getPortletSetup(request);
 
             // Post body replacements

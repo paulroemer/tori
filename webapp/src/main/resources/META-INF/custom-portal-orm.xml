@@ -15,7 +15,7 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.AccountModelImpl">
 		<attributes>
 			<id name="accountId" />
@@ -46,9 +46,11 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
+			<transient name="expandoBridge" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
 		</attributes>
 	</mapped-superclass>
-	-->
 	<mapped-superclass class="com.liferay.portal.model.impl.AddressModelImpl">
 		<attributes>
 			<id name="addressId" />
@@ -189,7 +191,7 @@
 			<transient name="primaryKeyObj" />
 			<transient name="virtualHostname" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.ContactModelImpl">
 		<attributes>
 			<id name="contactId" />
@@ -212,7 +214,7 @@
 			<basic name="lastName" />
 			<basic name="prefixId" />
 			<basic name="suffixId" />
-			<basic name="male" />
+			<basic name="male"><column column-definition="TINYINT"/> </basic>
 			<basic name="birthday">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
@@ -236,9 +238,17 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
+			<transient name="expandoBridge" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalAccountId" />
+			<transient name="originalClassNameId" />
+			<transient name="originalClassPK" />
+			<transient name="originalCompanyId" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portal.model.impl.CountryModelImpl">
+	<!--mapped-superclass class="com.liferay.portal.model.impl.CountryModelImpl">
 		<attributes>
 			<id name="countryId" />
 			<basic name="name" />
@@ -595,8 +605,10 @@
 				<lob/>
 			</basic>
 			<basic name="layoutSetPrototypeUuid"></basic>
-			<basic name="layoutSetPrototypeLinkEnabled"><column column-definition="TINYINT"/> </basic>
+			<basic name="layoutSetPrototypeLinkEnabledB"><column name="LAYOUTSETPROTOTYPELINKENABLED" column-definition="TINYINT"/> </basic>
+			<basic name="logoId" />
 			<transient name="modelAttributes" />
+			<transient name="layoutSetPrototypeLinkEnabled" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="virtualHostname" />
@@ -4153,12 +4165,11 @@
 	<entity class="com.liferay.counter.model.impl.CounterImpl" name="Counter">
 		<table name="Counter" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.AccountImpl" name="Account">
 		<table name="Account_" />
 		<attributes />
 	</entity>
-	-->
 	<entity class="com.liferay.portal.model.impl.AddressImpl" name="Address">
 		<attributes>
 			<transient name="country" />
@@ -4189,12 +4200,15 @@
 			<transient name="keyObj" />
 			<transient name="virtualHostname" />
 		</attributes>
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.ContactImpl" name="Contact">
 		<table name="Contact_" />
-		<attributes />
+		<attributes>
+			<transient name="fullName" />
+			<transient name="user" />
+		</attributes>
 	</entity>
-	<entity class="com.liferay.portal.model.impl.CountryImpl" name="Country">
+	<!--entity class="com.liferay.portal.model.impl.CountryImpl" name="Country">
 		<table name="Country" />
 		<attributes>
 			<transient name="nameCurrentLanguageId" />

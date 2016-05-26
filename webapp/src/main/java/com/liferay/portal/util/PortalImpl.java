@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.patch;
+package com.liferay.portal.util;
 
 import com.liferay.portal.NoSuchImageException;
 import com.liferay.portal.NoSuchLayoutException;
@@ -157,7 +157,6 @@ import com.liferay.portal.theme.PortletDisplay;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.upload.UploadPortletRequestImpl;
 import com.liferay.portal.upload.UploadServletRequestImpl;
-import com.liferay.portal.util.*;
 import com.liferay.portal.util.comparator.PortletControlPanelWeightComparator;
 import com.liferay.portal.webserver.WebServerServlet;
 import com.liferay.portlet.ActionResponseImpl;
@@ -259,6 +258,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
+import org.apache.struts.Globals;
+
 /**
  * @author Brian Wing Shun Chan
  * @author Brian Myunghun Kim
@@ -270,9 +271,9 @@ import javax.servlet.jsp.PageContext;
  * @author Juan Fernández
  */
 @DoPrivileged
-public class PortalMock implements Portal {
+public class PortalImpl implements Portal {
 
-	public PortalMock() {
+	public PortalImpl() {
 
 		// Computer name
 
@@ -1952,7 +1953,7 @@ public class PortalMock implements Portal {
 
 	@Override
 	public Map<String, Serializable> getExpandoBridgeAttributes(
-			ExpandoBridge expandoBridge, PortletRequest portletRequest)
+			ExpandoBridge expandoBridge, HttpServletRequest servletRequest)
 			throws PortalException, SystemException {
 
 		Map<String, Serializable> attributes =
@@ -1960,13 +1961,13 @@ public class PortalMock implements Portal {
 
 		List<String> names = new ArrayList<String>();
 
-		Enumeration<String> enu = portletRequest.getParameterNames();
+		Enumeration<String> enu = servletRequest.getParameterNames();
 
 		while (enu.hasMoreElements()) {
 			String param = enu.nextElement();
 
 			if (param.contains("ExpandoAttributeName--")) {
-				String name = ParamUtil.getString(portletRequest, param);
+				String name = ParamUtil.getString(servletRequest, param);
 
 				names.add(name);
 			}
@@ -1984,7 +1985,7 @@ public class PortalMock implements Portal {
 					ExpandoColumnConstants.PROPERTY_DISPLAY_TYPE_TEXT_BOX);
 
 			Serializable value = getExpandoValue(
-					portletRequest, "ExpandoAttribute--" + name + "--", type,
+					servletRequest, "ExpandoAttribute--" + name + "--", type,
 					displayType);
 
 			attributes.put(name, value);
@@ -2039,30 +2040,30 @@ public class PortalMock implements Portal {
 
 	@Override
 	public Serializable getExpandoValue(
-			PortletRequest portletRequest, String name, int type,
+			HttpServletRequest servletRequest, String name, int type,
 			String displayType)
 			throws PortalException, SystemException {
 
 		Serializable value = null;
 
 		if (type == ExpandoColumnConstants.BOOLEAN) {
-			value = ParamUtil.getBoolean(portletRequest, name);
+			value = ParamUtil.getBoolean(servletRequest, name);
 		}
 		else if (type == ExpandoColumnConstants.BOOLEAN_ARRAY) {
 		}
 		else if (type == ExpandoColumnConstants.DATE) {
 			int valueDateMonth = ParamUtil.getInteger(
-					portletRequest, name + "Month");
+					servletRequest, name + "Month");
 			int valueDateDay = ParamUtil.getInteger(
-					portletRequest, name + "Day");
+					servletRequest, name + "Day");
 			int valueDateYear = ParamUtil.getInteger(
-					portletRequest, name + "Year");
+					servletRequest, name + "Year");
 			int valueDateHour = ParamUtil.getInteger(
-					portletRequest, name + "Hour");
+					servletRequest, name + "Hour");
 			int valueDateMinute = ParamUtil.getInteger(
-					portletRequest, name + "Minute");
+					servletRequest, name + "Minute");
 			int valueDateAmPm = ParamUtil.getInteger(
-					portletRequest, name + "AmPm");
+					servletRequest, name + "AmPm");
 
 			if (valueDateAmPm == Calendar.PM) {
 				valueDateHour += 12;
@@ -2070,7 +2071,7 @@ public class PortalMock implements Portal {
 
 			TimeZone timeZone = null;
 
-			User user = getUser(portletRequest);
+			User user = getUser(servletRequest);
 
 			if (user != null) {
 				timeZone = user.getTimeZone();
@@ -2083,10 +2084,10 @@ public class PortalMock implements Portal {
 		else if (type == ExpandoColumnConstants.DATE_ARRAY) {
 		}
 		else if (type == ExpandoColumnConstants.DOUBLE) {
-			value = ParamUtil.getDouble(portletRequest, name);
+			value = ParamUtil.getDouble(servletRequest, name);
 		}
 		else if (type == ExpandoColumnConstants.DOUBLE_ARRAY) {
-			String[] values = portletRequest.getParameterValues(name);
+			String[] values = servletRequest.getParameterValues(name);
 
 			if (displayType.equals(
 					ExpandoColumnConstants.PROPERTY_DISPLAY_TYPE_TEXT_BOX)) {
@@ -2097,10 +2098,10 @@ public class PortalMock implements Portal {
 			value = GetterUtil.getDoubleValues(values);
 		}
 		else if (type == ExpandoColumnConstants.FLOAT) {
-			value = ParamUtil.getFloat(portletRequest, name);
+			value = ParamUtil.getFloat(servletRequest, name);
 		}
 		else if (type == ExpandoColumnConstants.FLOAT_ARRAY) {
-			String[] values = portletRequest.getParameterValues(name);
+			String[] values = servletRequest.getParameterValues(name);
 
 			if (displayType.equals(
 					ExpandoColumnConstants.PROPERTY_DISPLAY_TYPE_TEXT_BOX)) {
@@ -2111,10 +2112,10 @@ public class PortalMock implements Portal {
 			value = GetterUtil.getFloatValues(values);
 		}
 		else if (type == ExpandoColumnConstants.INTEGER) {
-			value = ParamUtil.getInteger(portletRequest, name);
+			value = ParamUtil.getInteger(servletRequest, name);
 		}
 		else if (type == ExpandoColumnConstants.INTEGER_ARRAY) {
-			String[] values = portletRequest.getParameterValues(name);
+			String[] values = servletRequest.getParameterValues(name);
 
 			if (displayType.equals(
 					ExpandoColumnConstants.PROPERTY_DISPLAY_TYPE_TEXT_BOX)) {
@@ -2125,10 +2126,10 @@ public class PortalMock implements Portal {
 			value = GetterUtil.getIntegerValues(values);
 		}
 		else if (type == ExpandoColumnConstants.LONG) {
-			value = ParamUtil.getLong(portletRequest, name);
+			value = ParamUtil.getLong(servletRequest, name);
 		}
 		else if (type == ExpandoColumnConstants.LONG_ARRAY) {
-			String[] values = portletRequest.getParameterValues(name);
+			String[] values = servletRequest.getParameterValues(name);
 
 			if (displayType.equals(
 					ExpandoColumnConstants.PROPERTY_DISPLAY_TYPE_TEXT_BOX)) {
@@ -2139,10 +2140,10 @@ public class PortalMock implements Portal {
 			value = GetterUtil.getLongValues(values);
 		}
 		else if (type == ExpandoColumnConstants.NUMBER) {
-			value = ParamUtil.getNumber(portletRequest, name);
+			value = ParamUtil.getNumber(servletRequest, name);
 		}
 		else if (type == ExpandoColumnConstants.NUMBER_ARRAY) {
-			String[] values = portletRequest.getParameterValues(name);
+			String[] values = servletRequest.getParameterValues(name);
 
 			if (displayType.equals(
 					ExpandoColumnConstants.PROPERTY_DISPLAY_TYPE_TEXT_BOX)) {
@@ -2153,10 +2154,10 @@ public class PortalMock implements Portal {
 			value = GetterUtil.getNumberValues(values);
 		}
 		else if (type == ExpandoColumnConstants.SHORT) {
-			value = ParamUtil.getShort(portletRequest, name);
+			value = ParamUtil.getShort(servletRequest, name);
 		}
 		else if (type == ExpandoColumnConstants.SHORT_ARRAY) {
-			String[] values = portletRequest.getParameterValues(name);
+			String[] values = servletRequest.getParameterValues(name);
 
 			if (displayType.equals(
 					ExpandoColumnConstants.PROPERTY_DISPLAY_TYPE_TEXT_BOX)) {
@@ -2167,10 +2168,10 @@ public class PortalMock implements Portal {
 			value = GetterUtil.getShortValues(values);
 		}
 		else if (type == ExpandoColumnConstants.STRING_ARRAY) {
-			value = portletRequest.getParameterValues(name);
+			value = servletRequest.getParameterValues(name);
 		}
 		else {
-			value = ParamUtil.getString(portletRequest, name);
+			value = ParamUtil.getString(servletRequest, name);
 		}
 
 		return value;
@@ -3240,8 +3241,8 @@ public class PortalMock implements Portal {
 
 		HttpSession session = request.getSession();
 
-		if (session.getAttribute("org.apache.struts.action.LOCALE") != null) {
-			locale = (Locale)session.getAttribute("org.apache.struts.action.LOCALE");
+		if (session.getAttribute(Globals.LOCALE_KEY) != null) {
+			locale = (Locale)session.getAttribute(Globals.LOCALE_KEY);
 
 			if (LanguageUtil.isAvailableLocale(groupId, locale)) {
 				return locale;
@@ -5720,9 +5721,9 @@ public class PortalMock implements Portal {
 			PortletConfig portletConfig, ActionRequest actionRequest,
 			ActionResponse actionResponse)
 			throws Exception {
-		System.out.println("# # # # ");
-//		_editDiscussionAction.processAction(
-//				null, null, portletConfig, actionRequest, actionResponse);
+
+		_editDiscussionAction.processAction(
+				null, null, portletConfig, actionRequest, actionResponse);
 	}
 
 	/**
@@ -7608,7 +7609,7 @@ public class PortalMock implements Portal {
 
 		HttpSession session = request.getSession();
 
-		session.setAttribute("org.apache.struts.action.LOCALE", locale);
+		session.setAttribute(Globals.LOCALE_KEY, locale);
 
 		LanguageUtil.updateCookie(request, response, locale);
 	}

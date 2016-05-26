@@ -19,8 +19,10 @@ package org.vaadin.tori.service;
 import java.lang.reflect.Method;
 
 import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.vaadin.tori.HttpServletRequestAware;
 import org.vaadin.tori.PortletRequestAware;
 import org.vaadin.tori.data.LiferayDataSource;
 import org.vaadin.tori.exception.DataSourceException;
@@ -41,12 +43,11 @@ import com.liferay.portlet.messageboards.service.MBBanLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
 
 public class LiferayAuthorizationService implements AuthorizationService,
-        PortletRequestAware {
+        HttpServletRequestAware {
 
     private static final Logger LOG = Logger
             .getLogger(LiferayAuthorizationService.class);
-//    private long scopeGroupId = -1;
-    private long scopeGroupId = 10187L; // TODO use parameters passed by session (see: <code>setRequest>/code>)
+    private long scopeGroupId = -1;
 
     private String currentUser;
     private boolean banned;
@@ -276,7 +277,7 @@ public class LiferayAuthorizationService implements AuthorizationService,
     }
 
     @Override
-    public void setRequest(final PortletRequest request) {
+    public void setRequest(final HttpServletRequest request) {
         if (scopeGroupId < 0) {
             // scope not defined yet -> get if from the request
             final ThemeDisplay themeDisplay = (ThemeDisplay) request

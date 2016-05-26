@@ -27,6 +27,7 @@ import java.util.List;
 import javax.mail.internet.InternetAddress;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -37,9 +38,12 @@ import org.apache.log4j.Logger;
 import org.fit.cssbox.css.CSSNorm;
 import org.fit.cssbox.css.DOMAnalyzer;
 import org.jsoup.Jsoup;
+import org.vaadin.tori.HttpServletRequestAware;
 import org.vaadin.tori.PortletRequestAware;
 import org.vaadin.tori.data.LiferayDataSource;
 import org.vaadin.tori.data.entity.LiferayEntityFactoryUtil;
+import org.vaadin.tori.patch.PortletPreferencesFactoryUtilPatch;
+import org.vaadin.tori.patch.ServiceContextFactoryPatch;
 import org.vaadin.tori.util.DOMBuilder;
 import org.vaadin.tori.util.ToriMailService;
 import org.w3c.dom.Document;
@@ -77,13 +81,13 @@ import com.liferay.portlet.messageboards.service.MBMailingListLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
 
 public class LiferayToriMailService implements ToriMailService,
-        PortletRequestAware {
+        HttpServletRequestAware {
 
     private String mailTemplateHtml;
     private String mailThemeCss;
     private String imagePath;
     private ServiceContext mbMessageServiceContext;
-    private PortletRequest request;
+    private HttpServletRequest request;
 
     @Override
     public void setMailTheme(final String mailThemeCss) {
@@ -415,13 +419,13 @@ public class LiferayToriMailService implements ToriMailService,
     }
 
     @Override
-    public void setRequest(final PortletRequest request) {
+    public void setRequest(final HttpServletRequest request) {
         this.request = request;
 
         try {
             imagePath = ((ThemeDisplay) request
                     .getAttribute(WebKeys.THEME_DISPLAY)).getPathImage();
-            mbMessageServiceContext = ServiceContextFactory.getInstance(
+            mbMessageServiceContext = ServiceContextFactoryPatch.getInstance(
                     MBMessage.class.getName(), request);
         } catch (NestableException e) {
             getLogger().error("Unable to initialize mail service", e);
@@ -435,7 +439,7 @@ public class LiferayToriMailService implements ToriMailService,
         String result = defaultValue;
         PortletPreferences portletPreferences;
         try {
-            portletPreferences = PortletPreferencesFactoryUtil
+            portletPreferences = PortletPreferencesFactoryUtilPatch
                     .getPortletSetup(request);
             result = portletPreferences.getValue(preferenceKey, defaultValue);
         } catch (NestableException e) {

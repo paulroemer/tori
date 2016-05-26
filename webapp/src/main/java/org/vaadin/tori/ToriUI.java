@@ -18,6 +18,16 @@ package org.vaadin.tori;
 
 import javax.portlet.PortletMode;
 
+import com.google.gwt.thirdparty.guava.common.base.Throwables;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.*;
+import com.liferay.portal.model.impl.CompanyImpl;
+import com.liferay.portal.model.impl.LayoutImpl;
+import com.liferay.portal.model.impl.UserImpl;
+import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.vaadin.server.VaadinServletRequest;
 import org.apache.log4j.Logger;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -41,149 +51,206 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import java.io.Serializable;
+import java.security.Key;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
+
+import static com.liferay.portal.kernel.util.WebKeys.THEME_DISPLAY;
+
 @SuppressWarnings("serial")
 @Widgetset("org.vaadin.tori.widgetset.ToriWidgetset")
 public class ToriUI extends UI implements ToriUIServerRpc {
 
-    public static final int DEFAULT_POLL_INTERVAL = 1000 * 10;
+	public static final int DEFAULT_POLL_INTERVAL = 1000 * 10;
 
-    private VerticalLayout mainLayout;
+	private VerticalLayout mainLayout;
 
-    private GoogleAnalyticsTracker analytics;
+	private GoogleAnalyticsTracker analytics;
 
-    private RecentBar recentBar;
-    private Breadcrumbs breadcrumbs;
+	private RecentBar recentBar;
+	private Breadcrumbs breadcrumbs;
 
-    private ToriApiLoader apiLoader;
-    private InputCacheUtil inputCacheUtil;
+	private ToriApiLoader apiLoader;
+	private InputCacheUtil inputCacheUtil;
 
-    @Override
-    protected void init(final VaadinRequest request) {
-        setId("tori-ui");
-        setPollInterval(DEFAULT_POLL_INTERVAL);
-        registerRpc(this);
-        ToriApiLoader.init(request);
-        apiLoader = ToriApiLoader.getCurrent();
-        inputCacheUtil = new InputCacheUtil();
-        addExtension(inputCacheUtil.getExtension());
-        checkUrl();
+	@Override
+	protected void init(final VaadinRequest request) {
+		setId("tori-ui");
+		setPollInterval(DEFAULT_POLL_INTERVAL);
+		registerRpc(this);
 
-        final String trackerId = apiLoader.getDataSource().getConfiguration()
-                .getGoogleAnalyticsTrackerId();
-        if (trackerId != null && !trackerId.isEmpty()) {
-            analytics = new GoogleAnalyticsTracker(trackerId);
-            analytics.setAllowAnchor(true);
-            analytics.extend(ToriUI.this);
-        }
+		fakeRequestAttributes(request);
 
-        mainLayout = new VerticalLayout();
-        mainLayout.setMargin(false);
-        setContent(mainLayout);
+		ToriApiLoader.init(request);
+		apiLoader = ToriApiLoader.getCurrent();
+		inputCacheUtil = new InputCacheUtil();
+		addExtension(inputCacheUtil.getExtension());
+		checkUrl();
 
-        VerticalLayout navigatorContent = new VerticalLayout();
-        setNavigator(new ToriNavigator(navigatorContent));
-        breadcrumbs = new Breadcrumbs();
+		final String trackerId = apiLoader.getDataSource().getConfiguration()
+				.getGoogleAnalyticsTrackerId();
+		if (trackerId != null && !trackerId.isEmpty()) {
+			analytics = new GoogleAnalyticsTracker(trackerId);
+			analytics.setAllowAnchor(true);
+			analytics.extend(ToriUI.this);
+		}
 
-        addControlPanelIfInDevelopment();
-        recentBar = new RecentBar();
-        mainLayout.addComponent(recentBar);
-        mainLayout.addComponent(breadcrumbs);
-        mainLayout.addComponent(navigatorContent);
+		mainLayout = new VerticalLayout();
+		mainLayout.setMargin(false);
+		setContent(mainLayout);
 
-        if (request instanceof VaadinPortletRequest) {
-            final VaadinPortletRequest r = (VaadinPortletRequest) request;
-            setPortletMode(r.getPortletRequest().getPortletMode());
-        }
+		VerticalLayout navigatorContent = new VerticalLayout();
+		setNavigator(new ToriNavigator(navigatorContent));
+		breadcrumbs = new Breadcrumbs();
 
-        ConfirmDialog.setFactory(ComponentUtil.getConfirmDialogFactory());
-    }
+		addControlPanelIfInDevelopment();
+		recentBar = new RecentBar();
+		mainLayout.addComponent(recentBar);
+		mainLayout.addComponent(breadcrumbs);
+		mainLayout.addComponent(navigatorContent);
 
-    private void checkUrl() {
-        UrlConverter uc = apiLoader.getUrlConverter();
-        if (uc != null) {
-            String currentUrl = Page.getCurrent().getLocation().toString();
-            String convertedUrl = uc.convertUrlToToriForm(currentUrl);
-            if (!currentUrl.equals(convertedUrl)) {
-                Page.getCurrent().setLocation(convertedUrl);
-            }
-        }
-    }
+		if (request instanceof VaadinPortletRequest) {
+			final VaadinPortletRequest r = (VaadinPortletRequest) request;
+			setPortletMode(r.getPortletRequest().getPortletMode());
+		}
 
-    public final void setPortletMode(final PortletMode portletMode) {
-        if (portletMode == PortletMode.EDIT) {
-            final EditViewImpl editView = new EditViewImpl(
-                    apiLoader.getDataSource(),
-                    apiLoader.getAuthorizationService());
-            editView.init();
-            setContent(editView);
-        } else {
-            setContent(mainLayout);
-        }
-    }
+		ConfirmDialog.setFactory(ComponentUtil.getConfirmDialogFactory());
+	}
 
-    private void addControlPanelIfInDevelopment() {
-        final AuthorizationService authorizationService = apiLoader
-                .getAuthorizationService();
-        if (authorizationService instanceof DebugAuthorizationService) {
-            DebugControlPanel debugControlPanel = new DebugControlPanel(
-                    (DebugAuthorizationService) authorizationService);
-            mainLayout.addComponent(debugControlPanel);
-            mainLayout.setComponentAlignment(debugControlPanel,
-                    Alignment.TOP_RIGHT);
-        }
-    }
+	private void fakeRequestAttributes(final VaadinRequest request) {
+		ThemeDisplay themeDisplay = new ThemeDisplay();
+		long scopeGroupId = 10187L;
+		long siteGroupId = 10187L;
+		long companyId = 10167L;
+		long accountId = 10168L;
+		long userId = 10902L;
+		long contactId = 10903L;
 
-    /**
-     * Send data to Google Analytics about what the user is doing.
-     * 
-     * @param action
-     *            the action performed in the path. <code>null</code> to ignore.
-     *            E.g. "reply"
-     */
-    public void trackAction(final String action) {
-        if (analytics != null) {
+		themeDisplay.setScopeGroupId(scopeGroupId);
+		themeDisplay.setSiteGroupId(siteGroupId);
 
-            String fragment = Page.getCurrent().getUriFragment();
-            StringBuilder sb = new StringBuilder(apiLoader.getDataSource()
-                    .getPathRoot() + "/forum/#");
-            sb.append(fragment != null ? fragment : "");
-            if (action != null) {
-                sb.append("/" + action);
-            }
-            analytics.trackPageview(sb.toString());
-        } else {
-            getLogger()
-                    .debug("Can't track an action - no analytics configured");
-        }
-    }
+		User user = new UserImpl();
+		user.setCompanyId(companyId);
+		user.setPrimaryKey(userId);
+		user.setContactId(contactId);
 
-    public RecentBar getRecentBar() {
-        return recentBar;
-    }
+		Company company = new CompanyImpl();
+		company.setCompanyId(companyId);
+		company.setAccountId(accountId);
+		company.setWebId("vaadin.com");
+		company.setKey("rO0ABXNyAB9qYXZheC5jcnlwdG8uc3BlYy5TZWNyZXRLZXlTcGVjW0cLZuIwYU0CAAJMAAlhbGdvcml0aG10ABJMamF2YS9sYW5nL1N0cmluZztbAANrZXl0AAJbQnhwdAADQUVTdXIAAltCrPMX");
+		company.setMx("vaadin.com");
+		company.setHomeURL("/home");
+		company.setActive(true);
 
-    public Breadcrumbs getBreadcrumbs() {
-        return breadcrumbs;
-    }
+		try {
+			themeDisplay.setUser(user);
+			themeDisplay.setCompany(company);
+		} catch (PortalException e) {
+			Throwables.propagate(e);
+		} catch (SystemException e) {
+			Throwables.propagate(e);
+		}
 
-    public InputCacheUtil getInputCacheUtil() {
-        return inputCacheUtil;
-    }
+		Layout layout = new LayoutImpl();
+		layout.setCompanyId(companyId);
+		layout.setGroupId(scopeGroupId);
+		layout.setParentLayoutId(0L);
+		layout.setType("link_to_layout");
+		layout.setLayoutId(78L);
 
-    private static Logger getLogger() {
-        return Logger.getLogger(ToriUI.class);
-    }
+		themeDisplay.setLayout(layout);
+		themeDisplay.setServerName("localhost");
+		request.setAttribute(THEME_DISPLAY, themeDisplay);
+	}
 
-    public static ToriUI getCurrent() {
-        return (ToriUI) UI.getCurrent();
-    }
+	private void checkUrl() {
+		UrlConverter uc = apiLoader.getUrlConverter();
+		if (uc != null) {
+			String currentUrl = Page.getCurrent().getLocation().toString();
+			String convertedUrl = uc.convertUrlToToriForm(currentUrl);
+			if (!currentUrl.equals(convertedUrl)) {
+				Page.getCurrent().setLocation(convertedUrl);
+			}
+		}
+	}
 
-    @Override
-    public void userInactive() {
-        setPollInterval(0);
-    }
+	public final void setPortletMode(final PortletMode portletMode) {
+		if (portletMode == PortletMode.EDIT) {
+			final EditViewImpl editView = new EditViewImpl(
+					apiLoader.getDataSource(),
+					apiLoader.getAuthorizationService());
+			editView.init();
+			setContent(editView);
+		} else {
+			setContent(mainLayout);
+		}
+	}
 
-    @Override
-    public void userActive() {
-        setPollInterval(DEFAULT_POLL_INTERVAL);
-    }
+	private void addControlPanelIfInDevelopment() {
+		final AuthorizationService authorizationService = apiLoader
+				.getAuthorizationService();
+		if (authorizationService instanceof DebugAuthorizationService) {
+			DebugControlPanel debugControlPanel = new DebugControlPanel(
+					(DebugAuthorizationService) authorizationService);
+			mainLayout.addComponent(debugControlPanel);
+			mainLayout.setComponentAlignment(debugControlPanel,
+					Alignment.TOP_RIGHT);
+		}
+	}
+
+	/**
+	 * Send data to Google Analytics about what the user is doing.
+	 *
+	 * @param action the action performed in the path. <code>null</code> to ignore.
+	 *               E.g. "reply"
+	 */
+	public void trackAction(final String action) {
+		if (analytics != null) {
+
+			String fragment = Page.getCurrent().getUriFragment();
+			StringBuilder sb = new StringBuilder(apiLoader.getDataSource()
+					.getPathRoot() + "/forum/#");
+			sb.append(fragment != null ? fragment : "");
+			if (action != null) {
+				sb.append("/" + action);
+			}
+			analytics.trackPageview(sb.toString());
+		} else {
+			getLogger()
+					.debug("Can't track an action - no analytics configured");
+		}
+	}
+
+	public RecentBar getRecentBar() {
+		return recentBar;
+	}
+
+	public Breadcrumbs getBreadcrumbs() {
+		return breadcrumbs;
+	}
+
+	public InputCacheUtil getInputCacheUtil() {
+		return inputCacheUtil;
+	}
+
+	private static Logger getLogger() {
+		return Logger.getLogger(ToriUI.class);
+	}
+
+	public static ToriUI getCurrent() {
+		return (ToriUI) UI.getCurrent();
+	}
+
+	@Override
+	public void userInactive() {
+		setPollInterval(0);
+	}
+
+	@Override
+	public void userActive() {
+		setPollInterval(DEFAULT_POLL_INTERVAL);
+	}
 }
