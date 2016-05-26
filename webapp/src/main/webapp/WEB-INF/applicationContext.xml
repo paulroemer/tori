@@ -11,17 +11,8 @@
                             http://www.springframework.org/schema/context/spring-context-4.1.xsd
                             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean class="com.liferay.portal.kernel.cache.key.CacheKeyGeneratorUtil">
-        <property name="defaultCacheKeyGenerator">
-            <bean class="com.liferay.portal.cache.key.SimpleCacheKeyGenerator"/>
-        </property>
-    </bean>
+    <import resource="staticLiferayUtilBeans.xml"/>
 
-    <bean class="com.liferay.portal.kernel.dao.db.DBFactoryUtil">
-        <property name="dBFactory">
-            <bean class="com.liferay.portal.patch.DBFactoryImplPatch" c:dialect-ref="dialect"/>
-        </property>
-    </bean>
     <bean class="com.liferay.portal.security.permission.PermissionThreadLocalPatch">
         <constructor-arg name="permissionChecker">
             <bean class="com.NoPermissionChecker"/>
@@ -31,10 +22,7 @@
           class="com.liferay.portlet.messageboards.service.impl.MBCategoryLocalServiceImpl"
           p:MBCategoryPersistence-ref="MBCategoryPersistence"/>
     <bean name="classLoaderRef" class="org.vaadin.tori.PortalClassLoaderInitializer"/>
-    <bean class="com.liferay.portal.kernel.executor.PortalExecutorManagerUtil"
-          p:portalExecutorManager-ref="portalExecutorManager"/>
     <bean name="portalExecutorManager" class="com.liferay.portal.executor.PortalExecutorManagerImpl"/>
-    <bean class="com.liferay.portal.kernel.dao.orm.FinderCacheUtil" p:finderCache-ref="finderCache"/>
     <bean id="finderCache" class="com.liferay.portal.dao.orm.common.FinderCacheImpl">
         <property name="multiVMPool">
             <bean class="com.liferay.portal.cache.MultiVMPoolImpl">
@@ -43,11 +31,6 @@
         </property>
     </bean>
     <bean id="portalCacheManager" class="com.liferay.portal.patch.MemoryPortalCacheManagerPatch"/>
-    <bean class="com.liferay.portal.kernel.cache.CacheRegistryUtil">
-        <property name="cacheRegistry">
-            <bean class="com.liferay.portal.cache.CacheRegistryImpl"/>
-        </property>
-    </bean>
     <bean name="MBCategoryPersistence"
           class="com.liferay.portlet.messageboards.service.persistence.MBCategoryPersistenceImpl"
           p:sessionFactory-ref="userSessionFactory"/>
@@ -101,24 +84,11 @@
     </bean>
     <bean name="threadPersistence" class="com.liferay.portlet.messageboards.service.persistence.MBThreadPersistenceImpl"
           p:sessionFactory-ref="userSessionFactory"/>
-    <bean class="com.liferay.portal.kernel.staging.permission.StagingPermissionUtil">
-        <property name="stagingPermission">
-            <bean class="com.liferay.portal.staging.permission.StagingPermissionImpl"/>
-        </property>
-    </bean>
     <bean name="com.liferay.portal.service.GroupLocalService"
-          class="com.liferay.portal.service.impl.GroupLocalServiceImpl">
-        <property name="groupPersistence">
-            <bean class="com.liferay.portal.service.persistence.GroupPersistenceImpl"
-                  p:sessionFactory-ref="userSessionFactory"/>
-        </property>
+          class="com.liferay.portal.service.impl.GroupLocalServiceImpl" p:groupPersistence-ref="groupPersistence">
         <property name="groupLocalService">
-            <bean class="com.liferay.portal.service.impl.GroupLocalServiceImpl">
-                <property name="groupPersistence">
-                    <bean class="com.liferay.portal.service.persistence.GroupPersistenceImpl"
-                          p:sessionFactory-ref="userSessionFactory"/>
-                </property>
-            </bean>
+            <bean class="com.liferay.portal.service.impl.GroupLocalServiceImpl"
+                  p:groupPersistence-ref="groupPersistence"/>
         </property>
     </bean>
     <bean name="com.liferay.portlet.messageboards.service.MBThreadService"
@@ -136,59 +106,12 @@
         <property name="MBCategoryPersistence" ref="MBCategoryPersistence"/>
     </bean>
 
-    <bean class="com.liferay.portal.security.permission.InlineSQLHelperUtil">
-        <property name="inlineSQLHelper">
-            <bean class="com.liferay.portal.security.permission.InlineSQLHelperImpl"/>
-        </property>
-    </bean>
-
-    <bean class="com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil">
-        <property name="dynamicQueryFactory">
-            <bean class="com.liferay.portal.dao.orm.hibernate.DynamicQueryFactoryImpl"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil">
-        <property name="propertyFactory">
-            <bean class="com.liferay.portal.dao.orm.hibernate.PropertyFactoryImpl"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portal.kernel.dao.orm.EntityCacheUtil">
-        <property name="entityCache">
-            <bean class="com.liferay.portal.dao.orm.common.EntityCacheImpl">
-                <property name="multiVMPool">
-                    <bean class="com.liferay.portal.cache.MultiVMPoolImpl">
-                        <property name="portalCacheManager" ref="portalCacheManager"/>
-                    </bean>
-                </property>
-            </bean>
-        </property>
-    </bean>
-
     <bean name="com.liferay.portal.service.ResourceBlockLocalService"
           class="com.liferay.portal.service.impl.ResourceBlockLocalServiceImpl"/>
 
-    <bean class="com.liferay.portal.kernel.dao.orm.OrderFactoryUtil">
-        <property name="orderFactory">
-            <bean class="com.liferay.portal.dao.orm.hibernate.OrderFactoryImpl"/>
-        </property>
-    </bean>
     <bean name="persistedModelLocalServiceRegistry"
           class="com.liferay.portal.service.PersistedModelLocalServiceRegistryImpl"/>
 
-    <bean class="com.liferay.portal.service.PersistedModelLocalServiceRegistryUtil"
-          p:persistedModelLocalServiceRegistry-ref="persistedModelLocalServiceRegistry"/>
-
-    <bean class="com.liferay.portal.kernel.util.PropsUtil">
-        <property name="props">
-            <bean class="com.liferay.portal.util.PropsImpl"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portal.util.PortalUtil">
-        <property name="portal">
-            <bean class="com.liferay.portal.util.PortalImpl"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portal.kernel.util.InfrastructureUtil" p:dataSource-ref="dataSource"/>
     <bean name="com.liferay.portal.service.ClassNameLocalService"
           class="com.liferay.portal.service.impl.ClassNameLocalServiceImpl">
         <property name="classNamePersistence" ref="classNamePersistence"/>
@@ -200,11 +123,6 @@
     </bean>
     <bean name="classNamePersistence" class="com.liferay.portal.service.persistence.ClassNamePersistenceImpl"
           p:sessionFactory-ref="userSessionFactory"/>
-    <bean class="com.liferay.portal.kernel.xml.SAXReaderUtil">
-        <property name="SAXReader">
-            <bean class="com.liferay.portal.xml.SAXReaderImpl"/>
-        </property>
-    </bean>
     <bean name="com.liferay.portlet.messageboards.service.MBBanLocalService"
           class="com.liferay.portlet.messageboards.service.impl.MBBanLocalServiceImpl">
         <property name="MBBanPersistence">
@@ -220,49 +138,12 @@
         </property>
     </bean>
     <bean name="com.liferay.portal.service.UserLocalService"
-          class="com.liferay.portal.service.impl.UserLocalServiceImpl">
-        <property name="userPersistence">
-            <bean class="com.liferay.portal.service.persistence.UserPersistenceImpl"
-                  p:sessionFactory-ref="userSessionFactory"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portal.kernel.cache.MultiVMPoolUtil">
-        <property name="multiVMPool">
-            <bean class="com.liferay.portal.cache.MultiVMPoolImpl" p:portalCacheManager-ref="portalCacheManager"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portal.kernel.cache.SingleVMPoolUtil">
-        <property name="singleVMPool">
-            <bean class="com.liferay.portal.cache.SingleVMPoolImpl" p:portalCacheManager-ref="portalCacheManager"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portal.kernel.dao.jdbc.SqlUpdateFactoryUtil">
-        <property name="sqlUpdateFactory">
-            <bean class="com.liferay.portal.dao.jdbc.spring.SqlUpdateFactoryImpl"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portal.kernel.dao.jdbc.MappingSqlQueryFactoryUtil">
-        <property name="mappingSqlQueryFactory">
-            <bean class="com.liferay.portal.dao.jdbc.spring.MappingSqlQueryFactoryImpl"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portal.model.ModelHintsUtil">
-        <property name="modelHints">
-            <bean class="com.liferay.portal.patch.ModelHintsImplPatch">
-                <property name="SAXReader">
-                    <bean class="com.liferay.portal.xml.SAXReaderImpl"/>
-                </property>
-            </bean>
-        </property>
+          class="com.liferay.portal.service.impl.UserLocalServiceImpl" p:userPersistence-ref="userPersistence">
     </bean>
     <bean name="com.liferay.portal.service.LayoutLocalService"
-          class="com.liferay.portal.service.impl.LayoutLocalServiceImpl">
+          class="com.liferay.portal.service.impl.LayoutLocalServiceImpl" p:userPersistence-ref="userPersistence">
         <property name="classNameLocalService">
             <bean class="com.liferay.portal.service.impl.ClassNameLocalServiceImpl"/>
-        </property>
-        <property name="userPersistence">
-            <bean class="com.liferay.portal.patch.UserPersistenceImplPatch"
-                  p:sessionFactory-ref="userSessionFactory" p:dataSource-ref="dataSource"/>
         </property>
         <property name="groupPersistence">
             <bean class="com.liferay.portal.service.persistence.GroupPersistenceImpl"
@@ -273,21 +154,11 @@
                   p:sessionFactory-ref="userSessionFactory"/>
         </property>
     </bean>
-    <bean class="com.liferay.portlet.PortletPreferencesFactoryUtil">
-        <property name="portletPreferencesFactory">
-            <bean class="com.liferay.portlet.PortletPreferencesFactoryImpl"/>
-        </property>
-    </bean>
     <bean name="com.liferay.portal.service.AccountLocalService"
           class="com.liferay.portal.service.impl.AccountLocalServiceImpl">
         <property name="accountPersistence">
             <bean class="com.liferay.portal.service.persistence.AccountPersistenceImpl"
                   p:sessionFactory-ref="userSessionFactory"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portal.kernel.util.HttpUtil">
-        <property name="http">
-            <bean class="com.liferay.portal.util.HttpImpl"/>
         </property>
     </bean>
     <bean name="com.liferay.portal.service.LayoutSetLocalService"
@@ -297,26 +168,11 @@
                   p:sessionFactory-ref="userSessionFactory"/>
         </property>
     </bean>
-    <bean class="com.liferay.portal.kernel.language.LanguageUtil">
-        <property name="language">
-            <bean class="com.liferay.portal.language.LanguageImpl"/>
-        </property>
-    </bean>
     <bean name="com.liferay.portal.service.ContactLocalService"
           class="com.liferay.portal.service.impl.ContactLocalServiceImpl">
         <property name="contactPersistence">
             <bean class="com.liferay.portal.service.persistence.ContactPersistenceImpl"
                   p:sessionFactory-ref="userSessionFactory"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portlet.expando.util.ExpandoBridgeFactoryUtil">
-        <property name="expandoBridgeFactory">
-            <bean class="com.liferay.portlet.expando.util.ExpandoBridgeFactoryImpl"/>
-        </property>
-    </bean>
-    <bean class="com.liferay.portal.kernel.search.IndexerRegistryUtil">
-        <property name="indexerRegistry">
-            <bean class="com.liferay.portal.search.IndexerRegistryImpl"/>
         </property>
     </bean>
     <bean class="com.liferay.portal.service.impl.PortletLocalServiceImpl"/>
@@ -328,10 +184,56 @@
     <bean name="com.liferay.portlet.expando.service.ExpandoValueLocalService"
           class="com.liferay.portlet.expando.service.impl.ExpandoValueLocalServiceImplPatch"
           p:persistedModelLocalServiceRegistry-ref="persistedModelLocalServiceRegistry">
-        <property
-                name="expandoTablePersistence">
+        <property name="expandoTablePersistence">
             <bean class="com.liferay.portlet.expando.service.persistence.ExpandoTablePersistenceImpl"
                   p:sessionFactory-ref="userSessionFactory"/>
         </property>
+        <property name="expandoColumnPersistence">
+            <bean class="com.liferay.portlet.expando.service.persistence.ExpandoColumnPersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
+        </property>
+        <property name="expandoValuePersistence">
+            <bean class="com.liferay.portlet.expando.service.persistence.ExpandoValuePersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
+        </property>
     </bean>
+    <bean name="com.liferay.portlet.expando.service.ExpandoColumnLocalService"
+          class="com.liferay.portlet.expando.service.impl.ExpandoColumnLocalServiceImpl">
+        <property name="expandoColumnPersistence">
+            <bean class="com.liferay.portlet.expando.service.persistence.ExpandoColumnPersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
+        </property>
+    </bean>
+    <bean name="com.liferay.portal.service.RepositoryLocalService"
+          class="com.liferay.portal.service.impl.RepositoryLocalServiceImpl">
+        <property name="repositoryPersistence">
+            <bean class="com.liferay.portal.service.persistence.RepositoryPersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
+        </property>
+    </bean>
+    <bean name="com.liferay.portlet.ratings.service.RatingsStatsLocalService"
+          class="com.liferay.portlet.ratings.service.impl.RatingsStatsLocalServiceImpl">
+        <property name="ratingsStatsPersistence">
+            <bean class="com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistenceImpl"
+                  p:sessionFactory-ref="userSessionFactory"/>
+        </property>
+    </bean>
+    <bean name="com.liferay.portal.service.RoleLocalService"
+          class="com.liferay.portal.service.impl.RoleLocalServiceImpl"
+          p:userPersistence-ref="userPersistence"
+          p:rolePersistence-ref="rolePersistence">
+    </bean>
+    <bean name="com.liferay.portal.service.PortletLocalService" class="com.liferay.portal.service.impl.PortletLocalServiceImpl"/>
+
+    <bean name="rolePersistence" class="com.liferay.portal.service.persistence.RolePersistenceImpl"
+          p:sessionFactory-ref="userSessionFactory" p:dataSource-ref="dataSource"/>
+    <bean name="userGroupPersistence" class="com.liferay.portal.service.persistence.UserGroupPersistenceImpl"
+          p:sessionFactory-ref="userSessionFactory" p:dataSource-ref="dataSource"/>
+    <bean name="groupPersistence" class="com.liferay.portal.service.persistence.GroupPersistenceImpl"
+          p:sessionFactory-ref="userSessionFactory" p:dataSource-ref="dataSource"/>
+    <bean name="userPersistence" class="com.liferay.portal.patch.UserPersistenceImplPatch"
+          p:groupPersistence-ref="groupPersistence"
+          p:rolePersistence-ref="rolePersistence"
+          p:sessionFactory-ref="userSessionFactory"
+          p:dataSource-ref="dataSource"/>
 </beans>
