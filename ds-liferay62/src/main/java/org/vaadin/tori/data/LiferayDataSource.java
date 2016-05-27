@@ -53,7 +53,7 @@ import org.vaadin.tori.data.entity.Post;
 import org.vaadin.tori.data.entity.User;
 import org.vaadin.tori.exception.DataSourceException;
 import org.vaadin.tori.patch.PortletPreferencesFactoryUtilPatch;
-import org.vaadin.tori.patch.ServiceContextFactoryPatch;
+import org.vaadin.tori.patch.ServiceContextReflectionFactory;
 import org.vaadin.tori.service.post.PostReport.Reason;
 
 import com.liferay.portal.NoSuchUserException;
@@ -885,18 +885,18 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
             }
         }
 
-        try {
-            mbBanServiceContext = ServiceContextFactoryPatch.getInstance(
+//        try {
+            mbBanServiceContext = ServiceContextReflectionFactory.getInstance(
                     MBBan.class.getName(), request);
-            flagsServiceContext = ServiceContextFactoryPatch.getInstance(
+            flagsServiceContext = ServiceContextReflectionFactory.getInstance(
                     "com.liferay.portlet.flags.model.FlagsEntry", request);
-            mbCategoryServiceContext = ServiceContextFactoryPatch.getInstance(
+            mbCategoryServiceContext = ServiceContextReflectionFactory.getInstance(
                     MBCategory.class.getName(), request);
-            mbMessageServiceContext = ServiceContextFactoryPatch.getInstance(
+            mbMessageServiceContext = ServiceContextReflectionFactory.getInstance(
                     MBMessage.class.getName(), request);
-        } catch (final NestableException e) {
-            LOG.error("Couldn't create ServiceContext.", e);
-        }
+//        } catch (final NestableException e) {
+//            LOG.error("Couldn't create ServiceContext.", e);
+//        }
 
         if (toriConfiguration == null) {
             toriConfiguration = mapConfiguration(request);
