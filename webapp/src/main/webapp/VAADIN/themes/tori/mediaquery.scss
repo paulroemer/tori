@@ -1,0 +1,29 @@
+@media screen and (max-width: 860px) {
+    .v-app.tori .post {
+        .author {width: 100px; min-width: 100px;}
+        .body {margin-left: 100px;}
+    }
+}
+    
+@media screen and (max-width: 560px) {
+    .v-app.tori .post {
+        .author {
+            float: none;
+            overflow: hidden;
+            width: auto;
+            text-align: left;
+            padding: 10px 14px 0;
+            background-color: $light-snow;
+            border-bottom: 1px solid $water;
+            .avatar {float: left;}
+            .authornamewrapper {margin:0;}
+            .authorname {font-size: rem(24);}
+            .prettytime, .permalink {color: $charcoal;}
+        }
+        .avatar {margin-right: 20px;}
+        .body {
+            margin-left: 14px;
+            &:after {bottom: -12px;}
+        }
+    }
+}
