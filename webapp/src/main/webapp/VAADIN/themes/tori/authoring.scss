@@ -3,6 +3,8 @@
 	.authoring {
 		transition: opacity 1000ms;
 		-webkit-transition: opacity 1000ms;
+        padding: 4px 0 20px;
+        margin-bottom: 0;
 	
 		.avatar {
 			opacity: 1;
@@ -18,11 +20,24 @@
 			display: none;
 		}
 		
-		.v-upload .v-button {
-			color: $secondary-button-color;
-        	border: $secondary-button-border;
-        	font-size: $button-font-size;
-		}
+        .v-button {
+            background-color: #B0E4B6;
+            color: #1E982E;
+            padding: 1em 1.6em;
+        	font-size: rem(18);
+            border-bottom: none;
+            &:hover {
+                background-color: lighten(#B0E4B6, 5%);
+            }
+        }
+        
+		.v-upload .v-button, .v-button.secondarybutton {
+            background-color: $snow;
+            color: $charcoal;
+            &:hover {
+                background-color: lighten($snow, 2%);
+            }
+        }
 		
 		&.replyhidden {
 			transition: opacity 0ms;
@@ -74,6 +89,21 @@
 			& > .cke {
 				border: none;
 			}
+            
+            .cke_toolbar > span, .cke_combo_button {
+                background-color: transparent;
+                background-image: none;
+            }
+            .cke_button_on {
+                box-shadow: none;
+                background: $dark-snow;
+                background-image: none;
+            }
+            a.cke_button_off:hover, a.cke_button_off:focus, a.cke_button_off:active, a.cke_button_disabled:hover, a.cke_button_disabled:focus, a.cke_button_disabled:active, .cke_combo_off a.cke_combo_button:hover, .cke_combo_off a.cke_combo_button:focus {
+                background-color: $snow;
+                background-image: none;
+            }
+        
 		}
 		
 		&.authoringcomponent {

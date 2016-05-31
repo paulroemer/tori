@@ -6,8 +6,8 @@
     	overflow: visible;
     	
     	.v-menubar-menuitem {
-	    	border: $dropdown-button-border;
-	    	border-radius: 50%;
+	    	border: 1px solid $dark-snow;
+	    	border-radius: 0;
     		width: 1em;
     		height: 1em;
     		cursor: pointer;
@@ -15,6 +15,10 @@
     		background: #fff;
     		moz-box-sizing: border-box;
     		box-sizing: border-box;
+            &:hover {
+                border-color: $water;
+                .v-menubar-menuitem-caption {border-top-color: $water;}
+            }
     		
     		.v-menubar-submenu-indicator{
     			display: none;
@@ -22,7 +26,7 @@
     		
     		.v-menubar-menuitem-caption {
     			border: 0.25em solid transparent;
-    			border-top-color: $dropdown-highlight-color;
+    			border-top-color: $dark-snow;
     			height: 0;
     			width: 0;
     			display: inline-block;
@@ -40,13 +44,8 @@
     .v-menubar-submenu-dropdown {
     	min-width: 154px;
     	max-width: 300px;
-    	border: $dropdown-popup-border;
+    	border: 1px solid $water;
     	padding: 7px 0;
-    	border-radius: $border-radius-primary;
-    	
-		-moz-box-shadow:    0px 2px 4px 0px rgba(0,0,0,0.13);
-		-webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.13);
-		box-shadow:         0px 2px 4px 0px rgba(0,0,0,0.13);
     	
     	 @include animation(vertical-fade-in 200ms);
     	
@@ -54,7 +53,7 @@
     		line-height: 22px;
     		padding-left: 17px;
     		cursor: pointer;
-    		color: $dropdown-highlight-color;
+    		color: $charcoal;
     		font-size: 13px;
     	}
     	
@@ -64,7 +63,7 @@
     	}
     	
     	.v-menubar-menuitem-selected {
-    		background: $dropdown-highlight-color;
+    		background: $water;
     		color: #fff;
     	}
 	}

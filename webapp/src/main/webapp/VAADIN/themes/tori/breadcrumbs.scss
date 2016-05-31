@@ -10,16 +10,14 @@
 		    }
 		    
 		    .categorylink {
-		    	padding-left: 20px;
 		    	
 			    &:BEFORE {
-			    	color: $breadcrumbs-categorylink-separator-color;
-			    	content: "/";
-					font-size: 25px;
-					font-weight: 100;
-					position: absolute;
-					left: 5px;
-					top: -3px;
+			    	color: $dark-snow;
+			    	content: "\2022";
+                    font-family: sans-serif;
+                    vertical-align: middle;
+                    font-size: 16px;
+                    margin: 0 8px;
 			    }
 		    }
 		    
@@ -48,14 +46,11 @@
 	    }
 	    
 	    .v-label.viewcaption {
-	    	font-family: $breadcrumbs-viewcaption-font-family;
-	    	letter-spacing: $breadcrumbs-viewcaption-letter-spacing;
-	    	color: #222;
-	        font-size: 24px;
+	    	@include type-heading-primary($color: $charcoal);
 	        text-overflow: ellipsis;
 	        position: relative;
-	        padding-right: 62px;
 	        width: auto !important;
+            padding: .8em 0 .4em;
 	        
 	        &:before,
 	        &:after {
@@ -84,8 +79,8 @@
 	    }
 	    
 	    .v-button {
-	    	width: 110px;
-	    	padding: 5px 0 !important;
+	    	width: auto;
+	    	padding: 5px 10px !important;
 	    	transition: all 400ms;
 			-webkit-transition: all 400ms;
 	    
@@ -125,6 +120,7 @@
 	    	}
 	    	
 	    	&.notfollowed {
+                border-bottom: none;
 	    		&:before {
 	    			font-size: 16px;
 	    			content: "\e609";

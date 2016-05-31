@@ -1,5 +1,6 @@
 @mixin threadview {
 	.threadview {
+        border-top: 1px solid $water;
 	
 	    .threadupdates {
 			padding: 32px 0 32px 153px;
