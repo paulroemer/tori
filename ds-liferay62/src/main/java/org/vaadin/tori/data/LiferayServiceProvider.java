@@ -53,14 +53,6 @@ public class LiferayServiceProvider implements ServiceProvider {
             public Configuration getConfiguration() {
                 return configuration;
             }
-
-            @Override
-            @Transactional
-            @org.springframework.transaction.annotation.Transactional
-            protected MBMessage internalSaveAsCurrentUser(String rawBody, Map<String, byte[]> files, DiscussionThread thread, long parentMessageId) throws PortalException, SystemException {
-                        TransactionSynchronizationManager.bindResource();
-                return super.internalSaveAsCurrentUser(rawBody, files, thread, parentMessageId);
-            }
         };
     }
 
