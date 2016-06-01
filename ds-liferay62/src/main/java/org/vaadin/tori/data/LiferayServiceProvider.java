@@ -16,7 +16,13 @@
 
 package org.vaadin.tori.data;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.transaction.Transactional;
+import com.liferay.portlet.messageboards.model.MBMessage;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.vaadin.tori.Configuration;
+import org.vaadin.tori.data.entity.DiscussionThread;
 import org.vaadin.tori.data.spi.ServiceProvider;
 import org.vaadin.tori.service.AuthorizationService;
 import org.vaadin.tori.service.LiferayAuthorizationService;
@@ -27,8 +33,13 @@ import org.vaadin.tori.util.PostFormatter;
 import org.vaadin.tori.util.ToriActivityMessaging;
 import org.vaadin.tori.util.ToriMailService;
 
+import java.util.Map;
+
 public class LiferayServiceProvider implements ServiceProvider {
 
+    public LiferayServiceProvider() {
+        System.out.println("# # # # LiferayServiceProvider");
+    }
     @Override
     public DataSource createDataSource() {
         return new LiferayDataSource() {
@@ -41,6 +52,14 @@ public class LiferayServiceProvider implements ServiceProvider {
             @Override
             public Configuration getConfiguration() {
                 return configuration;
+            }
+
+            @Override
+            @Transactional
+            @org.springframework.transaction.annotation.Transactional
+            protected MBMessage internalSaveAsCurrentUser(String rawBody, Map<String, byte[]> files, DiscussionThread thread, long parentMessageId) throws PortalException, SystemException {
+                        TransactionSynchronizationManager.bindResource();
+                return super.internalSaveAsCurrentUser(rawBody, files, thread, parentMessageId);
             }
         };
     }

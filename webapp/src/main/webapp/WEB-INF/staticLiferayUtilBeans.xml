@@ -115,7 +115,7 @@
     </bean>
     <bean class="com.liferay.portlet.PortletPreferencesFactoryUtil">
         <property name="portletPreferencesFactory">
-            <bean class="com.liferay.portlet.PortletPreferencesFactoryImpl"/>
+            <bean class="com.liferay.portal.patch.PortletPreferencesFactoryImplPatch"/>
         </property>
     </bean>
     <bean class="com.liferay.portal.kernel.util.HttpUtil">
@@ -143,5 +143,48 @@
             <bean class="com.liferay.portal.portletfilerepository.PortletFileRepositoryImpl"/>
         </property>
     </bean>
-
+    <bean class="com.liferay.portal.service.PortletLocalServiceUtil">
+        <property name="service">
+            <bean class="com.liferay.portal.service.impl.PortletLocalServiceImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.sanitizer.SanitizerUtil">
+        <property name="sanitizer">
+            <bean class="com.liferay.portal.sanitizer.SanitizerImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.uuid.PortalUUIDUtil">
+        <property name="portalUUID">
+            <bean class="com.liferay.portal.uuid.PortalUUIDImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.security.permission.PermissionCheckerFactoryUtil">
+        <property name="permissionCheckerFactory">
+            <bean class="com.liferay.portal.security.permission.PermissionCheckerFactoryImpl"></bean>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.security.permission.ResourceActionsUtil">
+        <property name="resourceActions">
+            <bean class="com.liferay.portal.patch.ResourceActionsImplPatch">
+                <constructor-arg name="portletLocalService">
+                    <bean class="com.liferay.portal.service.impl.PortletLocalServiceImpl"/>
+                </constructor-arg>
+            </bean>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.search.SearchEngineUtil">
+        <property name="searchPermissionChecker">
+            <bean class="com.liferay.portal.search.SearchPermissionCheckerImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil">
+        <property name="workflowHandlerRegistry">
+            <bean class="com.liferay.portal.patch.WorkflowHandlerRegistryImplPatch"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.workflow.WorkflowEngineManagerUtil">
+        <property name="workflowEngineManager">
+            <bean class="com.liferay.portal.workflow.WorkflowEngineManagerProxyBean"/>
+        </property>
+    </bean>
 </beans>

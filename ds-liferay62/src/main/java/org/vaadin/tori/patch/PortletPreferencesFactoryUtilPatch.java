@@ -31,7 +31,8 @@ public class PortletPreferencesFactoryUtilPatch extends PortletPreferencesFactor
 			HttpServletRequest servletRequest)
 			throws PortalException, SystemException {
 
-		return getPortletPreferencesFactory().getPortletSetup(servletRequest, "-1");
+		System.out.println("# # # # fake portlet id: 1_WAR_randombibleverseportlet");
+		return getPortletPreferencesFactory().getPortletSetup(servletRequest, "1_WAR_randombibleverseportlet");
 	}
 
 

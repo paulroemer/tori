@@ -23,9 +23,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gwt.thirdparty.guava.common.base.Throwables;
 import com.liferay.portal.bean.BeanLocatorImpl;
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.util.InitUtil;
 import com.vaadin.server.DeploymentConfiguration;
 import com.vaadin.server.RequestHandler;
@@ -67,6 +71,9 @@ public class ToriServlet extends SpringVaadinServlet {
     protected void service(final HttpServletRequest request,
             final HttpServletResponse response) throws ServletException,
             IOException {
+        long userId = 10902L;
+        System.out.println("# # # # mocking username - should be part of the request");
+        PrincipalThreadLocal.setName(userId);
         super.service(request, response);
     }
 
@@ -82,12 +89,17 @@ public class ToriServlet extends SpringVaadinServlet {
 
     @Override
     protected void servletInitialized() {
-        getService()
-                .setSystemMessagesProvider(ToriSystemMessagesProvider.get());
+        getService().setSystemMessagesProvider(ToriSystemMessagesProvider.get());
 //        InitUtil.initWithSpring();
         ApplicationContext springContext = SpringApplicationContext.getApplicationContext();
         BeanLocator beanLocator = new BeanLocatorImpl(Thread.currentThread().getContextClassLoader(), springContext);
         PortalBeanLocatorUtil.setBeanLocator(beanLocator);
+
+        try {
+            ResourceActionLocalServiceUtil.checkResourceActions();
+        } catch (SystemException e) {
+            Throwables.propagate(e);
+        }
     }
 
 }

@@ -7,15 +7,17 @@
 			<access>PROPERTY</access>
 		</persistence-unit-defaults>
 	</persistence-unit-metadata>
-<!--	<mapped-superclass class="com.liferay.counter.model.impl.CounterModelImpl">
+	<mapped-superclass class="com.liferay.counter.model.impl.CounterModelImpl">
 		<attributes>
 			<id name="name" />
 			<basic name="currentId" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
 		</attributes>
-	</mapped-superclass-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portal.model.impl.AccountModelImpl">
 		<attributes>
 			<id name="accountId" />
@@ -699,7 +701,7 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.LockModelImpl">
 		<attributes>
 			<id name="lockId" />
@@ -717,7 +719,7 @@
 				<column name="KEY_" />
 			</basic>
 			<basic name="owner" />
-			<basic name="inheritable" />
+			<basic name="inheritable"><column column-definition="TINYINT"/> </basic>
 			<basic name="expirationDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
@@ -725,9 +727,19 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
+			<transient name="expandoBridge" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalClassName" />
+			<transient name="originalUuid" />
+			<transient name="originalCompanyId" />
+			<transient name="originalUuid" />
+			<transient name="originalExpirationDate" />
+			<transient name="originalKey" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portal.model.impl.MembershipRequestModelImpl">
+	<!--mapped-superclass class="com.liferay.portal.model.impl.MembershipRequestModelImpl">
 		<attributes>
 			<id name="membershipRequestId" />
 			<basic name="groupId" />
@@ -980,7 +992,7 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.PortletModelImpl">
 		<attributes>
 			<id name="id">
@@ -988,17 +1000,22 @@
 			</id>
 			<basic name="companyId" />
 			<basic name="portletId" />
-			<basic name="roles" />
+			<basic name="roles"><lob/></basic>
 			<basic name="active">
-				<column name="ACTIVE_" />
+				<column name="ACTIVE_" column-definition="TINYINT"/>
 			</basic>
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="expandoBridge" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalCompanyId" />
+			<transient name="originalPortletId" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portal.model.impl.PortletItemModelImpl">
+	<!--mapped-superclass class="com.liferay.portal.model.impl.PortletItemModelImpl">
 		<attributes>
 			<id name="portletItemId" />
 			<basic name="groupId" />
@@ -1136,7 +1153,7 @@
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.ResourceActionModelImpl">
 		<attributes>
 			<id name="resourceActionId" />
@@ -1146,9 +1163,15 @@
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="expandoBridge" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="columnBitmask" />
+			<transient name="originalName" />
+			<transient name="originalActionId" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portal.model.impl.ResourceBlockModelImpl">
+	<!--mapped-superclass class="com.liferay.portal.model.impl.ResourceBlockModelImpl">
 		<attributes>
 			<id name="resourceBlockId" />
 			<basic name="companyId" />
@@ -1171,7 +1194,7 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.ResourcePermissionModelImpl">
 		<attributes>
 			<id name="resourcePermissionId" />
@@ -1185,9 +1208,18 @@
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="expandoBridge" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="columnBitmask" />
+			<transient name="originalCompanyId" />
+			<transient name="originalName" />
+			<transient name="originalPrimKey" />
+			<transient name="originalRoleId" />
+			<transient name="originalScope" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portal.model.impl.ResourceTypePermissionModelImpl">
+	<!--mapped-superclass class="com.liferay.portal.model.impl.ResourceTypePermissionModelImpl">
 		<attributes>
 			<id name="resourceTypePermissionId" />
 			<basic name="companyId" />
@@ -1682,7 +1714,7 @@
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.WorkflowInstanceLinkModelImpl">
 		<attributes>
 			<id name="workflowInstanceLinkId" />
@@ -1704,9 +1736,17 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
+			<transient name="expandoBridge" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalClassNameId" />
+			<transient name="originalClassPK" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryModelImpl">
+	<!--mapped-superclass class="com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryModelImpl">
 		<attributes>
 			<id name="deliveryId" />
 			<basic name="companyId" />
@@ -1831,7 +1871,7 @@
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.asset.model.impl.AssetEntryModelImpl">
 		<attributes>
 			<id name="entryId" />
@@ -1849,7 +1889,7 @@
 			<basic name="classPK" />
 			<basic name="classUuid" />
 			<basic name="classTypeId" />
-			<basic name="visible" />
+			<basic name="visible"><column column-definition="TINYINT"/> </basic>
 			<basic name="startDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
@@ -1863,10 +1903,10 @@
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="mimeType" />
-			<basic name="title" />
-			<basic name="description" />
-			<basic name="summary" />
-			<basic name="url" />
+			<basic name="title"><lob/></basic>
+			<basic name="description"><lob/></basic>
+			<basic name="summary"><lob/></basic>
+			<basic name="url"><lob/></basic>
 			<basic name="layoutUuid" />
 			<basic name="height" />
 			<basic name="width" />
@@ -1883,9 +1923,27 @@
 			<transient name="titleCurrentLanguageId" />
 			<transient name="titleMap" />
 			<transient name="userUuid" />
+			<transient name="expandoBridge" />
+			<transient name="availableLanguageIds" />
+			<transient name="columnBitmask" />
+			<transient name="defaultLanguageId" />
+			<transient name="descriptionCurrentValue" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalClassNameId" />
+			<transient name="originalClassPK" />
+			<transient name="originalClassUuid" />
+			<transient name="originalCompanyId" />
+			<transient name="originalExpirationDate" />
+			<transient name="originalGroupId" />
+			<transient name="originalLayoutUuid" />
+			<transient name="originalPublishDate" />
+			<transient name="originalVisible" />
+			<transient name="summaryCurrentValue" />
+			<transient name="titleCurrentValue" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portlet.asset.model.impl.AssetLinkModelImpl">
+	<!--mapped-superclass class="com.liferay.portlet.asset.model.impl.AssetLinkModelImpl">
 		<attributes>
 			<id name="linkId" />
 			<basic name="companyId" />
@@ -1961,7 +2019,7 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.asset.model.impl.AssetVocabularyModelImpl">
 		<attributes>
 			<id name="vocabularyId" />
@@ -1979,10 +2037,11 @@
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="name" />
-			<basic name="title" />
-			<basic name="description" />
+			<basic name="title"><lob/></basic>
+			<basic name="description"><lob/></basic>
 			<basic name="settings">
 				<column name="SETTINGS_" />
+				<lob/>
 			</basic>
 			<transient name="descriptionCurrentLanguageId" />
 			<transient name="descriptionMap" />
@@ -1992,9 +2051,22 @@
 			<transient name="titleCurrentLanguageId" />
 			<transient name="titleMap" />
 			<transient name="userUuid" />
+			<transient name="expandoBridge" />
+			<transient name="stagedModelType" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalUuid" />
+			<transient name="availableLanguageIds" />
+			<transient name="defaultLanguageId" />
+			<transient name="descriptionCurrentValue" />
+			<transient name="originalName" />
+			<transient name="titleCurrentValue" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portlet.blogs.model.impl.BlogsEntryModelImpl">
+	<!--mapped-superclass class="com.liferay.portlet.blogs.model.impl.BlogsEntryModelImpl">
 		<attributes>
 			<id name="entryId" />
 			<basic name="uuid">
@@ -4218,11 +4290,11 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<entity class="com.liferay.counter.model.impl.CounterImpl" name="Counter">
 		<table name="Counter" />
 		<attributes />
-	</entity-->
+	</entity>
 	<entity class="com.liferay.portal.model.impl.AccountImpl" name="Account">
 		<table name="Account_" />
 		<attributes />
@@ -4387,12 +4459,16 @@
 	<entity class="com.liferay.portal.model.impl.ListTypeImpl" name="ListType">
 		<table name="ListType" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.LockImpl" name="Lock">
 		<table name="Lock_" />
-		<attributes />
+		<attributes>
+			<transient name="expirationTime" />
+			<transient name="expired" />
+			<transient name="neverExpires" />
+		</attributes>
 	</entity>
-	<entity class="com.liferay.portal.model.impl.MembershipRequestImpl" name="MembershipRequest">
+	<!--entity class="com.liferay.portal.model.impl.MembershipRequestImpl" name="MembershipRequest">
 		<table name="MembershipRequest" />
 		<attributes />
 	</entity>
@@ -4460,7 +4536,7 @@
 	<entity class="com.liferay.portal.model.impl.PortalPreferencesImpl" name="PortalPreferences">
 		<table name="PortalPreferences" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.PortletImpl" name="Portlet">
 		<table name="Portlet" />
 		<attributes>
@@ -4589,9 +4665,19 @@
 			<transient name="workflowHandlerInstances" />
 			<transient name="xmlRpcMethodClass" />
 			<transient name="xmlRpcMethodInstance" />
+			<transient name="contextName" />
+			<transient name="contextPath" />
+			<transient name="instanceId" />
+			<transient name="pluginId" />
+			<transient name="pluginType" />
+			<transient name="rootPortlet" />
+			<transient name="rootPortletId" />
+			<transient name="staticEnd" />
+			<transient name="staticResourcePath" />
+			<transient name="userId" />
 		</attributes>
 	</entity>
-	<entity class="com.liferay.portal.model.impl.PortletItemImpl" name="PortletItem">
+	<!--entity class="com.liferay.portal.model.impl.PortletItemImpl" name="PortletItem">
 		<table name="PortletItem" />
 		<attributes />
 	</entity>
@@ -4618,24 +4704,24 @@
 	<!--entity class="com.liferay.portal.model.impl.RepositoryEntryImpl" name="RepositoryEntry">
 		<table name="RepositoryEntry" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.ResourceActionImpl" name="ResourceAction">
 		<table name="ResourceAction" />
 		<attributes />
 	</entity>
-	<entity class="com.liferay.portal.model.impl.ResourceBlockImpl" name="ResourceBlock">
+	<!--entity class="com.liferay.portal.model.impl.ResourceBlockImpl" name="ResourceBlock">
 		<table name="ResourceBlock" />
 		<attributes />
 	</entity>
 	<entity class="com.liferay.portal.model.impl.ResourceBlockPermissionImpl" name="ResourceBlockPermission">
 		<table name="ResourceBlockPermission" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.ResourcePermissionImpl" name="ResourcePermission">
 		<table name="ResourcePermission" />
 		<attributes />
 	</entity>
-	<entity class="com.liferay.portal.model.impl.ResourceTypePermissionImpl" name="ResourceTypePermission">
+	<!--entity class="com.liferay.portal.model.impl.ResourceTypePermissionImpl" name="ResourceTypePermission">
 		<table name="ResourceTypePermission" />
 		<attributes />
 	</entity-->
@@ -4769,12 +4855,12 @@
 	<entity class="com.liferay.portal.model.impl.WorkflowDefinitionLinkImpl" name="WorkflowDefinitionLink">
 		<table name="WorkflowDefinitionLink" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.WorkflowInstanceLinkImpl" name="WorkflowInstanceLink">
 		<table name="WorkflowInstanceLink" />
 		<attributes />
 	</entity>
-	<entity class="com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryImpl" name="AnnouncementsDelivery">
+	<!--entity class="com.liferay.portlet.announcements.model.impl.AnnouncementsDeliveryImpl" name="AnnouncementsDelivery">
 		<table name="AnnouncementsDelivery" />
 		<attributes />
 	</entity>
@@ -4793,12 +4879,19 @@
 	<entity class="com.liferay.portlet.asset.model.impl.AssetCategoryPropertyImpl" name="AssetCategoryProperty">
 		<table name="AssetCategoryProperty" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.asset.model.impl.AssetEntryImpl" name="AssetEntry">
 		<table name="AssetEntry" />
-		<attributes />
+		<attributes>
+			<transient name="assetRenderer"/>
+			<transient name="assetRendererFactory"/>
+			<transient name="categories"/>
+			<transient name="categoryIds" />
+			<transient name="tags"/>
+			<transient name="tagNames"/>
+		</attributes>
 	</entity>
-	<entity class="com.liferay.portlet.asset.model.impl.AssetLinkImpl" name="AssetLink">
+	<!--entity class="com.liferay.portlet.asset.model.impl.AssetLinkImpl" name="AssetLink">
 		<table name="AssetLink" />
 		<attributes />
 	</entity>
@@ -4813,14 +4906,17 @@
 	<entity class="com.liferay.portlet.asset.model.impl.AssetTagStatsImpl" name="AssetTagStats">
 		<table name="AssetTagStats" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.asset.model.impl.AssetVocabularyImpl" name="AssetVocabulary">
 		<table name="AssetVocabulary" />
 		<attributes>
 			<transient name="settingsProperties" />
+			<transient name="categories" />
+			<transient name="multiValued" />
+			<transient name="settings" />
 		</attributes>
 	</entity>
-	<entity class="com.liferay.portlet.blogs.model.impl.BlogsEntryImpl" name="BlogsEntry">
+	<!--entity class="com.liferay.portlet.blogs.model.impl.BlogsEntryImpl" name="BlogsEntry">
 		<table name="BlogsEntry" />
 		<attributes>
 			<transient name="smallImageType" />
