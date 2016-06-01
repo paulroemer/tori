@@ -242,9 +242,7 @@ public class ThreadPresenter extends Presenter<ThreadView> implements
                         displayPosts(threadId, selectedPostId);
 
                         try {
-
-                            System.out.println("# # # # Threadcount increment disabled");
-//        TODO re-activate and fix transaction creation                    dataSource.incrementViewCount(requestedThread);
+                            dataSource.incrementViewCount(requestedThread);
                             dataSource.markThreadRead(requestedThread.getId());
                         } catch (final DataSourceException e) {
                             log.error("Couldn't increment view count and "
