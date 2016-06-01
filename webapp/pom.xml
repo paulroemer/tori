@@ -125,7 +125,6 @@
             <properties>
                 <liferay.versions>6.2.0+</liferay.versions>
                 <productionMode>true</productionMode>
-                <tori.theme>tori-vaadin</tori.theme>
                 <security.manager.enabled>false</security.manager.enabled>
             </properties>
             <dependencies>
