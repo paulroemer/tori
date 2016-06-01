@@ -13,15 +13,15 @@
 
 	blockquote cite,
 	.quote-title {
-		background-color: $postbody-quote-background-color;
+		background-color: $light-snow;
 		padding-left: 50px;
-		font-family: $font-family-tertiary;
-		color: $font-color-secondary;
+        margin-top: 10px;
 		line-height: 35px;
 		position: relative;
 		display: block;
 		font-style: normal;
-		border-radius: $border-radius-primary $border-radius-primary 0 0;
+        font-size: rem(18);
+        color: $dark-snow;
 		
 		&:before {
 			@include quotationmark;
@@ -39,8 +39,6 @@
 	}
 	
 	.quote-title + .quote {
-		border-radius: 0 0 $border-radius-primary $border-radius-primary;
-	
 		&:before {
 			content: "";
 		}
@@ -59,10 +57,10 @@
 
 	blockquote > div,
 	.quote {
-		background-color: $postbody-quote-background-color;
+		background-color: $light-snow;
 		border-radius: $border-radius-primary;
 		
-		padding: 0 20px 5px 50px;
+		padding: 0 20px 10px 50px;
 		
 		.code .code-lines,
 		code:before,
@@ -124,6 +122,7 @@
 	}
 	
 	.code {
+        @include type-code-inline();
 		border-radius: $border-radius-primary;
 		font-family: Monaco, monospace;
 		font-size: $postbody-code-font-size;
@@ -157,9 +156,8 @@
 	}
 	
 	code {
+        @include type-code-inline();
 		border-radius: $border-radius-primary;
-		font-family: Monaco, monospace;
-		font-size: $postbody-code-font-size;
 		line-height: $postbody-code-line-height;
 		background-color: $postbody-code-background-color;
 		color: $postbody-code-color;
@@ -196,8 +194,10 @@
 	}
 	
 	ul, ol {
+        font-size: initial;
+        @include type-body-primary($color: $charcoal);
 		padding: 8px 0 0;
-		margin: 0 28px $font-size-primary;
+		margin: 0 28px 10px;
 		
 		br {
 			display: none;

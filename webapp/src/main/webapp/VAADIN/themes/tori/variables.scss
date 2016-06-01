@@ -1,84 +1,73 @@
-// Primary variables
-$popup-border-width: 2px !default;
-$popup-border-style: solid !default;
-$popup-border-color: #d1d1d1 !default;
-$popup-background-color: #fff !default;
+// Vaadin colors
+$snow: #e5e8e8;
+$light-snow: lighten($snow, 6%);
+$dark-snow: darken($snow, 20%);
+$charcoal: #33383a;
+$water: #00b4f0;
+$lava: #ff3a49;
+$salmon: #e61e6d;
+$gold: #ffc13f;
 
+//Tori icons
+@font-face {
+    font-family: 'Tori-Icons';
+    src:url('fonts/Tori-Icons.eot');
+    src:url('fonts/Tori-Icons.eot?#iefix') format('embedded-opentype'),
+        url('fonts/Tori-Icons.woff') format('woff'),
+        url('fonts/Tori-Icons.ttf') format('truetype'),
+        url('fonts/Tori-Icons.svg#Tori-Icons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+//Breakpoints not working!
+//$tablet: 680px;
+//$mobile: 500px;
+
+/*
 $font-family-primary: 'Helvetica Neue', Helvetica, Arial, sans-serif !default;
 $font-family-secondary: "HelveticaNeue-Light", "Helvetica Neue Light", $font-family-primary !default;
 $font-family-tertiary: "HelveticaNeueMedium", "HelveticaNeue-Medium", $font-family-primary !default;
 $font-size-primary: 14px !default;
 $font-color-primary: #888 !default;
 $font-color-secondary: #555 !default;
+*/
 
-$highlight-color: #2AAAE6 !default;
-
+$highlight-color: $water !default;
 $border-radius-primary: 0 !default;
 
-$separator-border-color: #e8e8e8 !default;
-
-// Recent bar
-$recent-bar-primary-shadow-color: #F5F5F5 !default;
-$recent-bar-title-color: #8a8a8a !default;
-
-// Breadcrumbs
-$breadcrumbs-categorylink-separator-color: #ccc !default;
-$breadcrumbs-viewcaption-font-family: "HelveticaNeue-Light", "Helvetica Neue Light", $font-family-primary !default;
-$breadcrumbs-viewcaption-letter-spacing: normal !default;
-
 // Button
-$button-border-radius: 4px !default;
-$button-border: 2px solid rgba(41,170,230,0.65) !default;
+$button-border-radius: 0 !default;
+$button-border: 0px solid rgba(41,170,230,0.65) !default;
 $button-font-size: 13px !default;
 $secondary-button-border: 2px solid #C7C7C7 !default;
 
-// Dropdown
-$dropdown-button-border: 1px solid #C1C1C1 !default;
-
-
 // Post
-$post-avatar-border-color: #D7D7D7 !default;
+$post-avatar-border-color: $snow !default;
 $post-anonymous-avatar-color: #fff !default;
-$post-permalink-color: #AAA !default;
+$post-permalink-color: $snow !default;
 $post-body-line-height: 22px !default;
-$post-editing-background: #F5F5F5 !default;
-$post-vote-icon-color: #ccc !default;
+$post-vote-icon-color: $snow !default;
 
 // Post body
 $postbody-quote-background-color: #F7F7F7 !default;
 
-$postbody-code-linenumber-background-color: #E8F6FD !default;
-$postbody-code-linenumber-color: #94BBCD !default;
-$postbody-code-background-color: #F3FBFF !default;
-$postbody-code-color: #5D7783 !default;
+$postbody-code-linenumber-background-color: $charcoal !default;
+$postbody-code-linenumber-color: $snow !default;
+$postbody-code-background-color: $charcoal !default;
+$postbody-code-color: #fff !default;
 $postbody-code-vertical-padding: 4px !default;
-$postbody-code-font-size: 13px !default;
-$postbody-code-line-height: 18px !default;
+$postbody-code-font-size: rem(20) !default;
+$postbody-code-line-height: rem(28) !default;
 
-$postbody-quote-code-linenumber-background-color: #E7E7E7 !default;
-$postbody-quote-code-background-color: #ECECEC !default;
-
-//Thread listing
-$threadlisting-latest-color: #2698E0 !default;
-$threadlisting-row-hover-underline-color: #96CDf0 !default;
-$threadlisting-follow-icon-color: #ccc !default;
-
-$thread-sticky-icon-color: #50D497 !default;
-$thread-locked-icon-color: #EDC628 !default;
-
-// Recent bar
-$recent-bar-border-bottom-color: $separator-border-color !default;
+$postbody-quote-code-linenumber-background-color: lighten($charcoal, 15%) !default;
+$postbody-quote-code-background-color: lighten($charcoal, 15%) !default;
 
 // Link
 $link-color: $highlight-color !default; 
 
 // Button 
 $button-color: $highlight-color;
-$secondary-button-color: $font-color-secondary !default;
-
-// Dropdown
-$dropdown-highlight-color: $highlight-color;
-$dropdown-popup-border: $popup-border-width $popup-border-style $popup-border-color !default;
 
 // Post
 $post-avatar-border: 1px solid $post-avatar-border-color !default;
@@ -86,17 +75,17 @@ $post-anonymous-avatar-background-color: $post-avatar-border-color !default;
 $post-separator-border: 1px solid $separator-border-color !default;
 
 // Post body
-$postbody-quote-code-color: $postbody-quote-code-linenumber-color !default;
+$postbody-quote-code-color: #fff !default;
 $postbody-quote-quotationmark-color: $highlight-color !default;
-$postbody-quote-code-linenumber-color: $font-color-primary !default;
+$postbody-quote-code-linenumber-color: #fff !default;
 
 // Popupbutton
 $popupbutton-border: $popup-border-width $popup-border-style $popup-border-color !default;
 $popupbutton-background-color: $popup-background-color !default;
 
 // Window
-$window-background-color: $popup-background-color !default;
-$window-border: $popup-border-width $popup-border-style $popup-border-color !default;
+$window-background-color: #fff !default;
+$window-border: 1px solid $water !default;
 
 // Thread listing
 $threadlisting-row-border-bottom-color: $separator-border-color !default;
