@@ -22,6 +22,7 @@ import java.util.HashSet;
 
 import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.vaadin.tori.HttpServletRequestAware;
@@ -49,7 +50,7 @@ public class LiferayToriActivityMessaging implements
     private static final String STARTED_TYPING = "STARTED_TYPING";
     private static final String POST_ID = "POST_ID";
 
-    private HttpServletRequest request;
+    private HttpSession session;
     private long currentUserId;
 
     private final Collection<UserTypingListener> userTypingListeners = new HashSet<UserTypingListener>();
@@ -89,7 +90,7 @@ public class LiferayToriActivityMessaging implements
     }
 
     private String getSenderId() {
-        return request.getSession().getId();
+        return session.getId();
     }
 
     private boolean isThisSender(final Message message) {
@@ -120,7 +121,7 @@ public class LiferayToriActivityMessaging implements
     private boolean isSessionAlive() {
         boolean result = true;
         try {
-            request.getSession().getAttribute("test");
+            session.getAttribute("test");
         } catch (IllegalStateException e) {
             result = false;
         }
@@ -129,7 +130,8 @@ public class LiferayToriActivityMessaging implements
 
     @Override
     public void setRequest(final HttpServletRequest request) {
-        this.request = request;
+        session = request.getSession();
+
         if (currentUserId == 0 && request.getRemoteUser() != null) {
             currentUserId = Long.valueOf(request.getRemoteUser());
         }
