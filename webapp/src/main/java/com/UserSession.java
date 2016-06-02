@@ -49,6 +49,23 @@ public class UserSession extends com.liferay.portal.dao.orm.jpa.SessionImpl {
 	private Session session = null;
 
 	@Override
+	public Object merge(Object object) throws ORMException {
+		Object result = null;
+		TransactionSynchronizationManager.bindResource(emf, emh);
+		try {
+			EntityManager localManager = emh.getEntityManager();
+			EntityTransaction tx = localManager.getTransaction();
+			tx.begin();
+			result = super.merge(object);
+			localManager.flush();
+			tx.commit();
+		} finally {
+			TransactionSynchronizationManager.unbindResource(emf);
+		}
+		return result;
+	}
+
+	@Override
 	public void saveOrUpdate(Object object) throws ORMException {
 		TransactionSynchronizationManager.bindResource(emf, emh);
 		try {
