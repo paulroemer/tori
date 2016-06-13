@@ -2264,7 +2264,7 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryModelImpl">
 		<attributes>
 			<id name="fileEntryId" />
@@ -2285,13 +2285,13 @@
 			<basic name="classPK" />
 			<basic name="repositoryId" />
 			<basic name="folderId" />
-			<basic name="treePath" />
+			<basic name="treePath"><lob/></basic>
 			<basic name="name" />
 			<basic name="extension" />
 			<basic name="mimeType" />
 			<basic name="title" />
-			<basic name="description" />
-			<basic name="extraSettings" />
+			<basic name="description"><lob/></basic>
+			<basic name="extraSettings"><lob/></basic>
 			<basic name="fileEntryTypeId" />
 			<basic name="version" />
 			<basic name="size">
@@ -2302,15 +2302,36 @@
 			<basic name="largeImageId" />
 			<basic name="custom1ImageId" />
 			<basic name="custom2ImageId" />
-			<basic name="manualCheckInRequired" />
+			<basic name="manualCheckInRequired"><column column-definition="TINYINT"/> </basic>
 			<transient name="className" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
+			<transient name="expandoBridge" />
+			<transient name="stagedModelType" />
+			<transient name="trashHandler" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalName" />
+			<transient name="inTrash" />
+			<transient name="inTrashContainer" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalUuid" />
+			<transient name="trashEntry" />
+			<transient name="trashEntryClassPK" />
+			<transient name="originalFileEntryTypeId" />
+			<transient name="originalFolderId" />
+			<transient name="originalMimeType" />
+			<transient name="originalTitle" />
+			<transient name="originalUuid" />
+			<transient name="originalUserId" />
+			<transient name="status" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataModelImpl">
+	<!--mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataModelImpl">
 		<attributes>
 			<id name="fileEntryMetadataId" />
 			<basic name="uuid">
@@ -2454,7 +2475,7 @@
 			<transient name="statusByUserUuid" />
 			<transient name="userUuid" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass!-->
 	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl">
 		<attributes>
 			<id name="folderId" />
@@ -2472,19 +2493,19 @@
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="repositoryId" />
-			<basic name="mountPoint" />
+			<basic name="mountPoint"><column column-definition="TINYINT"/> </basic>
 			<basic name="parentFolderId" />
-			<basic name="treePath" />
+			<basic name="treePath"><lob/></basic>
 			<basic name="name" />
-			<basic name="description" />
+			<basic name="description"><lob/></basic>
 			<basic name="lastPostDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="defaultFileEntryTypeId" />
 			<basic name="hidden">
-				<column name="HIDDEN_" />
+				<column name="HIDDEN_" column-definition="TINYINT"/>
 			</basic>
-			<basic name="overrideFileEntryTypes" />
+			<basic name="overrideFileEntryTypes"><column column-definition="TINYINT"/> </basic>
 			<basic name="status" />
 			<basic name="statusByUserId" />
 			<basic name="statusByUserName" />
@@ -2498,9 +2519,37 @@
 			<transient name="primaryKeyObj" />
 			<transient name="statusByUserUuid" />
 			<transient name="userUuid" />
+			<transient name="expandoBridge" />
+			<transient name="stagedModelType" />
+			<transient name="trashHandler" />
+			<transient name="approved" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalName" />
+			<transient name="containerModelName" />
+			<transient name="denied" />
+			<transient name="draft" />
+			<transient name="expired" />
+			<transient name="inTrash" />
+			<transient name="inTrashContainer" />
+			<transient name="inactive" />
+			<transient name="incomplete" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalHidden" />
+			<transient name="originalMountPoint" />
+			<transient name="originalParentFolderId" />
+			<transient name="originalRepositoryId" />
+			<transient name="originalStatus" />
+			<transient name="originalUuid" />
+			<transient name="pending" />
+			<transient name="scheduled" />
+			<transient name="trashEntry" />
+			<transient name="trashEntryClassPK" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLSyncEventModelImpl">
+	<!--mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLSyncEventModelImpl">
 		<attributes>
 			<id name="syncEventId" />
 			<basic name="modifiedTime" />
@@ -4943,14 +4992,32 @@
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLContentImpl" name="DLContent">
 		<table name="DLContent" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryImpl" name="DLFileEntry">
 		<table name="DLFileEntry" />
 		<attributes>
 			<transient name="extraSettingsProperties" />
+			<transient name="extraSettings" />
+			<transient name="contentStream" />
+			<transient name="expandoBridge" />
+			<transient name="stagedModelType" />
+			<transient name="status" />
+			<transient name="checkedOut" />
+			<transient name="dataRepositoryId" />
+			<transient name="fileVersion" />
+			<transient name="folder" />
+			<transient name="icon" />
+			<transient name="inHiddenFolder" />
+			<transient name="inTrash" />
+			<transient name="lock" />
+			<transient name="luceneProperties" />
+			<transient name="versionUserId" />
+			<transient name="versionUserName" />
+			<transient name="versionUserUuid" />
+
 		</attributes>
 	</entity>
-	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataImpl" name="DLFileEntryMetadata">
+	<!--entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataImpl" name="DLFileEntryMetadata">
 		<table name="DLFileEntryMetadata" />
 		<attributes />
 	</entity>
@@ -4971,12 +5038,23 @@
 		<attributes>
 			<transient name="extraSettingsProperties" />
 		</attributes>
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFolderImpl" name="DLFolder">
 		<table name="DLFolder" />
-		<attributes />
+		<attributes>
+			<transient name="ancestorFolderIds" />
+			<transient name="ancestors" />
+			<transient name="stagedModelType" />
+			<transient name="inHiddenFolder" />
+			<transient name="locked" />
+			<transient name="parentFolder" />
+			<transient name="path" />
+			<transient name="pathArray" />
+			<transient name="root" />
+
+		</attributes>
 	</entity>
-	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLSyncEventImpl" name="DLSyncEvent">
+	<!--entity class="com.liferay.portlet.documentlibrary.model.impl.DLSyncEventImpl" name="DLSyncEvent">
 		<table name="DLSyncEvent" />
 		<attributes />
 	</entity>

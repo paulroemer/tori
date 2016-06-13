@@ -13,6 +13,8 @@
 
     <import resource="staticLiferayUtilBeans.xml"/>
 
+    <bean name="authToken" class="com.vaadin.auth.AuthFilter"/>
+
     <bean name="permissionChecker" class="com.NoPermissionChecker"/>
 
     <bean class="com.liferay.portal.security.permission.PermissionThreadLocalPatch"
@@ -220,10 +222,29 @@
         </property>
     </bean>
     <bean name="com.liferay.portal.service.RepositoryLocalService"
-          class="com.liferay.portal.service.impl.RepositoryLocalServiceImpl">
+          class="com.liferay.portal.service.impl.RepositoryLocalServiceImpl"
+          p:groupPersistence-ref="groupPersistence">
         <property name="repositoryPersistence">
             <bean class="com.liferay.portal.service.persistence.RepositoryPersistenceImpl"
                   p:sessionFactory-ref="userSessionFactory"/>
+        </property>
+        <property name="DLFolderLocalService">
+            <bean class="com.liferay.portlet.documentlibrary.service.impl.DLFolderLocalServiceImpl"
+                  p:userPersistence-ref="userPersistence">
+                <property name="DLFolderPersistence">
+                    <bean class="com.liferay.portlet.documentlibrary.service.persistence.DLFolderPersistenceImpl"
+                          p:sessionFactory-ref="userPersistence"/>
+                </property>
+                <property name="DLFileEntryLocalService">
+                    <bean class="com.liferay.portlet.documentlibrary.service.impl.DLFileEntryLocalServiceImpl">
+                        <property
+                                name="DLFileEntryPersistence">
+                            <bean class="com.liferay.portlet.documentlibrary.service.persistence.DLFileEntryPersistenceImpl"
+                                  p:sessionFactory-ref="userPersistence"/>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
         </property>
     </bean>
     <bean name="com.liferay.portlet.ratings.service.RatingsStatsLocalService"
@@ -361,7 +382,9 @@
           class="com.liferay.portal.service.persistence.LockPersistenceImpl"
           p:sessionFactory-ref="userPersistence"/>
     <bean name="com.liferay.portlet.documentlibrary.service.DLAppLocalService"
-          class="com.liferay.portlet.documentlibrary.service.impl.DLAppLocalServiceImpl"/>
+          class="com.liferay.portlet.documentlibrary.service.impl.DLAppLocalServiceImpl">
+        <property name="repositoryLocalService" ref="com.liferay.portal.service.RepositoryLocalService"/>
+    </bean>
     <bean name="com.liferay.portal.service.ResourceActionLocalService"
           class="com.liferay.portal.service.impl.ResourceActionLocalServiceImpl">
         <property name="resourceActionPersistence">

@@ -1,6 +1,8 @@
 package com;
 
 import com.liferay.portal.kernel.dao.orm.ORMException;
+import com.liferay.portal.security.pwd.*;
+import com.liferay.util.PwdGenerator;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.jpa.EntityManagerHolder;
@@ -9,7 +11,11 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.servlet.Servlet;
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
+import java.util.Enumeration;
 
 public class UserSession extends com.liferay.portal.dao.orm.jpa.SessionImpl {
 
@@ -101,4 +107,5 @@ public class UserSession extends com.liferay.portal.dao.orm.jpa.SessionImpl {
 	public void flush() throws ORMException {
 		// do nothing, flush is called in save/saveOrUpdate;
 	}
+
 }
