@@ -35,13 +35,17 @@ public class AuthFilter extends RequestContextFilter implements BeanFactoryAware
 	private long userIdFromRequest(HttpServletRequest request) {
 		long result = 10169L; // default user
 		UserLocalService userLocalService = beanFactory.getBean(UserLocalService.class);
-		for (Cookie cookie : request.getCookies()) {
-			if ("VAADINTEST".equals(cookie.getName())) {
-				try {
-					User user = userLocalService.fetchUserByUuidAndCompanyId(cookie.getValue(), 10167L);
-					return user.getUserId();
-				} catch (SystemException e) {
-					Throwables.propagate(e);
+
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : request.getCookies()) {
+				if ("VAADINTEST".equals(cookie.getName())) {
+					try {
+						User user = userLocalService.fetchUserByUuidAndCompanyId(cookie.getValue(), 10167L);
+						return user.getUserId();
+					} catch (SystemException e) {
+						Throwables.propagate(e);
+					}
 				}
 			}
 		}
