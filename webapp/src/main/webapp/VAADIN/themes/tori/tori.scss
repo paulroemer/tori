@@ -5,8 +5,7 @@
         .v-generated-body {
              overflow: auto;
         }
-                                        }  
-	
+
 	.v-app.tori {
 	    @include base;
 	    @include dropdown;
@@ -23,7 +22,7 @@
 	    
 	    .v-widget {
 	        font-family: inherit;
-	        font-size: rem(22);
+	        font-size: 22;
 	        color: inherit;
 	    }
 	    
