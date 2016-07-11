@@ -187,4 +187,9 @@
             <bean class="com.liferay.portal.workflow.WorkflowEngineManagerProxyBean"/>
         </property>
     </bean>
+    <bean class="com.liferay.portal.kernel.util.DigesterUtil">
+        <property name="digester">
+            <bean class="com.liferay.portal.util.DigesterImpl"/>
+        </property>
+    </bean>
 </beans>

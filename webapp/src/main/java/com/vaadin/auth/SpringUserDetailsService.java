@@ -25,7 +25,7 @@ public class SpringUserDetailsService implements UserDetailsService, BeanFactory
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserLocalService userLocalService = beanFactory.getBean(UserLocalService.class);
 		try {
-			User user = userLocalService.fetchUserByScreenName(10167L, username);
+			User user = userLocalService.fetchUser(Long.valueOf(username));
 			if (user == null) {
 				throw new UsernameNotFoundException("no user found for screen name: '" + username + "'");
 			}

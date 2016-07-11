@@ -43,7 +43,7 @@ public class VaadinUserDetails implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return user.getScreenName();
+		return String.valueOf(user.getUserId());
 	}
 
 	@Override
