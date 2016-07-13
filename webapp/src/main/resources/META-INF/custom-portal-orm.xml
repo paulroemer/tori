@@ -981,18 +981,24 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.PortalPreferencesModelImpl">
 		<attributes>
 			<id name="portalPreferencesId" />
 			<basic name="ownerId" />
 			<basic name="ownerType" />
-			<basic name="preferences" />
+			<basic name="preferences"><lob/></basic>
+			<transient name="columnBitmask" />
+			<transient name="expandoBridge" />
 			<transient name="modelAttributes" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalOwnerId" />
+			<transient name="originalOwnerType" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portal.model.impl.PortletModelImpl">
 		<attributes>
 			<id name="id">
@@ -2243,7 +2249,7 @@
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLContentModelImpl">
 		<attributes>
 			<id name="contentId" />
@@ -2260,11 +2266,19 @@
 			<basic name="size">
 				<column name="SIZE_" />
 			</basic>
+			<transient name="columnBitmask" />
+			<transient name="expandoBridge" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalCompanyId" />
+			<transient name="originalPath" />
+			<transient name="originalRepositoryId" />
+			<transient name="originalVersion" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryModelImpl">
 		<attributes>
 			<id name="fileEntryId" />
@@ -2346,7 +2360,7 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryTypeModelImpl">
 		<attributes>
 			<id name="fileEntryTypeId" />
@@ -2364,19 +2378,32 @@
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="fileEntryTypeKey" />
-			<basic name="name" />
-			<basic name="description" />
+			<basic name="name"><lob/></basic>
+			<basic name="description"><lob/></basic>
+			<transient name="availableLanguageIds" />
+			<transient name="columnBitmask" />
+			<transient name="defaultLanguageId" />
 			<transient name="descriptionCurrentLanguageId" />
+			<transient name="descriptionCurrentValue" />
 			<transient name="descriptionMap" />
+			<transient name="expandoBridge" />
 			<transient name="modelAttributes" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
 			<transient name="nameCurrentLanguageId" />
+			<transient name="nameCurrentValue" />
 			<transient name="nameMap" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalUuid" />
+			<transient name="originalFileEntryTypeKey" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="stagedModelType" />
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileRankModelImpl">
+	<!--mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileRankModelImpl">
 		<attributes>
 			<id name="fileRankId" />
 			<basic name="groupId" />
@@ -2430,7 +2457,7 @@
 			<transient name="statusByUserUuid" />
 			<transient name="userUuid" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileVersionModelImpl">
 		<attributes>
 			<id name="fileVersionId" />
@@ -2450,13 +2477,13 @@
 			<basic name="repositoryId" />
 			<basic name="folderId" />
 			<basic name="fileEntryId" />
-			<basic name="treePath" />
+			<basic name="treePath" ><lob/></basic>
 			<basic name="extension" />
 			<basic name="mimeType" />
 			<basic name="title" />
-			<basic name="description" />
-			<basic name="changeLog" />
-			<basic name="extraSettings" />
+			<basic name="description" ><lob/></basic>
+			<basic name="changeLog" ><lob/></basic>
+			<basic name="extraSettings" ><lob/></basic>
 			<basic name="fileEntryTypeId" />
 			<basic name="version" />
 			<basic name="size">
@@ -2469,13 +2496,36 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<transient name="expandoBridge" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="stagedModelType" />
 			<transient name="statusByUserUuid" />
 			<transient name="userUuid" />
+			<transient name="approved" />
+			<transient name="columnBitmask" />
+			<transient name="denied" />
+			<transient name="draft" />
+			<transient name="expired" />
+			<transient name="inactive" />
+			<transient name="incomplete" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalCompanyId" />
+			<transient name="originalFileEntryId" />
+			<transient name="originalFolderId" />
+			<transient name="originalGroupId" />
+			<transient name="originalMimeType" />
+			<transient name="originalStatus" />
+			<transient name="originalTitle" />
+			<transient name="originalUuid" />
+			<transient name="originalVersion" />
+			<transient name="pending" />
+			<transient name="scheduled" />
+
 		</attributes>
-	</mapped-superclass!-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl">
 		<attributes>
 			<id name="folderId" />
@@ -3635,7 +3685,7 @@
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.ratings.model.impl.RatingsEntryModelImpl">
 		<attributes>
 			<id name="entryId" />
@@ -3652,12 +3702,20 @@
 			<basic name="classPK" />
 			<basic name="score" />
 			<transient name="className" />
+			<transient name="columnBitmask" />
+			<transient name="expandoBridge" />
 			<transient name="modelAttributes" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalClassNameId" />
+			<transient name="originalClassPK" />
+			<transient name="originalScore" />
+			<transient name="originalUserId" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
 		</attributes>
-	</mapped-superclass-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portlet.ratings.model.impl.RatingsStatsModelImpl">
 		<attributes>
 			<id name="statsId" />
@@ -4581,11 +4639,11 @@
 		<attributes>
 			<transient name="rolesArray" />
 		</attributes>
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.PortalPreferencesImpl" name="PortalPreferences">
 		<table name="PortalPreferences" />
 		<attributes />
-	</entity-->
+	</entity>
 	<entity class="com.liferay.portal.model.impl.PortletImpl" name="Portlet">
 		<table name="Portlet" />
 		<attributes>
@@ -4988,11 +5046,20 @@
 		<attributes>
 			<transient name="recurrenceObj" />
 		</attributes>
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLContentImpl" name="DLContent">
 		<table name="DLContent" />
 		<attributes />
-	</entity-->
+	</entity>
+	<entity class="com.liferay.portlet.documentlibrary.model.DLContentDataBlobModel" name="DLContentData">
+		<table name="DLContent" />
+		<attributes>
+			<id name="contentId" />
+			<basic name="dataBlob">
+				<column name="data_"/>
+			</basic>
+		</attributes>
+	</entity>
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryImpl" name="DLFileEntry">
 		<table name="DLFileEntry" />
 		<attributes>
@@ -5020,25 +5087,33 @@
 	<!--entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataImpl" name="DLFileEntryMetadata">
 		<table name="DLFileEntryMetadata" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryTypeImpl" name="DLFileEntryType">
 		<table name="DLFileEntryType" />
-		<attributes />
+		<attributes>
+			<transient name="DDMStructures" />
+			<transient name="exportable" />
+		</attributes>
 	</entity>
-	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileRankImpl" name="DLFileRank">
+	<!--entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileRankImpl" name="DLFileRank">
 		<table name="DLFileRank" />
 		<attributes />
 	</entity>
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileShortcutImpl" name="DLFileShortcut">
 		<table name="DLFileShortcut" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileVersionImpl" name="DLFileVersion">
 		<table name="DLFileVersion" />
 		<attributes>
 			<transient name="extraSettingsProperties" />
+			<transient name="extraSettings"/>
+			<transient name="expandoBridge" />
+			<transient name="fileEntry" />
+			<transient name="folder" />
+			<transient name="icon" />
 		</attributes>
-	</entity-->
+	</entity>
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFolderImpl" name="DLFolder">
 		<table name="DLFolder" />
 		<attributes>
@@ -5259,11 +5334,11 @@
 	<entity class="com.liferay.portlet.polls.model.impl.PollsVoteImpl" name="PollsVote">
 		<table name="PollsVote" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.ratings.model.impl.RatingsEntryImpl" name="RatingsEntry">
 		<table name="RatingsEntry" />
 		<attributes />
-	</entity-->
+	</entity>
 	<entity class="com.liferay.portlet.ratings.model.impl.RatingsStatsImpl" name="RatingsStats">
 		<table name="RatingsStats" />
 		<attributes />

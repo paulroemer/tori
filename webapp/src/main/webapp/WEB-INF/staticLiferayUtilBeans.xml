@@ -192,4 +192,29 @@
             <bean class="com.liferay.portal.util.DigesterImpl"/>
         </property>
     </bean>
+    <bean class="com.liferay.portal.kernel.util.FileUtil">
+        <property name="file">
+            <bean class="com.liferay.portal.util.FileImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil">
+        <property name="fastDateFormatFactory">
+            <bean class="com.liferay.portal.util.FastDateFormatFactoryImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.util.MimeTypesUtil">
+        <property name="mimeTypes">
+            <bean class="com.liferay.portal.util.MimeTypesImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.util.PrefsPropsUtil">
+        <property name="portalPreferencesLocalService">
+            <bean class="com.liferay.portal.service.impl.PortalPreferencesLocalServiceImpl">
+                <property name="portalPreferencesPersistence">
+                    <bean class="com.liferay.portal.service.persistence.PortalPreferencesPersistenceImpl"
+                          p:sessionFactory-ref="userSessionFactory"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
 </beans>

@@ -1,12 +1,12 @@
 /*
  * Copyright 2014 Vaadin Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -16,6 +16,16 @@
 
 package org.vaadin.tori;
 
+import com.vaadin.server.*;
+import com.vaadin.ui.UI;
+import org.apache.log4j.Logger;
+import org.vaadin.tori.data.DataSource;
+import org.vaadin.tori.data.spi.ServiceProvider;
+import org.vaadin.tori.service.AuthorizationService;
+import org.vaadin.tori.util.*;
+
+import javax.portlet.PortletRequest;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -24,28 +34,6 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.ServiceLoader;
-
-import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
-import org.vaadin.tori.data.DataSource;
-import org.vaadin.tori.data.spi.ServiceProvider;
-import org.vaadin.tori.service.AuthorizationService;
-import org.vaadin.tori.service.DebugAuthorizationService;
-import org.vaadin.tori.util.PostFormatter;
-import org.vaadin.tori.util.ToriActivityMessaging;
-import org.vaadin.tori.util.ToriMailService;
-import org.vaadin.tori.util.UrlConverter;
-import org.vaadin.tori.util.UserBadgeProvider;
-
-import com.vaadin.server.Page;
-import com.vaadin.server.SessionDestroyEvent;
-import com.vaadin.server.SessionDestroyListener;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinService;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.UI;
 
 @SuppressWarnings("serial")
 public class ToriApiLoader implements Serializable, SessionDestroyListener {
@@ -111,7 +99,7 @@ public class ToriApiLoader implements Serializable, SessionDestroyListener {
 
     /**
      * Verifies that the common project is in the classpath
-     * 
+     *
      * @throws RuntimeException
      *             if Common is not in the classpath
      */
