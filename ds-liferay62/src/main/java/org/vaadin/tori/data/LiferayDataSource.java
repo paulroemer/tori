@@ -1,12 +1,12 @@
 /*
  * Copyright 2014 Vaadin Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -43,6 +43,8 @@ import com.liferay.portlet.ratings.service.RatingsEntryLocalServiceUtil;
 import com.liferay.portlet.ratings.service.RatingsEntryServiceUtil;
 import com.liferay.portlet.ratings.service.RatingsStatsLocalServiceUtil;
 import org.apache.log4j.Logger;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.vaadin.tori.Configuration;
 import org.vaadin.tori.HttpServletRequestAware;
@@ -830,13 +832,18 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
                 scopeGroupId = themeDisplay.getScopeGroupId();
                 LOG.debug("Using groupId " + scopeGroupId + " as the scope.");
             }
-            long remoteUser = 0;
-            if (request.getRemoteUser() != null) {
-                remoteUser = Long.valueOf(request.getRemoteUser());
+            Long authUser = null;
+
+            Authentication springAuth = SecurityContextHolder.getContext().getAuthentication();
+            if (springAuth != null && springAuth.isAuthenticated()) {
+                authUser = Long.valueOf(springAuth.getName());
             }
-            if (currentUserId != remoteUser) {
+            if (authUser == null && request.getRemoteUser() != null) {
+                authUser = Long.valueOf(request.getRemoteUser());
+            }
+            if (currentUserId != authUser) {
                 // current user is changed
-                currentUserId = remoteUser;
+                currentUserId = authUser;
             }
             if (imagePath == null) {
                 imagePath = themeDisplay.getPathImage();

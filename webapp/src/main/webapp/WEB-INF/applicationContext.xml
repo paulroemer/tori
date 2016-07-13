@@ -9,7 +9,8 @@
                             http://www.springframework.org/schema/beans/spring-beans.xsd
                             http://www.springframework.org/schema/context
                             http://www.springframework.org/schema/context/spring-context-4.1.xsd
-                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
+                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                            http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <import resource="spring-security.xml"/>
     <import resource="staticLiferayUtilBeans.xml"/>
@@ -466,4 +467,20 @@
     <bean name="com.liferay.portlet.documentlibrary.service.DLFileVersionLocalService"
           class="com.liferay.portlet.documentlibrary.service.impl.DLFileVersionLocalServiceImpl"
           p:DLFileVersionPersistence-ref="dlFileVersionPersistence"/>
+    <bean name="com.liferay.portlet.messageboards.service.MBThreadFlagLocalService"
+          class="com.liferay.portlet.messageboards.service.impl.MBThreadFlagLocalServiceImpl"
+          p:userPersistence-ref="userPersistence"
+          p:counterLocalService-ref="counterLocalService">
+        <property name="MBThreadFlagPersistence">
+            <bean class="com.liferay.portlet.messageboards.service.persistence.MBThreadFlagPersistenceImpl"
+                  p:sessionFactory-ref="userPersistence"/>
+        </property>
+    </bean>
+    <bean name="com.liferay.portal.service.SubscriptionLocalService"
+          class="com.liferay.portal.service.impl.SubscriptionLocalServiceImpl">
+        <property name="subscriptionPersistence">
+            <bean class="com.liferay.portal.service.persistence.SubscriptionPersistenceImpl"
+                  p:sessionFactory-ref="userPersistence"/>
+        </property>
+    </bean>
 </beans>

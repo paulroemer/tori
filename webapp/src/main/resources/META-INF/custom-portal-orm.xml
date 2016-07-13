@@ -1315,7 +1315,7 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.SubscriptionModelImpl">
 		<attributes>
 			<id name="subscriptionId" />
@@ -1332,13 +1332,21 @@
 			<basic name="classPK" />
 			<basic name="frequency" />
 			<transient name="className" />
+			<transient name="columnBitmask" />
+			<transient name="expandoBridge" />
 			<transient name="modelAttributes" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalClassNameId" />
+			<transient name="originalClassPK" />
+			<transient name="originalCompanyId" />
+			<transient name="originalUserId" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portal.model.impl.SystemEventModelImpl">
+	<!--mapped-superclass class="com.liferay.portal.model.impl.SystemEventModelImpl">
 		<attributes>
 			<id name="systemEventId" />
 			<basic name="groupId" />
@@ -3451,7 +3459,7 @@
 			<transient name="trashEntryClassPK" />
 		</attributes>
 	</mapped-superclass>
-	<!--mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBThreadFlagModelImpl">
+	<mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBThreadFlagModelImpl">
 		<attributes>
 			<id name="threadFlagId" />
 			<basic name="uuid">
@@ -3468,13 +3476,23 @@
 				<temporal>TIMESTAMP</temporal>
 			</basic>
 			<basic name="threadId" />
+			<transient name="columnBitmask" />
+			<transient name="expandoBridge" />
 			<transient name="modelAttributes" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalUuid" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalThreadId" />
+			<transient name="originalUserId" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="stagedModelType" />
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portlet.mobiledevicerules.model.impl.MDRActionModelImpl">
+	<!--mapped-superclass class="com.liferay.portlet.mobiledevicerules.model.impl.MDRActionModelImpl">
 		<attributes>
 			<id name="actionId" />
 			<basic name="uuid">
@@ -4847,12 +4865,12 @@
 	<entity class="com.liferay.portal.model.impl.ShardImpl" name="Shard">
 		<table name="Shard" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.SubscriptionImpl" name="Subscription">
 		<table name="Subscription" />
 		<attributes />
 	</entity>
-	<entity class="com.liferay.portal.model.impl.SystemEventImpl" name="SystemEvent">
+	<!--entity class="com.liferay.portal.model.impl.SystemEventImpl" name="SystemEvent">
 		<table name="SystemEvent" />
 		<attributes>
 			<transient name="referrerClassName" />
@@ -5299,11 +5317,11 @@
 
 		</attributes>
 	</entity>
-	<!--entity class="com.liferay.portlet.messageboards.model.impl.MBThreadFlagImpl" name="MBThreadFlag">
+	<entity class="com.liferay.portlet.messageboards.model.impl.MBThreadFlagImpl" name="MBThreadFlag">
 		<table name="MBThreadFlag" />
 		<attributes />
 	</entity>
-	<entity class="com.liferay.portlet.mobiledevicerules.model.impl.MDRActionImpl" name="MDRAction">
+	<!--entity class="com.liferay.portlet.mobiledevicerules.model.impl.MDRActionImpl" name="MDRAction">
 		<table name="MDRAction" />
 		<attributes>
 			<transient name="typeSettingsProperties" />
