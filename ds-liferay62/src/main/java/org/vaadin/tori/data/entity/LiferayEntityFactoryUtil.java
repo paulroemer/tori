@@ -1,12 +1,12 @@
 /*
  * Copyright 2012 Vaadin Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -34,10 +34,12 @@ import com.liferay.portlet.messageboards.model.MBThread;
 
 /**
  * A utility for mapping Liferay entities to Tori entities.
- * 
+ *
  * TODO: Map immutable DTOs/proxies instead of entities
  */
 public class LiferayEntityFactoryUtil {
+
+	private static final String STATIC_PORTRAIT_CONTENT_URI_PREFIX = "/static/portrait/";
 
     public static Category createCategory(final MBCategory liferayCategory,
             final DataSource dataSource) {
@@ -192,9 +194,8 @@ public class LiferayEntityFactoryUtil {
     public static String getAvatarUrl(final long liferayPortraidId,
             final String imagePath, final boolean isFemale) {
         String result = null;
-        if (imagePath != null && liferayPortraidId > 0) {
-            result = imagePath + "/user_" + (isFemale ? "female" : "male")
-                    + "_portrait?img_id=" + liferayPortraidId;
+        if (liferayPortraidId > 0) {
+            result = STATIC_PORTRAIT_CONTENT_URI_PREFIX + liferayPortraidId;
         }
         return result;
     }
