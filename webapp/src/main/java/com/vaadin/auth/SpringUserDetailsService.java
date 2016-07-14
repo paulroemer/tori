@@ -30,6 +30,8 @@ public class SpringUserDetailsService implements UserDetailsService, BeanFactory
 				throw new UsernameNotFoundException("no user found for screen name: '" + username + "'");
 			}
 			return new VaadinUserDetails(user);
+		} catch (NumberFormatException e) {
+			throw new UsernameNotFoundException(e.toString());
 		} catch (SystemException e) {
 			throw new UsernameNotFoundException(e.toString());
 		}
