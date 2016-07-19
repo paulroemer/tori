@@ -157,8 +157,15 @@
           class="com.liferay.portal.patch.UserLocalServiceImplPatch" p:userPersistence-ref="userPersistence">
         <constructor-arg name="persistedModelLocalServiceRegistry" ref="persistedModelLocalServiceRegistry"/>
     </bean>
+    <bean name="com.liferay.portal.service.CompanyLocalService"
+          class="com.liferay.portal.service.impl.CompanyLocalServiceImpl" p:companyPersistence-ref="companyPersistence">
+    </bean>
+    <bean name="companyPersistence" class="com.liferay.portal.service.persistence.CompanyPersistenceImpl"
+          p:sessionFactory-ref="userSessionFactory"/>
     <bean name="com.liferay.portal.service.LayoutLocalService"
-          class="com.liferay.portal.service.impl.LayoutLocalServiceImpl" p:userPersistence-ref="userPersistence">
+          class="com.liferay.portal.service.impl.LayoutLocalServiceImpl"
+          p:userPersistence-ref="userPersistence"
+          p:layoutPersistence-ref="layoutPersistence">
         <property name="classNameLocalService">
             <bean class="com.liferay.portal.service.impl.ClassNameLocalServiceImpl"/>
         </property>
@@ -171,6 +178,8 @@
                   p:sessionFactory-ref="userSessionFactory"/>
         </property>
     </bean>
+    <bean name="layoutPersistence" class="com.liferay.portal.service.persistence.LayoutPersistenceImpl"
+          p:sessionFactory-ref="userSessionFactory"/>
     <bean name="com.liferay.portal.service.AccountLocalService"
           class="com.liferay.portal.service.impl.AccountLocalServiceImpl">
         <property name="accountPersistence">

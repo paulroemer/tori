@@ -1,49 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="2.4"
-	xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>Tori</display-name>
-	<context-param>
-		<description>Vaadin production mode</description>
-		<param-name>productionMode</param-name>
-		<param-value>${productionMode}</param-value>
-	</context-param>
-	<servlet>
-		<servlet-name>Tori</servlet-name>
-		<servlet-class>org.vaadin.tori.ToriServlet</servlet-class>
-		<init-param>
-			<param-name>UI</param-name>
-			<param-value>org.vaadin.tori.ToriUI</param-value>
-		</init-param>
-		<init-param>
-			<param-name>theme</param-name>
-			<param-value>tori</param-value>
-		</init-param>
-		<init-param>
-			<param-name>widgetset</param-name>
-			<param-value>org.vaadin.tori.widgetset.ToriWidgetset</param-value>
-		</init-param>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>WEB-INF/applicationContext.xml</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Tori</servlet-name>
-		<url-pattern>/*</url-pattern>
-	</servlet-mapping>
-	<filter>
-		<filter-name>rememberMeFilter</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-	</filter>
+         xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+    <display-name>Tori</display-name>
+    <context-param>
+        <description>Vaadin production mode</description>
+        <param-name>productionMode</param-name>
+        <param-value>${productionMode}</param-value>
+    </context-param>
+    <servlet>
+        <servlet-name>Tori</servlet-name>
+        <servlet-class>org.vaadin.tori.ToriServlet</servlet-class>
+        <init-param>
+            <param-name>UI</param-name>
+            <param-value>org.vaadin.tori.ToriUI</param-value>
+        </init-param>
+        <init-param>
+            <param-name>theme</param-name>
+            <param-value>tori</param-value>
+        </init-param>
+        <init-param>
+            <param-name>widgetset</param-name>
+            <param-value>org.vaadin.tori.widgetset.ToriWidgetset</param-value>
+        </init-param>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>WEB-INF/applicationContext.xml</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Tori</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
 
-	<filter-mapping>
-		<filter-name>rememberMeFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+    <filter>
+        <filter-name>userFromRemembermeFilter</filter-name>
+        <filter-class>org.vaadin.tori.UserFromRememberMeFilter</filter-class>
+    </filter>
 
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
+    <filter-mapping>
+        <filter-name>userFromRemembermeFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
 
 </web-app>

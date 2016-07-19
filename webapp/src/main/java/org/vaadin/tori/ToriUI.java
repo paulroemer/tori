@@ -1,12 +1,12 @@
 /*
  * Copyright 2014 Vaadin Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -16,19 +16,27 @@
 
 package org.vaadin.tori;
 
-import javax.portlet.PortletMode;
-
 import com.google.gwt.thirdparty.guava.common.base.Throwables;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.model.*;
+import com.liferay.portal.model.Company;
+import com.liferay.portal.model.Layout;
+import com.liferay.portal.model.User;
 import com.liferay.portal.model.impl.CompanyImpl;
 import com.liferay.portal.model.impl.LayoutImpl;
 import com.liferay.portal.model.impl.UserImpl;
-import com.liferay.portal.service.ServiceContext;
+import com.liferay.portal.service.CompanyLocalService;
+import com.liferay.portal.service.LayoutLocalService;
+import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.expando.model.ExpandoBridge;
-import com.vaadin.server.VaadinServletRequest;
+import com.vaadin.annotations.Widgetset;
+import com.vaadin.server.Page;
+import com.vaadin.server.VaadinPortletRequest;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 import org.apache.log4j.Logger;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
@@ -43,19 +51,8 @@ import org.vaadin.tori.util.UrlConverter;
 import org.vaadin.tori.view.edit.EditViewImpl;
 import org.vaadin.tori.widgetset.client.ui.ToriUIServerRpc;
 
-import com.vaadin.annotations.Widgetset;
-import com.vaadin.server.Page;
-import com.vaadin.server.VaadinPortletRequest;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-
-import java.io.Serializable;
-import java.security.Key;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
+import javax.portlet.PortletMode;
+import java.util.Optional;
 
 import static com.liferay.portal.kernel.util.WebKeys.THEME_DISPLAY;
 
@@ -81,7 +78,9 @@ public class ToriUI extends UI implements ToriUIServerRpc {
 		setPollInterval(DEFAULT_POLL_INTERVAL);
 		registerRpc(this);
 
-		fakeRequestAttributes(request);
+		Long userId = ThreadUser.getId();
+		ThemeDisplay td2 = fakeThemeDisplay(userId);
+		request.setAttribute(THEME_DISPLAY, td2);
 
 		ToriApiLoader.init(request);
 		apiLoader = ToriApiLoader.getCurrent();
@@ -119,13 +118,12 @@ public class ToriUI extends UI implements ToriUIServerRpc {
 		ConfirmDialog.setFactory(ComponentUtil.getConfirmDialogFactory());
 	}
 
-	private void fakeRequestAttributes(final VaadinRequest request) {
+	private ThemeDisplay fakeThemeDisplay(final Long userId) {
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 		long scopeGroupId = 10187L;
 		long siteGroupId = 10187L;
 		long companyId = 10167L;
 		long accountId = 10168L;
-		long userId = 10902L;
 		long contactId = 10903L;
 
 		themeDisplay.setScopeGroupId(scopeGroupId);
@@ -133,7 +131,7 @@ public class ToriUI extends UI implements ToriUIServerRpc {
 
 		User user = new UserImpl();
 		user.setCompanyId(companyId);
-		user.setPrimaryKey(userId);
+		user.setPrimaryKey(userId!=null?userId:0);
 		user.setContactId(contactId);
 
 		Company company = new CompanyImpl();
@@ -163,7 +161,40 @@ public class ToriUI extends UI implements ToriUIServerRpc {
 
 		themeDisplay.setLayout(layout);
 		themeDisplay.setServerName("localhost");
-		request.setAttribute(THEME_DISPLAY, themeDisplay);
+		return themeDisplay;
+	}
+
+
+	private ThemeDisplay initializeThemeDisplay(final Long userId) throws SystemException, PortalException {
+		Optional<UserLocalService> us = PortalBeanLocatorUtil.locate(UserLocalService.class).values().stream().findFirst();
+		Optional<CompanyLocalService> cs = PortalBeanLocatorUtil.locate(CompanyLocalService.class).values().stream().findFirst();
+		Optional<LayoutLocalService> ls = PortalBeanLocatorUtil.locate(LayoutLocalService.class).values().stream().findFirst();
+
+		if (userId != null && us.isPresent()) {
+			User user = us.get().fetchUser(userId);
+
+			ThemeDisplay themeDisplay = new ThemeDisplay();
+			themeDisplay.setUser(user);
+
+			long groupId = user.getGroupId();
+			themeDisplay.setScopeGroupId(groupId);
+			themeDisplay.setSiteGroupId(groupId);
+
+			long companyId = user.getCompanyId();
+
+			if (companyId > 0 && cs.isPresent()) {
+				Company company = cs.get().fetchCompany(companyId);
+				themeDisplay.setCompany(company);
+			}
+			if (ls.isPresent()) {
+				Layout layout = ls.get().fetchFirstLayout(groupId, false, 0);
+				themeDisplay.setLayout(layout);
+			}
+			themeDisplay.setServerName("localhost");
+			return themeDisplay;
+		} else {
+			return null;
+		}
 	}
 
 	private void checkUrl() {

@@ -170,30 +170,38 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.CompanyModelImpl">
 		<attributes>
 			<id name="companyId" />
 			<basic name="accountId" />
 			<basic name="webId" />
 			<basic name="key">
-				<column name="KEY_" />
+				<column name="KEY_" /><lob/>
 			</basic>
 			<basic name="mx" />
-			<basic name="homeURL" />
+			<basic name="homeURL"><lob/></basic>
 			<basic name="logoId" />
-			<basic name="system" />
+			<basic name="system"><column column-definition="TINYINT"/> </basic>
 			<basic name="maxUsers" />
 			<basic name="active">
-				<column name="ACTIVE_" />
+				<column name="ACTIVE_" column-definition="TINYINT"/>
 			</basic>
+			<transient name="columnBitmask" />
+			<transient name="expandoBridge" />
 			<transient name="keyObj" />
 			<transient name="modelAttributes" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalLogoId" />
+			<transient name="originalMx" />
+			<transient name="originalSystem" />
+			<transient name="originalWebId" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="virtualHostname" />
 		</attributes>
-	</mapped-superclass-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portal.model.impl.ContactModelImpl">
 		<attributes>
 			<id name="contactId" />
@@ -390,7 +398,7 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portal.model.impl.LayoutModelImpl">
 		<attributes>
 			<id name="plid" />
@@ -407,50 +415,74 @@
 			<basic name="modifiedDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
-			<basic name="privateLayout" />
+			<basic name="privateLayout"><column column-definition="TINYINT"/> </basic>
 			<basic name="layoutId" />
 			<basic name="parentLayoutId" />
-			<basic name="name" />
-			<basic name="title" />
-			<basic name="description" />
-			<basic name="keywords" />
-			<basic name="robots" />
+			<basic name="name"><lob/></basic>
+			<basic name="title"><lob/></basic>
+			<basic name="description"><lob/></basic>
+			<basic name="keywords"><lob/></basic>
+			<basic name="robots"><lob/></basic>
 			<basic name="type">
 				<column name="TYPE_" />
 			</basic>
-			<basic name="typeSettings" />
+			<basic name="typeSettings"><lob/></basic>
 			<basic name="hidden">
-				<column name="HIDDEN_" />
+				<column name="HIDDEN_" column-definition="TINYINT"/>
 			</basic>
 			<basic name="friendlyURL" />
-			<basic name="iconImage" />
+			<basic name="iconImage"><column column-definition="TINYINT"/> </basic>
 			<basic name="iconImageId" />
 			<basic name="themeId" />
 			<basic name="colorSchemeId" />
 			<basic name="wapThemeId" />
 			<basic name="wapColorSchemeId" />
-			<basic name="css" />
+			<basic name="css"><lob/></basic>
 			<basic name="priority" />
 			<basic name="layoutPrototypeUuid" />
-			<basic name="layoutPrototypeLinkEnabled" />
+			<basic name="layoutPrototypeLinkEnabled"><column column-definition="TINYINT"/> </basic>
 			<basic name="sourcePrototypeLayoutUuid" />
 			<transient name="descriptionCurrentLanguageId" />
 			<transient name="descriptionMap" />
+			<transient name="expandoBridge" />
 			<transient name="keywordsCurrentLanguageId" />
 			<transient name="keywordsMap" />
 			<transient name="modelAttributes" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
 			<transient name="nameCurrentLanguageId" />
 			<transient name="nameMap" />
+			<transient name="originalUuid" />
+			<transient name="originalCompanyId" />
+			<transient name="originalFriendlyURL" />
+			<transient name="originalGroupId" />
+			<transient name="originalIconImageId" />
+			<transient name="originalLayoutId" />
+			<transient name="originalLayoutPrototypeUuid" />
+			<transient name="originalParentLayoutId" />
+			<transient name="originalPrivateLayout" />
+			<transient name="originalSourcePrototypeLayoutUuid" />
+			<transient name="originalType" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="robotsCurrentLanguageId" />
 			<transient name="robotsMap" />
+			<transient name="stagedModelType" />
 			<transient name="titleCurrentLanguageId" />
 			<transient name="titleMap" />
 			<transient name="userUuid" />
+			<transient name="availableLanguageIds" />
+			<transient name="columnBitmask" />
+			<transient name="defaultLanguageId" />
+			<transient name="descriptionCurrentValue" />
+			<transient name="keywordsCurrentValue" />
+			<transient name="nameCurrentValue" />
+			<transient name="robotsCurrentValue" />
+			<transient name="robotsCurrentLanguageId" />
+			<transient name="titleCurrentValue" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portal.model.impl.LayoutBranchModelImpl">
+	<!--mapped-superclass class="com.liferay.portal.model.impl.LayoutBranchModelImpl">
 		<attributes>
 			<id name="layoutBranchId" />
 			<basic name="groupId" />
@@ -4447,14 +4479,35 @@
 	<!--entity class="com.liferay.portal.model.impl.ClusterGroupImpl" name="ClusterGroup">
 		<table name="ClusterGroup" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.CompanyImpl" name="Company">
 		<table name="Company" />
 		<attributes>
 			<transient name="keyObj" />
 			<transient name="virtualHostname" />
+			<transient name="account" />
+			<transient name="adminName" />
+			<transient name="active" />
+			<transient name="authType" />
+			<transient name="autoLogin" />
+			<transient name="defaultUser" />
+			<transient name="defaultWebId" />
+			<transient name="emailAddress" />
+			<transient name="group" />
+			<transient name="groupId" />
+			<transient name="locale" />
+			<transient name="name" />
+			<transient name="sendPassword" />
+			<transient name="sendPasswordResetLink" />
+			<transient name="shardName" />
+			<transient name="shortName" />
+			<transient name="siteLogo" />
+			<transient name="strangers" />
+			<transient name="strangersVerify" />
+			<transient name="strangersWithMx" />
+			<transient name="timeZone" />
 		</attributes>
-	</entity-->
+	</entity>
 	<entity class="com.liferay.portal.model.impl.ContactImpl" name="Contact">
 		<table name="Contact_" />
 		<attributes>
@@ -4525,15 +4578,49 @@
 		<attributes>
 			<transient name="textObj" />
 		</attributes>
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portal.model.impl.LayoutImpl" name="Layout">
 		<table name="Layout" />
 		<attributes>
 			<transient name="layoutSet" />
 			<transient name="typeSettingsProperties" />
+			<transient name="allChildren" />
+			<transient name="ancestors" />
+			<transient name="children" />
+			<transient name="friendlyURLMap" />
+			<transient name="typeSettings" />
+			<transient name="ancestorLayoutId" />
+			<transient name="ancestorPlid" />
+			<transient name="colorScheme" />
+			<transient name="contentDisplayPage" />
+			<transient name="cssText" />
+			<transient name="firstChild" />
+			<transient name="firstParent" />
+			<transient name="friendlyURLsXML" />
+			<transient name="group" />
+			<transient name="inheritLookAndFeel" />
+			<transient name="inheritWapLookAndFeel" />
+			<transient name="layoutPrototypeLinkActive" />
+			<transient name="layoutType" />
+			<transient name="parentPlid" />
+			<transient name="publicLayout" />
+			<transient name="rootLayout" />
+			<transient name="scopeGroup" />
+			<transient name="supportsEmbeddedPortlets" />
+			<transient name="target" />
+			<transient name="theme" />
+			<transient name="typeArticle" />
+			<transient name="typeControlPanel" />
+			<transient name="typeEmbedded" />
+			<transient name="typeLinkToLayout" />
+			<transient name="typePanel" />
+			<transient name="typePortlet" />
+			<transient name="typeURL" />
+			<transient name="wapColorScheme" />
+			<transient name="wapTheme" />
 		</attributes>
 	</entity>
-	<entity class="com.liferay.portal.model.impl.LayoutBranchImpl" name="LayoutBranch">
+	<!--entity class="com.liferay.portal.model.impl.LayoutBranchImpl" name="LayoutBranch">
 		<table name="LayoutBranch" />
 		<attributes />
 	</entity>

@@ -43,11 +43,9 @@ import com.liferay.portlet.ratings.service.RatingsEntryLocalServiceUtil;
 import com.liferay.portlet.ratings.service.RatingsEntryServiceUtil;
 import com.liferay.portlet.ratings.service.RatingsStatsLocalServiceUtil;
 import org.apache.log4j.Logger;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.vaadin.tori.Configuration;
 import org.vaadin.tori.HttpServletRequestAware;
+import org.vaadin.tori.ThreadUser;
 import org.vaadin.tori.data.entity.*;
 import org.vaadin.tori.exception.DataSourceException;
 import org.vaadin.tori.patch.PortletPreferencesFactoryUtilPatch;
@@ -834,14 +832,10 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
             }
             Long authUser = null;
 
-            Authentication springAuth = SecurityContextHolder.getContext().getAuthentication();
-            if (springAuth != null && springAuth.isAuthenticated()) {
-                authUser = Long.valueOf(springAuth.getName());
+            if (authUser == null && ThreadUser.getId() != null) {
+                authUser = ThreadUser.getId();
             }
-            if (authUser == null && request.getRemoteUser() != null) {
-                authUser = Long.valueOf(request.getRemoteUser());
-            }
-            if (currentUserId != authUser) {
+            if (authUser != null && currentUserId != authUser) {
                 // current user is changed
                 currentUserId = authUser;
             }

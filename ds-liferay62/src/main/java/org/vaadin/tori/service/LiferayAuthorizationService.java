@@ -16,22 +16,6 @@
 
 package org.vaadin.tori.service;
 
-import java.lang.reflect.Method;
-
-import javax.portlet.PortletRequest;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.log4j.Logger;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.vaadin.tori.HttpServletRequestAware;
-import org.vaadin.tori.PortletRequestAware;
-import org.vaadin.tori.data.LiferayDataSource;
-import org.vaadin.tori.exception.DataSourceException;
-import org.vaadin.tori.service.LiferayAuthorizationConstants.CategoryAction;
-import org.vaadin.tori.service.LiferayAuthorizationConstants.MbAction;
-import org.vaadin.tori.service.LiferayAuthorizationConstants.MessageAction;
-
 import com.liferay.portal.kernel.exception.NestableException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
@@ -43,6 +27,17 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.messageboards.model.MBThread;
 import com.liferay.portlet.messageboards.service.MBBanLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
+import org.apache.log4j.Logger;
+import org.vaadin.tori.HttpServletRequestAware;
+import org.vaadin.tori.ThreadUser;
+import org.vaadin.tori.data.LiferayDataSource;
+import org.vaadin.tori.exception.DataSourceException;
+import org.vaadin.tori.service.LiferayAuthorizationConstants.CategoryAction;
+import org.vaadin.tori.service.LiferayAuthorizationConstants.MbAction;
+import org.vaadin.tori.service.LiferayAuthorizationConstants.MessageAction;
+
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 
 public class LiferayAuthorizationService implements AuthorizationService,
         HttpServletRequestAware {
@@ -257,15 +252,10 @@ public class LiferayAuthorizationService implements AuthorizationService,
     }
 
     private void setCurrentUser(final String user) {
-        String newUser = user;
-        Authentication springAuth = SecurityContextHolder.getContext().getAuthentication();
-        if (springAuth != null && springAuth.isAuthenticated()) {
-            newUser = springAuth.getName();
-        }
-        if (currentUser == null && newUser != null || currentUser != null
-                && !currentUser.equals(newUser)) {
+        if (currentUser == null && (user != null && user.length() > 0) || currentUser != null
+                && !currentUser.equals(user)) {
             // user has changed
-            currentUser = newUser;
+            currentUser = user;
             LOG.debug(String.format("Current user is now %s.", currentUser));
         }
     }
@@ -295,8 +285,7 @@ public class LiferayAuthorizationService implements AuthorizationService,
                 LOG.debug("Using groupId " + scopeGroupId + " as the scope.");
             }
         }
-
-        setCurrentUser(request.getRemoteUser());
+        setCurrentUser(ThreadUser.get());
         setBannedStatus();
     }
 
