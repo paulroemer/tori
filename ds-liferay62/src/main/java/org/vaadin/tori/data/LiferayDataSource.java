@@ -830,11 +830,8 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
                 scopeGroupId = themeDisplay.getScopeGroupId();
                 LOG.debug("Using groupId " + scopeGroupId + " as the scope.");
             }
-            Long authUser = null;
+            Long authUser = ThreadUser.getId();
 
-            if (authUser == null && ThreadUser.getId() != null) {
-                authUser = ThreadUser.getId();
-            }
             if (authUser != null && currentUserId != authUser) {
                 // current user is changed
                 currentUserId = authUser;
