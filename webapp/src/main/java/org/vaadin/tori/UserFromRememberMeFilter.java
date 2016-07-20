@@ -44,9 +44,6 @@ public class UserFromRememberMeFilter extends GenericFilterBean {
 							return Long.valueOf(userIdString);
 						}
 					}
-					int i = 0;
-					for (String tokenElement : decodeCookie(val))
-						System.out.println("# # # # tokenElement: " + (i++) + ": " + tokenElement);
 				}
 			}
 		}
