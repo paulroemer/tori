@@ -217,4 +217,14 @@
             </bean>
         </property>
     </bean>
+    <bean class="com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil">
+        <property name="projectionFactory">
+            <bean class="com.liferay.portal.dao.orm.hibernate.ProjectionFactoryImpl"/>
+        </property>
+    </bean>
+    <bean class="com.liferay.portal.kernel.json.JSONFactoryUtil">
+        <property name="JSONFactory">
+            <bean class="com.liferay.portal.json.JSONFactoryImpl"/>
+        </property>
+    </bean>
 </beans>

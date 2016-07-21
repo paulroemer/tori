@@ -1,9 +1,19 @@
 package org.vaadin.tori;
 
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.model.User;
+import com.liferay.portal.security.auth.CompanyThreadLocal;
+import com.liferay.portal.security.auth.PrincipalThreadLocal;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.util.PortalInstances;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.crypto.codec.Base64;
 import org.springframework.security.web.authentication.rememberme.InvalidCookieException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
+import ru.xpoft.vaadin.SpringApplicationContext;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -24,7 +34,23 @@ public class UserFromRememberMeFilter extends GenericFilterBean {
 		if (request instanceof HttpServletRequest) {
 			Long userId = getCurrentUser((HttpServletRequest) request);
 			ThreadUser.set(userId);
+			ApplicationContext ctx = SpringApplicationContext.getApplicationContext();
+			if (ctx != null) {
+				PermissionChecker permissionChecker = ctx.getBean(PermissionChecker.class);
+				try {
+					User user = UserLocalServiceUtil.getUserById(userId);
+					permissionChecker.init(user);
+					PrincipalThreadLocal.setName(userId);
+					PortalInstances.addCompanyId(user.getCompanyId());
+					CompanyThreadLocal.setCompanyId(user.getCompanyId());
+				} catch (PortalException e) {
+					e.printStackTrace();
+				} catch (SystemException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+
 		try {
 			chain.doFilter(request, response);
 		} finally {
