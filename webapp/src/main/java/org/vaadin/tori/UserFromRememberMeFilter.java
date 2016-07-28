@@ -33,7 +33,12 @@ public class UserFromRememberMeFilter extends GenericFilterBean {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		if (request instanceof HttpServletRequest) {
 			Long userId = getCurrentUser((HttpServletRequest) request);
+			if (userId == null) {
+				// use default aka guest user (see https://web.liferay.com/community/wiki/-/wiki/Main/The+%22Guest%22%20user)
+				userId = 10169L;
+			}
 			ThreadUser.set(userId);
+
 			ApplicationContext ctx = SpringApplicationContext.getApplicationContext();
 			if (ctx != null) {
 				PermissionChecker permissionChecker = ctx.getBean(PermissionChecker.class);
@@ -73,8 +78,10 @@ public class UserFromRememberMeFilter extends GenericFilterBean {
 				}
 			}
 		}
+
 		return null;
 	}
+
 	private String[] decodeCookie(String cookieValue) {
 		for (int j = 0; j < cookieValue.length() % 4; j++) {
 			cookieValue = cookieValue + "=";
