@@ -423,8 +423,9 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
+              <groupId>org.eclipse.jetty</groupId>
+              <artifactId>jetty-maven-plugin</artifactId>
+              <version>9.2.3.v20140905</version>
             </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
