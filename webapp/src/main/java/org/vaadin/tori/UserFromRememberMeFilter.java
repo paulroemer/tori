@@ -64,6 +64,11 @@ public class UserFromRememberMeFilter extends GenericFilterBean {
 	}
 
 	private Long getCurrentUser(final HttpServletRequest request) {
+		// getCookies() returns an array of cookies or null if there are no cookies
+		// prevent 500 error from npe by returning immediately here
+		if (request.getCookies() == null) {
+			return null;
+		}
 		for (Cookie cookie : request.getCookies()) {
 			if (cookie.getName().equals("remember-me")) {
 				String val = cookie.getValue();
