@@ -841,7 +841,7 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
             }
         }
 
-//        try {
+        try {
             mbBanServiceContext = ServiceContextReflectionFactory.getInstance(
                     MBBan.class.getName(), request);
             flagsServiceContext = ServiceContextReflectionFactory.getInstance(
@@ -850,9 +850,9 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
                     MBCategory.class.getName(), request);
             mbMessageServiceContext = ServiceContextReflectionFactory.getInstance(
                     MBMessage.class.getName(), request);
-//        } catch (final NestableException e) {
-//            LOG.error("Couldn't create ServiceContext.", e);
-//        }
+        } catch (final Exception e) {
+            LOG.error("Couldn't create ServiceContext.", e);
+        }
 
         if (toriConfiguration == null) {
             toriConfiguration = mapConfiguration(request);
@@ -1151,8 +1151,10 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
             LOG.error("Couldn't load PortletPreferences.", e);
         } catch (final ReadOnlyException e) {
             LOG.error("Couldn't update PortletPreferences.", e);
-        } catch (final ValidatorException e) {
-            LOG.error("Couldn't update PortletPreferences.", e);
+		} catch (final ValidatorException e) {
+			LOG.error("Couldn't update PortletPreferences.", e);
+		} catch (final NullPointerException e) {
+			LOG.error("Couldn't update PortletPreferences.", e);
         } catch (final IOException e) {
             LOG.error("Couldn't update PortletPreferences.", e);
         }
