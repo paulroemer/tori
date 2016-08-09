@@ -33,17 +33,33 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
+	<resource-ref>
+		<res-ref-name>jdbc/db_portal</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+
+	<filter>
+		<filter-name>IndexerBotFilter</filter-name>
+		<filter-class>org.vaadin.tori.IndexerBotFilter</filter-class>
+	</filter>
+
     <filter>
         <filter-name>userFromRemembermeFilter</filter-name>
         <filter-class>org.vaadin.tori.UserFromRememberMeFilter</filter-class>
     </filter>
 
-    <filter-mapping>
-        <filter-name>userFromRemembermeFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+	<filter-mapping>
+		<filter-name>IndexerBotFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
-    <listener>
+	<filter-mapping>
+		<filter-name>userFromRemembermeFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 

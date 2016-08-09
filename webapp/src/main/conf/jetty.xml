@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+
+<Configure id="Server" class="org.eclipse.jetty.server.Server">
+	<New id="db_portal" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg></Arg>
+		<Arg>jdbc/db_portal</Arg>
+		<Arg>
+			<New class="com.zaxxer.hikari.HikariDataSource">
+				<Arg>
+					<New class="com.zaxxer.hikari.HikariConfig">
+						<Set name="minimumIdle">5</Set>
+						<Set name="maximumPoolSize">20</Set>
+						<Set name="dataSourceClassName">com.mysql.jdbc.jdbc2.optional.MysqlDataSource</Set>
+						<Set name="username">root</Set>
+						<Set name="password"></Set>
+						<Call name="addDataSourceProperty">
+							<Arg>url</Arg>
+							<Arg>jdbc:mysql://localhost:3306/lportal</Arg>
+						</Call>
+					</New>
+				</Arg>
+			</New>
+		</Arg>
+	</New>
+
+	<New id="db_directory" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg></Arg>
+		<Arg>jdbc/db_directory</Arg>
+		<Arg>
+			<New class="com.zaxxer.hikari.HikariDataSource">
+				<Arg>
+					<New class="com.zaxxer.hikari.HikariConfig">
+						<Set name="minimumIdle">5</Set>
+						<Set name="maximumPoolSize">20</Set>
+						<Set name="dataSourceClassName">com.mysql.jdbc.jdbc2.optional.MysqlDataSource</Set>
+						<Set name="username">root</Set>
+						<Set name="password"></Set>
+						<Call name="addDataSourceProperty">
+							<Arg>url</Arg>
+							<Arg>jdbc:mysql://localhost:3306/directory</Arg>
+						</Call>
+					</New>
+				</Arg>
+			</New>
+		</Arg>
+	</New>
+
+	<New id="db_misc" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg></Arg>
+		<Arg>jdbc/db_misc</Arg>
+		<Arg>
+			<New class="com.zaxxer.hikari.HikariDataSource">
+				<Arg>
+					<New class="com.zaxxer.hikari.HikariConfig">
+						<Set name="minimumIdle">5</Set>
+						<Set name="maximumPoolSize">20</Set>
+						<Set name="dataSourceClassName">com.mysql.jdbc.jdbc2.optional.MysqlDataSource</Set>
+						<Set name="username">root</Set>
+						<Set name="password"></Set>
+						<Call name="addDataSourceProperty">
+							<Arg>url</Arg>
+							<Arg>jdbc:mysql://localhost:3306/misc</Arg>
+						</Call>
+					</New>
+				</Arg>
+			</New>
+		</Arg>
+	</New>
+
+	<New id="db_proaccount" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg></Arg>
+		<Arg>jdbc/db_proaccount</Arg>
+		<Arg>
+			<New class="com.zaxxer.hikari.HikariDataSource">
+				<Arg>
+					<New class="com.zaxxer.hikari.HikariConfig">
+						<Set name="minimumIdle">5</Set>
+						<Set name="maximumPoolSize">20</Set>
+						<Set name="dataSourceClassName">com.mysql.jdbc.jdbc2.optional.MysqlDataSource</Set>
+						<Set name="username">root</Set>
+						<Set name="password"></Set>
+						<Call name="addDataSourceProperty">
+							<Arg>url</Arg>
+							<Arg>jdbc:mysql://localhost:3306/proaccount</Arg>
+						</Call>
+					</New>
+				</Arg>
+			</New>
+		</Arg>
+	</New>
+</Configure>

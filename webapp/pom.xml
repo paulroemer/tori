@@ -138,7 +138,7 @@
                 </dependency>
             </dependencies>
             <build>
-                <finalName>tori</finalName>
+                <finalName>v7tori</finalName>
             </build>
         </profile>
     </profiles>
@@ -423,9 +423,24 @@
     <build>
         <plugins>
             <plugin>
-              <groupId>org.eclipse.jetty</groupId>
-              <artifactId>jetty-maven-plugin</artifactId>
-              <version>9.2.3.v20140905</version>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.3.11.v20160721</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.zaxxer</groupId>
+						<artifactId>HikariCP</artifactId>
+						<version>2.4.6</version>
+					</dependency>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.36</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<jettyXml>${basedir}/src/main/conf/jetty.xml</jettyXml>
+				</configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
