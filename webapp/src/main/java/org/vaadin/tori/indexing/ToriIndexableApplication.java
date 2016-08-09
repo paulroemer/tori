@@ -1,12 +1,12 @@
 /*
  * Copyright 2012 Vaadin Ltd.
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -32,8 +32,8 @@ import org.vaadin.tori.util.UrlConverter;
 public class ToriIndexableApplication {
 
     public static final String ESCAPED_FRAGMENT = "_escaped_fragment_";
-	public static final String USER_AGENT = "User-Agent";
-	public static final String[] BOT_USER_AGENTS = { // "firefox", // for
+    private static final String USER_AGENT = "User-Agent";
+    private static final String[] BOT_USER_AGENTS = { // "firefox", // for
                                                       // testing
             "googlebot", // google
             "bingbot", "adidxbot", "msnbot", // bing
@@ -172,7 +172,7 @@ public class ToriIndexableApplication {
          * Unfortunately there's no hacky way of checking if the parameter is
          * the last one or not. This seems to be the best way with a sane amount
          * of effort.
-         *
+         * 
          * Or maybe just Liferay makes things hard by injecting stuff into
          * parameters that aren't originally there.
          */
@@ -187,7 +187,6 @@ public class ToriIndexableApplication {
     public static boolean isIndexerBot(final HttpServletRequest servletRequest) {
         final String visitorUserAgent = servletRequest.getHeader(USER_AGENT)
                 .toLowerCase();
-		System.out.println("welcome! your useragent is:" + visitorUserAgent);
         if (visitorUserAgent == null) {
             Logger.getLogger(ToriIndexableApplication.class).warn(
                     "User agent not detected. Assuming visitor is "
