@@ -1,11 +1,11 @@
 @mixin threadlisting {
-	
+
 	.threadlisting {
 		width: 100%;
 	    display: block !important;
-        
+
         a {color: $charcoal;}
-	
+
 		.threadlistingrow {
 			height: 40px;
 			white-space: nowrap;
@@ -18,21 +18,21 @@
 			overflow: hidden;
 			display: block;
 			cursor: pointer;
-			
+
 			@include animation(horizontal-fade-in 450ms);
-			
+
 		    &.unread {
 			    .topicname:before {
 					content: "\2022\00a0";
 				}
 		    }
-		    
+
 		    & > * {
 		    	display: inline-block;
 		    	vertical-align: middle;
 		    	line-height: 1;
 		    }
-		    
+
 		    &:before {
                 /*
 		    	content: "";
@@ -44,24 +44,24 @@
 				background: $threadlisting-row-border-bottom-color;
                 */
 		    }
-		    
+
 		    &:hover {
 		    	&:after{
 			    	opacity: .4;
 					transition: all 200ms;
 				}
-            
+
             &:active {
-                &:after {transition: all 50ms; background: $water;}    
+                &:after {transition: all 50ms; background: $water;}
             }
-				
+
 				.dropdown {
 					visibility: visible;
                     opacity: 1;
                     color: $water;
 				}
 		    }
-		    
+
 		    &:after {
 		    	width: 100%;
                 opacity: 0;
@@ -73,34 +73,34 @@
 				height: 40px;
 				background: $snow;
                 z-index: -1;
-				
+
 				/*.v-sa:not(.v-ch) & {
 					height: 2px;
 				}*/
 		    }
-		    
+
 		    .touch &:after {
 		    	display: none;
 		    }
-		    
+
 			.followtopic:HOVER:before,
 			&.following .followtopic:before {
 			 	color: $highlight-color;
 			 	visibility: visible;
 			}
-			
+
 			&.following .followtopic:before {
 				@include animation(fade-in 500ms);
 			}
-			
+
 			&:hover .followtopic:before {
-				visibility: visible;	
+				visibility: visible;
 			}
-			
+
 			&.maynotfollow .followtopic {
 				display: none;
 			}
-			
+
 			.followtopic:before {
 				font-family: "Tori-Icons";
 				content: "\e605";
@@ -111,14 +111,14 @@
 				color: $water;
 				visibility: hidden;
 			}
-			
-			
+
+
 			.threadicons {
 				font-family: "Tori-Icons";
 				vertical-align: top;
 				font-size: 12px;
 			}
-			
+
 			&.sticky .threadicons:before {
 				content: "\e004";
 				color: $water;
@@ -131,7 +131,7 @@
 				margin-left: 5px;
 				@include animation(fade-in 500ms);
 			}
-		
+
 			.topic {
 				transition: all 320ms;
 				-webkit-transform: translatez(0);
@@ -147,21 +147,21 @@
 				vertical-align: middle;
 				-moz-box-sizing: border-box;
 				box-sizing: border-box;
-				
+
 				&:after {
 					font-family: "Tori-Icons";
 					vertical-align: middle;
 					padding-left: 5px;
 				}
 		    }
-		    
+
 		    .started {
 		    	width: 21%;
 		    	font-size: rem(20);
 		    	overflow: hidden;
 		    	white-space: normal;
 		    }
-		    
+
 		    .replycountwrapper {
 				text-align: center;
 				width: 36px;
@@ -169,7 +169,7 @@
 				display: inline-block;
 				font-size: rem(16);
 				position: relative;
-				
+
 				&:BEFORE,
 	    		.replycount:BEFORE,
 	    		.replycount:AFTER {
@@ -183,27 +183,27 @@
 					background-color: #fff;
 					z-index: -1;
 		    	}
-		    	
+
 		    	.replycount:BEFORE {
 		    		left: 5px;
 					top: -6px;
 		    	}
-		    	
+
 		    	&:BEFORE {
 		    		display: none;
 	    			left: 3px;
 					top: -8px;
 		    	}
-		    	
+
 			}
-	    	
+
 	    	&.shortthread .replycountwrapper .replycount:BEFORE {
 	    		display: none;
 	    	}
 	    	&.longthread .replycountwrapper:BEFORE {
 	    		display: block;
 	    	}
-	    	
+
 	    	&.noreplies {
 	    		.replycountwrapper {
 	    			visibility: hidden;
@@ -215,7 +215,7 @@
 	    			display: none;
 	    		}
 	    	}
-		    	
+
 		    .latest {
 		    	width: 24%;
 		    	font-size: rem(20);
@@ -225,8 +225,9 @@
 				padding-left: 36px;
 				margin-left: -36px;
 				text-decoration: none;
+					overflow: hidden;
 		    }
-		    
+
 		    .startedby,
 		    .latestby {
 				overflow: hidden;
@@ -236,8 +237,8 @@
 				padding: 0 5px 0 3px;
 				white-space: nowrap;
 		    }
-		    
-			 
+
+
 			.startedtime, .latesttime {
 				padding: 0.3em 0.6em;
 				display: inline-block;
@@ -245,17 +246,17 @@
                 font-size: 10px;
                 text-transform: uppercase;
 			}
-			 
+
 			 .startedtime {
 			 	background: $snow;
 				color: #888;
 			 }
-			 
+
 			 .latesttime {
 			 	background: #F0F8FC;
 				color: #3E8DB5;
 			 }
-			 
+
 			 .dropdown {
 			 	vertical-align: middle !important;
 			 	visibility: visible;
@@ -264,19 +265,19 @@
                 color: $dark-snow;
 			 }
 		 }
-		 
+
 		.threadlisting-placeholder {
 			height: 40px;
 			border-bottom: 1px solid $water;
 			position: relative;
-		 
+
 	    	&:before {
 				padding-left: 26px;
 				content: "Loading Post...";
 				color: $font-color-primary;
 				line-height: 40px;
 			}
-		 	
+
 			&:after {
 				content: "";
 				position: absolute;
@@ -295,7 +296,7 @@
 }
 
 @include keyframes(horizontal-fade-in) {
-	0% { 
+	0% {
 		opacity: 0;
 		@include transform(translatex(-10px));
 	}
