@@ -8,21 +8,21 @@
 	    transition: background 500ms;
 		-webkit-transition: background 500ms;
         font-weight: normal;
-	    
+
 	    table {
 	    	border-collapse: collapse;
 	    }
-	    
+
 	   	.body .settings {
 	    	font-size: 20px;
 	    }
-	    
+
 	    &.banned-author {
 	        zoom: 1;
 	        filter: alpha(opacity=50);
 	        opacity: 0.5;
 	    }
-	    
+
 	    .author {
 	        width: 153px;
 	        min-width: 153px;
@@ -45,7 +45,7 @@
             background-color: $post-anonymous-avatar-background-color;
 			background-position: center;
 			position: relative;
-            
+
             &.anonymous:before {
             	font-family: "Tori-Icons";
 				content: "\e606";
@@ -55,25 +55,25 @@
 				left: 2px;
             }
         }
-        
+
         .authornamewrapper {
         	margin: 10px 0 2px;
         }
-    
+
         .authorname {
             @include type-body-sub($color: $charcoal);
             font-size: rem(20);
         	text-overflow: ellipsis;
-			
+
 			&.nolink {
 				color: $charcoal;
-				
+
 				&:HOVER{
 					text-decoration: none;
 				}
 			}
         }
-        
+
         .badge {
         	background-color: transparent;
         	padding: 0;
@@ -81,11 +81,11 @@
         	display: inline;
         	font-size: inherit;
         	line-height: normal;
-        
+
 	        a {
 	        	color: transparent;
 	        	position: relative;
-	        	
+
 	        	&:before {
 	        		content: "\e015";
 					color: #ee7c08;
@@ -97,59 +97,59 @@
 	        	}
 	        }
         }
-        
+
         .prettytime {
         	@include type-body-secondary($color: $dark-snow);
 			line-height: 22px;
 			height: 22px;
             margin-bottom: 4px;
         }
-        
+
         .permalink {
 			font-size: rem(14);
 			color: $dark-snow;
 			line-height: 12px;
-			
+
 			&:hover {
     			color: $link-color;
     		}
 	    }
-	    
+
 	    &.editing {
 	    	background: $light-snow;
-			
+
 	        .posteditorplaceholder {
 	        	display: block !important;
 	        	visibility: visible;
 	        	opacity: 1;
 	        	z-index: 1;
 	        }
-	        
+
 	        .bodytext {
 	        	visibility: hidden !important;
 	        }
-	        
-	        
+
+
 	        .settings,
 	        .footer > div {
 	        	display: none;
 	        }
-	        
+
 	        .attachments {
 	        	visibility: hidden;
 	        }
-	        
+
 	        &.authoringcomponent .attachments {
 	        	visibility: visible;
 	        }
-	        
+
         }
-        
+
         &#threadreply .attachments {
         	visibility: visible;
         	margin-bottom: 20px;
         }
-        
+
 	    .posteditorplaceholder {
 	    	outline: none;
         	position: absolute;
@@ -161,11 +161,11 @@
         	transition: all 500ms;
 			-webkit-transition: all 500ms;
         }
-        
+
         .v-ie8 & .posteditorplaceholder {
         	display: none;
         }
-        
+
 	    .body {
 	        padding-top: 1px;
 	        margin-right: 12px;
@@ -184,48 +184,47 @@
             &:before {display: none;}
             &:after {bottom: -24px;}
 	    }
-        
+
         &:first-of-type .body{
             border-left-color: $water;
             &:before {background-color: $water; top: 12px; display: block;}
             &:after {background-color: $water; bottom: 0;}
         }
-        
+
         &:last-of-type {
             margin-bottom: 40px;
             .body:after {bottom: -12px;}
         }
-        
+
         &.editing .body {
             border: none;
             &:before, &:after {
                 display: none;
             }
         }
-	    
+
         .settings {
 	    	position: absolute;
 			right: 17px;
 			top: 11px;
 	    }
-	    
+
         .bodytext {
         	margin-top: 40px;
 			padding: 0 3rem;
 			min-height: 98px;
 			position: relative;
-			background: #fff;
 			transition: visibility 500ms;
 			-webkit-transition: visibility 500ms;
         }
-        
+
         .attachments {
             padding: 5px 3rem 0 3rem;
             position: relative;
             width: 100%;
             overflow: hidden;
             box-sizing: border-box;
-        
+
             &:before {
                 content: "ATTACHMENTS";
                 font-size: 11px;
@@ -233,32 +232,32 @@
                 left: 3rem;
                 float: left;
             }
-            
+
             .filerow,
             a {
                 font-size: 12px;
                 float: left;
                 clear: both;
-                
+
                 .namelabel {
             		vertical-align: text-bottom;
             	}
-            	
+
             	.deleteattachment{
             		cursor: pointer;
             		color: #E6452A;
 					font-size: 15px;
 					line-height: 13px;
 					vertical-align: top;
-						
+
 	            	&:before {
 	            		content: "x";
 	            	}
 	            }
             }
         }
-        
-        
+
+
         .body .footer {
 	        width: 100%;
 	        margin-top: 15px;
@@ -266,23 +265,23 @@
 	        -moz-box-sizing: border-box;
 			box-sizing: border-box;
     		line-height: 1;
-    		
+
     		@include animation(fade-in 500ms);
-    		
+
     		.vote {
 	            margin-right: 10px;
 	            cursor: pointer !important;
 	            outline: none;
 	            float: left;
 	            color: $post-vote-icon-color;
-	            
+
 	            &:after {
 	            	font-family: "Tori-Icons";
 	            }
-	            
+
 	            &.upvote {
 	            	margin-top: -2px;
-	            	
+
 	            	&:after {
 		            	content: "\e602";
 		            	font-size: 16px;
@@ -292,7 +291,7 @@
 	            		color: #43B536;
 	            	}
 	            }
-	            
+
 	            &.downvote {
 	            	&:after {
 		            	content: "\e603";
@@ -304,12 +303,12 @@
 	            	}
 	            }
 	        }
-        
+
     		.score {
 	        	padding-left: 5px;
 	        	float: left;
 	        	line-height: 1;
-	        	
+
 	        	&.negative {
 	        		color: #E6452A;
 	        	}
@@ -320,19 +319,19 @@
 		        	display: none;
 		        }
 	        }
-	        
+
 	        .quoteforreply, .flagpost {
 		    	cursor: pointer;
 		    	margin-left: 2em;
 		    	color: $dark-snow;
                 font-size: rem(20);
 		    	line-height: 15px;
-		    	
+
 		    	&:hover {
 	    			color: $link-color;
 	    		}
 		    }
-		    
+
 		    .quoteforreply:before {
 		    	font-family: "Tori-Icons";
 				content: "\e007";
@@ -340,7 +339,7 @@
 				vertical-align: middle;
 				font-size: 16px;
 		    }
-		    
+
             .flagpost {
                 float: right;
             }
@@ -352,17 +351,17 @@
                 letter-spacing: 0;
 	    		background: transparent;
                 font-size: rem(20);
-	    		
+
 	    		&:hover {
 	    			color: $link-color;
 	    		}
-	    		
+
 	    		.v-button-caption,
 	    		.v-button-wrap {
 	    			vertical-align: baseline;
 	    			font-weight: normal;
 	    		}
-	    		
+
 	    		&:before {
 			    	font-family: "Tori-Icons";
 			    	content: "\e014";
@@ -371,30 +370,30 @@
 			    }
 		    }
 	    }
-	   
-		    
+
+
 	    .settings .v-menubar-menuitem, .badge, .prettytime {
 	    	visibility: hidden;
 	    	opacity: 0;
 	    	transition: opacity 500ms, visibility 500ms;
 			-webkit-transition: opacity 500ms, visibility 500ms;
-	    }	    
+	    }
 	}
-	
+
 	.ready .post {
 		.badge, .prettytime {
 	    	visibility: visible;
 	    	opacity: 1;
 	    }
-	    
+
 	    &:hover .settings .v-menubar-menuitem {
 	    	visibility: visible;
 	    	opacity: 1;
 	    }
 	}
-	
+
 	@include keyframes(fade-in) {
-		0% { 
+		0% {
 			opacity: 0;
 		}
 	}
