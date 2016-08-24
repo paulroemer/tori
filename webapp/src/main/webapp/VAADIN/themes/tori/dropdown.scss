@@ -6,7 +6,7 @@
     	overflow: visible;
     	
     	.v-menubar-menuitem {
-	    	border: 1px solid $dark-snow;
+	    	border: 1px solid $stainless;
 	    	border-radius: 0;
     		width: 1em;
     		height: 1em;
@@ -26,7 +26,7 @@
     		
     		.v-menubar-menuitem-caption {
     			border: 0.25em solid transparent;
-    			border-top-color: $dark-snow;
+    			border-top-color: $stainless;
     			height: 0;
     			width: 0;
     			display: inline-block;

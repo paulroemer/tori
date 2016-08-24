@@ -99,7 +99,7 @@
         }
 
         .prettytime {
-        	@include type-body-secondary($color: $dark-snow);
+        	@include type-body-secondary($color: $stainless);
 			line-height: 22px;
 			height: 22px;
             margin-bottom: 4px;
@@ -107,7 +107,7 @@
 
         .permalink {
 			font-size: rem(14);
-			color: $dark-snow;
+			color: $stainless;
 			line-height: 12px;
 
 			&:hover {
@@ -116,7 +116,7 @@
 	    }
 
 	    &.editing {
-	    	background: $light-snow;
+	    	background: $snow;
 
 	        .posteditorplaceholder {
 	        	display: block !important;
@@ -171,7 +171,7 @@
 	        margin-right: 12px;
 	        margin-left: 153px;
 	        position: relative;
-            border-left: 1px solid $snow;
+            border-left: 1px solid $aluminium;
             &:before, &:after {
                 content: '';
                 position: absolute;
@@ -179,7 +179,7 @@
                 width: 12px;
                 height: 12px;
                 border-radius: 50%;
-                background-color: $snow;
+                background-color: $aluminium;
             }
             &:before {display: none;}
             &:after {bottom: -24px;}
@@ -323,7 +323,7 @@
 	        .quoteforreply, .flagpost {
 		    	cursor: pointer;
 		    	margin-left: 2em;
-		    	color: $dark-snow;
+		    	color: $stainless;
                 font-size: rem(20);
 		    	line-height: 15px;
 
@@ -346,7 +346,7 @@
 		    .flagpost .v-button {
 	    		padding: 0;
 	    		border: none;
-	    		color: $dark-snow;
+	    		color: $stainless;
                 text-transform: initial;
                 letter-spacing: 0;
 	    		background: transparent;

@@ -32,10 +32,10 @@
         }
         
 		.v-upload .v-button, .v-button.secondarybutton {
-            background-color: $snow;
+            background-color: $aluminium;
             color: $charcoal;
             &:hover {
-                background-color: lighten($snow, 2%);
+                background-color: lighten($aluminium, 2%);
             }
         }
 		
@@ -96,11 +96,11 @@
             }
             .cke_button_on {
                 box-shadow: none;
-                background: $dark-snow;
+                background: $stainless;
                 background-image: none;
             }
             a.cke_button_off:hover, a.cke_button_off:focus, a.cke_button_off:active, a.cke_button_disabled:hover, a.cke_button_disabled:focus, a.cke_button_disabled:active, .cke_combo_off a.cke_combo_button:hover, .cke_combo_off a.cke_combo_button:focus {
-                background-color: $snow;
+                background-color: $aluminium;
                 background-image: none;
             }
         

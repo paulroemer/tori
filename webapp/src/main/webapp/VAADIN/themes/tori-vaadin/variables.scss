@@ -1,15 +1,31 @@
+// Vaadin Visual Style Guide colors
+// =================================================================================================
+
+// For DNA
+$water:       #00b4f0;
+$lava:        #ff3a49;
+
+// For highlights
+$salmon:      #e61e6d;
+$gold:        #ffc13f;
+
+// For contrast and text
+$charcoal:    #33383a; // Secondary backgrounds, titles on light background
+$graphite:    #404549; // Secondary backgrounds, custom styling
+$stainless:   #829191; // Paragraph text (works on light and dark backgrounds)
+$aluminium:   #e5e8e8; // Secondary backgrounds, custom styling
+$snow:        #f8f8f8; // Main background, titles on dark background
+
+// Other colors
+// =================================================================================================
+$white:       #fff;
+$overlay:     #1b1d1e;
+
+// =================================================================================================
+
 $vaadin-green: #40b527;
 $vaadin-orange: #ee7c08;
 $vaadin-blue: #00b4f0;
-
-// Vaadin colors
-$snow: #e5e8e8;
-$dark-snow: #e5e8ea;
-$charcoal: #33383a;
-$water: #00b4f0;
-$lava: #ff3a49;
-$salmon: #e61e6d;
-$gold: #ffc13f;
 
 $highlight-color: $water;
 $font-color-primary: $lava;

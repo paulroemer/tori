@@ -1,12 +1,27 @@
-// Vaadin colors
-$snow: #e5e8e8;
-$light-snow: lighten($snow, 6%);
-$dark-snow: darken($snow, 20%);
-$charcoal: #33383a;
-$water: #00b4f0;
-$lava: #ff3a49;
-$salmon: #e61e6d;
-$gold: #ffc13f;
+// Vaadin Visual Style Guide colors
+// =================================================================================================
+
+// For DNA
+$water:       #00b4f0;
+$lava:        #ff3a49;
+
+// For highlights
+$salmon:      #e61e6d;
+$gold:        #ffc13f;
+
+// For contrast and text
+$charcoal:    #33383a; // Secondary backgrounds, titles on light background
+$graphite:    #404549; // Secondary backgrounds, custom styling
+$stainless:   #829191; // Paragraph text (works on light and dark backgrounds)
+$aluminium:   #e5e8e8; // Secondary backgrounds, custom styling
+$snow:        #f8f8f8; // Main background, titles on dark background
+
+// Other colors
+// =================================================================================================
+$white:       #fff;
+$overlay:     #1b1d1e;
+
+// =================================================================================================
 
 //Tori icons
 @font-face {
@@ -45,17 +60,17 @@ $button-font-size: 13px !default;
 $secondary-button-border: 2px solid #C7C7C7 !default;
 
 // Post
-$post-avatar-border-color: $snow !default;
+$post-avatar-border-color: $aluminium !default;
 $post-anonymous-avatar-color: #fff !default;
-$post-permalink-color: $snow !default;
+$post-permalink-color: $aluminium !default;
 $post-body-line-height: 22px !default;
-$post-vote-icon-color: $snow !default;
+$post-vote-icon-color: $aluminium !default;
 
 // Post body
 $postbody-quote-background-color: #F7F7F7 !default;
 
 $postbody-code-linenumber-background-color: $charcoal !default;
-$postbody-code-linenumber-color: $snow !default;
+$postbody-code-linenumber-color: $aluminium !default;
 $postbody-code-background-color: $charcoal !default;
 $postbody-code-color: #fff !default;
 $postbody-code-vertical-padding: 4px !default;
@@ -66,9 +81,9 @@ $postbody-quote-code-linenumber-background-color: lighten($charcoal, 15%) !defau
 $postbody-quote-code-background-color: lighten($charcoal, 15%) !default;
 
 // Link
-$link-color: $highlight-color !default; 
+$link-color: $highlight-color !default;
 
-// Button 
+// Button
 $button-color: $highlight-color;
 
 // Post

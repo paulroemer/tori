@@ -13,7 +13,7 @@
 
 	blockquote cite,
 	.quote-title {
-		background-color: $light-snow;
+		background-color: $snow;
 		padding-left: 50px;
         margin-top: 10px;
 		line-height: 35px;
@@ -21,7 +21,7 @@
 		display: block;
 		font-style: normal;
         font-size: rem(18);
-        color: $dark-snow;
+        color: $stainless;
 		
 		&:before {
 			@include quotationmark;
@@ -57,7 +57,7 @@
 
 	blockquote > div,
 	.quote {
-		background-color: $light-snow;
+		background-color: $snow;
 		border-radius: $border-radius-primary;
 		
 		padding: 0 20px 10px 50px;

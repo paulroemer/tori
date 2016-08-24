@@ -25,7 +25,7 @@
 	        }
 	    
 	    	.description {
-				color: $dark-snow;
+				color: $stainless;
 	    	}
 	    	
 	    	.v-popupbutton {
@@ -83,11 +83,11 @@
 	            }
 	            
 	           	.v-table-cell-content {
-	                border-bottom: 1px solid $snow;
+	                border-bottom: 1px solid $aluminium;
 	            }
 	            
 	            &:hover {
-                    background-color: lighten($snow,6%);
+                    background-color: lighten($aluminium,6%);
                     transition: all 200ms;
 	                .settingsmenu .v-menubar-menuitem {
 	                	visibility: visible;

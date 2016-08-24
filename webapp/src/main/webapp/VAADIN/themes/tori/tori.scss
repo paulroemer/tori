@@ -50,7 +50,7 @@
                 .v-button {
                     text-decoration: none;
                     font-size: rem(18);
-                    color: $snow;
+                    color: $aluminium;
                     border-bottom: none;
                 }
             }
@@ -119,7 +119,7 @@
             border-bottom: 1px solid $water;
 	        
 	        &.secondarybutton {
-	        	color: $dark-snow;
+	        	color: $stainless;
                 border-bottom: none;
 	        }
 	        
@@ -135,8 +135,8 @@
 	    }
 	    
 	    .headerlayout {
-            @include type-heading-sub($color: $dark-snow);
-            border-bottom: 1px solid $snow;			
+            @include type-heading-sub($color: $stainless);
+            border-bottom: 1px solid $aluminium;			
 		}
 		
 		.v-shadow-window,
@@ -171,7 +171,7 @@
 			
 			.v-textarea,
 			.v-textfield {
-				border: 1px solid $dark-snow;
+				border: 1px solid $stainless;
                 font-style: normal;
                 padding: 0.5em;
 			}
