@@ -35,6 +35,7 @@ import com.vaadin.server.Page;
 import com.vaadin.server.VaadinPortletRequest;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import org.apache.log4j.Logger;
@@ -117,6 +118,10 @@ public class ToriUI extends UI implements ToriUIServerRpc {
 		}
 
 		ConfirmDialog.setFactory(ComponentUtil.getConfirmDialogFactory());
+
+		JavaScript.getCurrent().addFunction("tori_closeUI", jsonArray -> {
+			ToriUI.getCurrent().close();
+		});
 	}
 
 
