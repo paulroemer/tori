@@ -18,6 +18,9 @@ package org.vaadin.tori.indexing;
 
 import java.util.List;
 
+import com.vaadin.server.VaadinService;
+import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinServletRequest;
 import org.vaadin.tori.ToriNavigator.ApplicationView;
 import org.vaadin.tori.ToriUtil;
 import org.vaadin.tori.data.entity.Category;
@@ -115,8 +118,8 @@ public class IndexableCategoryView extends IndexableView {
     }
 
     private String getThreadUrl(final DiscussionThread thread) {
-        return application.getDataSource().getPathRoot() + "/forum/#"
-                + ApplicationView.THREADS.getUrl() + "/" + thread.getId();
+
+        return application.getHttpServletRequest().getContextPath() + "/" + ApplicationView.THREADS.getViewName() + "/" + thread.getId();
     }
 
 }

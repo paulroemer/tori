@@ -1,12 +1,12 @@
 /*
  * Copyright 2012 Vaadin Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -42,89 +42,46 @@ public class ToriIndexableApplication {
 
     private final ToriApiLoader apiLoader = new ToriApiLoader();
 
+    private HttpServletRequest httpServletRequest = null;
+
     public ToriIndexableApplication(final PortletRequest request) {
         apiLoader.setRequest(request);
     }
 
     public ToriIndexableApplication(final HttpServletRequest request) {
         apiLoader.setRequest(request);
+
+        httpServletRequest = request;
     }
 
     /** Get the resulting XHTML page (<code>&lt;html&gt;</code> tags and all) */
     public String getResultInHtml(final HttpServletRequest servletRequest) {
 
-        String requestUrl = null;
-        String lrcid = servletRequest.getParameter("_19_mbCategoryId");
-        if (lrcid != null) {
-            requestUrl = apiLoader.getDataSource().getPathRoot()
-                    + "/-/message_boards?_19_mbCategoryId=" + lrcid;
-        }
+		final String[] splittedPath = servletRequest.getPathInfo().split("/");
 
-        String lrmid = servletRequest.getParameter("_19_messageId");
-        if (lrmid != null) {
-            requestUrl = apiLoader.getDataSource().getPathRoot()
-                    + "/-/message_boards/view_message/" + lrmid;
-        }
+        String viewString = "dashboard";
+        List<String> arguments = new ArrayList<>();
 
-        UrlConverter urlConverter = apiLoader.getUrlConverter();
-        if (urlConverter != null && requestUrl != null) {
-            String convertedUrl = urlConverter.convertUrlToToriForm(requestUrl);
-            if (!requestUrl.equals(convertedUrl)) {
-                return getRedirectionTag(convertedUrl);
+		if(splittedPath.length >= 2) {
+            viewString = splittedPath[1];
+
+            if (splittedPath.length >= 3) {
+                int i = 2;
+                for (; i < splittedPath.length; ++i) {
+                    arguments.add(splittedPath[i]);
+                }
             }
         }
 
-        final ArrayList<String> fragmentArguments = getFragmentArguments(servletRequest);
-
-        final String viewString = getViewString(fragmentArguments);
-        final List<String> arguments = getArguments(fragmentArguments);
         final IndexableView view = getIndexableView(viewString, arguments, this);
-        return view.getHtml();
+		return view.getHtml();
     }
+
+    public HttpServletRequest getHttpServletRequest() { return httpServletRequest; }
 
     private String getRedirectionTag(final String redirectUrl) {
         return "<meta http-equiv=\"refresh\" content=\"0;URL='" + redirectUrl
                 + "'\">";
-    }
-
-    private static List<String> getArguments(
-            final ArrayList<String> fragmentArguments) {
-        if (fragmentArguments.isEmpty()) {
-            return fragmentArguments;
-        }
-
-        @SuppressWarnings("unchecked")
-        final List<String> clone = (List<String>) fragmentArguments.clone();
-        clone.remove(0);
-        return clone;
-    }
-
-    private static String getViewString(final List<String> fragmentArguments) {
-        if (fragmentArguments.isEmpty()) {
-            return ApplicationView.DASHBOARD.getViewName();
-        } else {
-            return fragmentArguments.get(0);
-        }
-    }
-
-    private static ArrayList<String> getFragmentArguments(
-            final HttpServletRequest servletRequest) {
-        final String fragment = servletRequest.getParameter(ESCAPED_FRAGMENT);
-
-        if (fragment == null) {
-            return new ArrayList<String>();
-        }
-
-        final ArrayList<String> args = new ArrayList<String>();
-        for (final String bit : fragment.split("/")) {
-            args.add(bit);
-        }
-        if (!args.isEmpty() && args.get(0).isEmpty()) {
-            // because we start with a slash, the first index is always empty.
-            // Or should be.
-            args.remove(0);
-        }
-        return args;
     }
 
     private static IndexableView getIndexableView(final String view,
@@ -172,7 +129,7 @@ public class ToriIndexableApplication {
          * Unfortunately there's no hacky way of checking if the parameter is
          * the last one or not. This seems to be the best way with a sane amount
          * of effort.
-         * 
+         *
          * Or maybe just Liferay makes things hard by injecting stuff into
          * parameters that aren't originally there.
          */
