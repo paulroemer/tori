@@ -3,12 +3,14 @@ package org.vaadin.tori.util;
 import com.google.gwt.thirdparty.guava.common.base.Throwables;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.process.ExceptionProcessCallable;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.impl.CompanyImpl;
 import com.liferay.portal.model.impl.LayoutImpl;
 import com.liferay.portal.model.impl.UserImpl;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 
 /**
@@ -18,19 +20,27 @@ public class ToriUtil {
 
 	public static ThemeDisplay fakeThemeDisplay(final Long userId) {
 		ThemeDisplay themeDisplay = new ThemeDisplay();
-		long scopeGroupId = 10187L;
-		long siteGroupId = 10187L;
-		long companyId = 10167L;
-		long accountId = 10168L;
-		long contactId = 10903L;
+		final long scopeGroupId = 10187L;
+		final long siteGroupId = 10187L;
+		final long companyId = 10167L;
+		final long accountId = 10168L;
+		final long contactId = 10903L;
+		final long defaultUserId = 10169L;
 
 		themeDisplay.setScopeGroupId(scopeGroupId);
 		themeDisplay.setSiteGroupId(siteGroupId);
 
-		User user = new UserImpl();
-		user.setCompanyId(companyId);
-		user.setPrimaryKey(userId!=null?userId:0);
-		user.setContactId(contactId);
+		User user = null;
+		try {
+			user = UserLocalServiceUtil.getUser(userId);
+		} catch (Exception e) {
+			// if something went wrong, use the default user
+			user = new UserImpl();
+			user.setCompanyId(companyId);
+			user.setPrimaryKey(userId!=null?userId:defaultUserId);
+			user.setContactId(contactId);
+			user.setDefaultUser(userId == defaultUserId);
+		}
 
 		Company company = new CompanyImpl();
 		company.setCompanyId(companyId);

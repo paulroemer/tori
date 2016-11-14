@@ -227,4 +227,16 @@
             <bean class="com.liferay.portal.json.JSONFactoryImpl"/>
         </property>
     </bean>
+
+	<bean class="com.liferay.portal.kernel.parsers.bbcode.BBCodeTranslatorUtil">
+		<property name="BBCodeTranslator">
+			<bean class="com.liferay.portal.parsers.bbcode.HtmlBBCodeTranslatorImpl"/>
+		</property>
+	</bean>
+
+	<bean class="com.liferay.portal.kernel.util.HtmlUtil">
+		<property name="html">
+			<bean class="com.liferay.portal.util.HtmlImpl"/>
+		</property>
+	</bean>
 </beans>
