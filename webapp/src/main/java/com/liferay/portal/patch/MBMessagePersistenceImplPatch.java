@@ -1,10 +1,12 @@
 package com.liferay.portal.patch;
 
+import ch.qos.logback.core.db.dialect.DBUtil;
 import com.liferay.portal.ModelListenerException;
 import com.liferay.portal.model.BaseModelListener;
 import com.liferay.portal.model.ModelListener;
 import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.service.persistence.MBMessagePersistenceImpl;
+import com.liferay.portlet.messageboards.util.MBUtil;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.ArrayList;
@@ -24,6 +26,11 @@ public class MBMessagePersistenceImplPatch extends MBMessagePersistenceImpl impl
 		@Override
 		public void onBeforeCreate(MBMessage model) throws ModelListenerException {
 			model.setStatus(STATUS_APPROVED);
+		}
+
+		@Override
+		public void onAfterCreate(MBMessage model) throws ModelListenerException {
+			MBUtil.updateThreadMessageCount(model.getCompanyId(), model.getThreadId());
 		}
 	}
 

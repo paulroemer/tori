@@ -1,5 +1,6 @@
 package com;
 
+import com.liferay.portal.dao.orm.jpa.ExceptionTranslator;
 import com.liferay.portal.kernel.dao.orm.ORMException;
 import com.liferay.portal.security.pwd.*;
 import com.liferay.util.PwdGenerator;
@@ -69,6 +70,21 @@ public class UserSession extends com.liferay.portal.dao.orm.jpa.SessionImpl {
 			TransactionSynchronizationManager.unbindResource(emf);
 		}
 		return result;
+	}
+
+	@Override
+	public void delete(Object object) throws ORMException {
+		TransactionSynchronizationManager.bindResource(emf, emh);
+		try {
+			EntityManager localManager = emh.getEntityManager();
+			EntityTransaction tx = localManager.getTransaction();
+			tx.begin();
+			super.delete(super.merge(object));
+			localManager.flush();
+			tx.commit();
+		} finally {
+			TransactionSynchronizationManager.unbindResource(emf);
+		}
 	}
 
 	@Override

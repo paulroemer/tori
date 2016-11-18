@@ -87,6 +87,15 @@
         <property name="entityManagerFactory" ref="portalEntityManagerFactoryBean"/>
     </bean>
 
+	<bean name="com.liferay.portlet.expando.service.persistence.ExpandoTablePersistence"
+		  class="com.liferay.portlet.expando.service.persistence.ExpandoTablePersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory">
+	</bean>
+	<bean name="com.liferay.portlet.expando.service.persistence.ExpandoRowPersistence"
+		  class="com.liferay.portlet.expando.service.persistence.ExpandoRowPersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory">
+	</bean>
+
     <!--<bean id="entityManagerHolder" class="org.springframework.orm.jpa.EntityManagerHolder"-->
     <!--c:entityManager-ref="portalEntityManager">-->
     <!--</bean>-->
@@ -96,23 +105,28 @@
         <property name="entityManagerFactory" ref="portalEntityManagerFactoryBean"/>
         <property name="hibernateSessionFactory" ref="hibernateJpaSessionFactoryBean"/>
     </bean>
-
     <bean name="com.liferay.portlet.messageboards.service.MBThreadLocalService"
-          class="com.liferay.portlet.messageboards.service.impl.MBThreadLocalServiceImpl">
+          class="com.liferay.portlet.messageboards.service.impl.MBThreadLocalServiceImpl"
+		  p:assetEntryLocalService-ref="assetEntryLocalService"
+		  p:counterLocalService-ref="counterLocalService">
         <property name="MBThreadPersistence" ref="threadPersistence"/>
     </bean>
-    <bean name="threadPersistence" class="com.liferay.portlet.messageboards.service.persistence.MBThreadPersistenceImpl"
+    <bean name="threadPersistence" class="com.liferay.portal.patch.MBThreadPersistenceImplPatch"
           p:sessionFactory-ref="userSessionFactory"/>
+	<bean name="com.liferay.portlet.asset.service.persistence.AssetCategoryPersistence" class="com.liferay.portlet.asset.service.persistence.AssetCategoryPersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory"/>
+	<bean name="com.liferay.portlet.asset.service.persistence.AssetTagPersistence" class="com.liferay.portlet.asset.service.persistence.AssetTagPersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory"/>
     <bean name="com.liferay.portal.service.GroupLocalService"
           class="com.liferay.portal.service.impl.GroupLocalServiceImpl"
-          p:groupPersistence-ref="groupPersistence"
+          p:groupPersistence-ref="com.liferay.portal.service.persistence.GroupPersistence"
           p:userPersistence-ref="userPersistence">
         <property name="groupLocalService">
             <bean class="com.liferay.portal.service.impl.GroupLocalServiceImpl"
-                  p:groupPersistence-ref="groupPersistence"/>
+                  p:groupPersistence-ref="com.liferay.portal.service.persistence.GroupPersistence"/>
         </property>
         <property name="groupFinder">
-            <bean class="com.liferay.portal.service.persistence.GroupFinderImpl"
+            <bean class="com.liferay.portal.patch.GroupFinderImplPatch"
                   p:sessionFactory-ref="userSessionFactory"></bean>
         </property>
     </bean>
@@ -211,11 +225,8 @@
     </bean>
     <bean name="com.liferay.portlet.expando.service.ExpandoValueLocalService"
           class="com.liferay.portlet.expando.service.impl.ExpandoValueLocalServiceImplPatch"
-          p:persistedModelLocalServiceRegistry-ref="persistedModelLocalServiceRegistry">
-        <property name="expandoTablePersistence">
-            <bean class="com.liferay.portlet.expando.service.persistence.ExpandoTablePersistenceImpl"
-                  p:sessionFactory-ref="userSessionFactory"/>
-        </property>
+          p:persistedModelLocalServiceRegistry-ref="persistedModelLocalServiceRegistry"
+	      p:expandoTablePersistence-ref="com.liferay.portlet.expando.service.persistence.ExpandoTablePersistence">
         <property name="expandoColumnPersistence">
             <bean class="com.liferay.portlet.expando.service.persistence.ExpandoColumnPersistenceImpl"
                   p:sessionFactory-ref="userSessionFactory"/>
@@ -225,6 +236,13 @@
                   p:sessionFactory-ref="userSessionFactory"/>
         </property>
     </bean>
+	<bean name="com.liferay.portlet.expando.service.ExpandoRowLocalService"
+		  class="com.liferay.portlet.expando.service.impl.ExpandoRowLocalServiceImpl"
+		  p:counterLocalService-ref="counterLocalService"
+		  p:expandoTablePersistence-ref="com.liferay.portlet.expando.service.persistence.ExpandoTablePersistence"
+		  p:expandoRowPersistence-ref="com.liferay.portlet.expando.service.persistence.ExpandoRowPersistence"
+		  p:expandoValueLocalService-ref="com.liferay.portlet.expando.service.ExpandoValueLocalService">
+	</bean>
     <bean name="com.liferay.portlet.expando.service.ExpandoColumnLocalService"
           class="com.liferay.portlet.expando.service.impl.ExpandoColumnLocalServiceImpl">
         <property name="expandoColumnPersistence">
@@ -234,7 +252,7 @@
     </bean>
     <bean name="com.liferay.portal.service.RepositoryLocalService"
           class="com.liferay.portal.patch.RepositoryLocalServiceImplPatch"
-          p:groupPersistence-ref="groupPersistence"
+          p:groupPersistence-ref="com.liferay.portal.service.persistence.GroupPersistence"
           p:DLFolderLocalService-ref="com.liferay.portlet.documentlibrary.service.DLFolderLocalService"
           p:persistedModelLocalServiceRegistry-ref="persistedModelLocalServiceRegistry"
           p:DLFileEntryLocalService-ref="com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService"
@@ -295,7 +313,8 @@
           p:sessionFactory-ref="userSessionFactory"/>
 
     <bean name="com.liferay.portlet.ratings.service.RatingsStatsLocalService"
-          class="com.liferay.portal.patch.RatingsStatsLocalServiceImplPatch">
+          class="com.liferay.portal.patch.RatingsStatsLocalServiceImplPatch"
+	      p:ratingsEntryPersistence-ref="com.liferay.portlet.ratings.service.persistence.RatingsEntryPersistence">
         <property name="ratingsStatsPersistence">
             <bean class="com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistenceImpl"
                   p:sessionFactory-ref="userSessionFactory"/>
@@ -303,11 +322,19 @@
         <property name="persistedModelLocalServiceRegistry" ref="persistedModelLocalServiceRegistry"/>
         <property name="counterLocalService" ref="counterLocalService"/>
     </bean>
+	<bean name="com.liferay.portlet.messageboards.service.MBStatsUserLocalService"
+		  class="com.liferay.portlet.messageboards.service.impl.MBStatsUserLocalServiceImpl"
+	      p:MBThreadLocalService-ref="com.liferay.portlet.messageboards.service.MBThreadLocalService"
+	      p:MBStatsUserLocalService-ref="com.liferay.portlet.messageboards.service.MBStatsUserLocalService"
+	      p:MBStatsUserPersistence-ref="com.liferay.portlet.messageboards.service.persistence.MBStatsUserPersistence"
+	      p:MBMessagePersistence-ref="com.liferay.portlet.messageboards.service.persistence.MBMessagePersistence">
+		<property name="counterLocalService" ref="counterLocalService"/>
+	</bean>
     <bean name="com.liferay.portal.service.RoleLocalService"
           class="com.liferay.portal.patch.RoleLocalServiceImplPatch"
           p:userPersistence-ref="userPersistence"
           p:rolePersistence-ref="rolePersistence"
-          p:groupPersistence-ref="groupPersistence"
+          p:groupPersistence-ref="com.liferay.portal.service.persistence.GroupPersistence"
           p:userLocalService-ref="com.liferay.portal.service.UserLocalService">
         <constructor-arg ref="persistedModelLocalServiceRegistry"/>
         <property name="roleFinder">
@@ -328,20 +355,40 @@
           p:sessionFactory-ref="userSessionFactory" p:dataSource-ref="dataSource"/>
     <bean name="userGroupPersistence" class="com.liferay.portal.service.persistence.UserGroupPersistenceImpl"
           p:sessionFactory-ref="userSessionFactory" p:dataSource-ref="dataSource"/>
-    <bean name="groupPersistence" class="com.liferay.portal.service.persistence.GroupPersistenceImpl"
+    <bean name="com.liferay.portal.service.persistence.GroupPersistence" class="com.liferay.portal.service.persistence.GroupPersistenceImpl"
           p:sessionFactory-ref="userSessionFactory" p:dataSource-ref="dataSource"/>
     <bean name="userPersistence" class="com.liferay.portal.patch.UserPersistenceImplPatch"
-          p:groupPersistence-ref="groupPersistence"
+          p:groupPersistence-ref="com.liferay.portal.service.persistence.GroupPersistence"
           p:rolePersistence-ref="rolePersistence"
           p:sessionFactory-ref="userSessionFactory"
           p:dataSource-ref="dataSource"/>
+	<bean name="com.liferay.portlet.asset.service.persistence.AssetEntryPersistence" class="com.liferay.portal.patch.AssetEntryPersistenceImplPatch"
+		  p:sessionFactory-ref="userPersistence"
+	      p:dataSource-ref="dataSource"
+	      p:assetCategoryPersistence-ref="com.liferay.portlet.asset.service.persistence.AssetCategoryPersistence"
+	      p:assetTagPersistence-ref="com.liferay.portlet.asset.service.persistence.AssetTagPersistence"/>
+	<bean name="com.liferay.portlet.ratings.service.persistence.RatingsEntryPersistence"
+		  class="com.liferay.portlet.ratings.service.persistence.RatingsEntryPersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory"/>
+	<bean name="com.liferay.portal.service.persistence.SystemEventPersistence"
+		  class="com.liferay.portal.service.persistence.SystemEventPersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory"/>
+	<bean name="com.liferay.portlet.messageboards.service.persistence.MBStatsUserPersistence"
+		  class="com.liferay.portlet.messageboards.service.persistence.MBStatsUserPersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory"/>
+	<bean name="com.liferay.portlet.messageboards.service.persistence.MBMessagePersistence"
+		  class="com.liferay.portal.patch.MBMessagePersistenceImplPatch"
+		  p:sessionFactory-ref="userSessionFactory"/>
+	<bean name="com.liferay.portlet.social.service.persistence.SocialActivityCounterPersistence"
+		  class="com.liferay.portlet.social.service.persistence.SocialActivityCounterPersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory"/>
+	<bean name="com.liferay.portlet.social.service.persistence.SocialActivityLimitPersistence"
+		  class="com.liferay.portlet.social.service.persistence.SocialActivityLimitPersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory"/>
 
     <bean name="com.liferay.portlet.messageboards.service.MBMessageService"
           class="com.liferay.portal.patch.MBMessageServiceImplPatch" c:permissionChecker-ref="permissionChecker">
-        <property name="MBMessagePersistence">
-            <bean class="com.liferay.portlet.messageboards.service.persistence.MBMessagePersistenceImpl"
-                  p:sessionFactory-ref="userPersistence"/>
-        </property>
+        <property name="MBMessagePersistence" ref="com.liferay.portlet.messageboards.service.persistence.MBMessagePersistence"></property>
         <property name="lockLocalService">
             <bean class="com.liferay.portal.service.impl.LockLocalServiceImpl">
                 <property name="lockPersistence">
@@ -353,37 +400,52 @@
         <property name="MBMessageLocalService" ref="com.liferay.portlet.messageboards.service.MBMessageLocalService"/>
     </bean>
 
-    <bean name="com.liferay.portlet.messageboards.service.MBMessageLocalService"
-          class="com.liferay.portlet.messageboards.service.impl.MBMessageLocalServiceImpl"
-          p:userPersistence-ref="userPersistence"
-          p:resourceLocalService-ref="com.liferay.portal.service.ResourceLocalService"
-          p:assetEntryLocalService-ref="assetEntryLocanLservice">
-        <property name="counterLocalService" ref="counterLocalService"/>
-        <property name="MBMessagePersistence">
-            <bean class="com.liferay.portal.patch.MBMessagePersistenceImplPatch"
-                  p:sessionFactory-ref="userSessionFactory"/>
-        </property>
-        <property name="MBThreadPersistence">
-            <bean class="com.liferay.portlet.messageboards.service.persistence.MBThreadPersistenceImpl"
-                  p:sessionFactory-ref="userPersistence"/>
-        </property>
-        <property name="assetLinkLocalService">
-            <bean class="com.liferay.portlet.asset.service.impl.AssetLinkLocalServiceImpl">
-                <property name="assetLinkPersistence">
-                    <bean class="com.liferay.portlet.asset.service.persistence.AssetLinkPersistenceImpl"
-                          p:sessionFactory-ref="userPersistence"/>
-                </property>
-            </bean>
-        </property>
-    </bean>
-    <bean name="assetEntryLocanLservice" class="com.liferay.portlet.asset.service.impl.AssetEntryLocalServiceImpl">
-        <property name="userPersistence" ref="userPersistence"/>
-        <property name="assetEntryPersistence">
-            <bean class="com.liferay.portlet.asset.service.persistence.AssetEntryPersistenceImpl"
-                  p:sessionFactory-ref="userPersistence"/>
-        </property>
-        <property name="counterLocalService" ref="counterLocalService"/>
-    </bean>
+	<bean name="com.liferay.portlet.messageboards.service.MBMessageLocalService"
+		  class="com.liferay.portlet.messageboards.service.impl.MBMessageLocalServiceImpl"
+		  p:userPersistence-ref="userPersistence"
+		  p:resourceLocalService-ref="com.liferay.portal.service.ResourceLocalService"
+		  p:assetEntryLocalService-ref="assetEntryLocalService"
+		  p:MBThreadLocalService-ref="com.liferay.portlet.messageboards.service.MBThreadLocalService"
+		  p:MBThreadPersistence-ref="threadPersistence"
+	      p:expandoRowLocalService-ref="com.liferay.portlet.expando.service.ExpandoRowLocalService"
+	      p:ratingsStatsLocalService-ref="com.liferay.portlet.ratings.service.RatingsStatsLocalService"
+	      p:MBStatsUserLocalService-ref="com.liferay.portlet.messageboards.service.MBStatsUserLocalService"
+	      p:assetLinkLocalService-ref="com.liferay.portlet.asset.service.AssetLinkLocalService"
+	      p:workflowInstanceLinkLocalService-ref="com.liferay.portal.service.WorkflowInstanceLinkLocalService">
+		<property name="counterLocalService" ref="counterLocalService"/>
+		<property name="MBMessagePersistence" ref="com.liferay.portlet.messageboards.service.persistence.MBMessagePersistence"/>
+	</bean>
+	<bean   name="com.liferay.portlet.asset.service.AssetLinkLocalService"
+			class="com.liferay.portlet.asset.service.impl.AssetLinkLocalServiceImpl">
+		<property name="assetLinkPersistence">
+			<bean class="com.liferay.portlet.asset.service.persistence.AssetLinkPersistenceImpl"
+				  p:sessionFactory-ref="userPersistence"/>
+		</property>
+	</bean>
+	<bean name="com.liferay.portal.service.SystemEventLocalService"
+		  class="com.liferay.portal.service.impl.SystemEventLocalServiceImpl"
+		  p:userPersistence-ref="userPersistence"
+		  p:companyPersistence-ref="companyPersistence"
+		  p:counterLocalService-ref="counterLocalService"
+		  p:systemEventPersistence-ref="com.liferay.portal.service.persistence.SystemEventPersistence"
+		  p:groupPersistence-ref="com.liferay.portal.service.persistence.GroupPersistence">
+	</bean>
+	<bean name="assetEntryLocalService" class="com.liferay.portlet.asset.service.impl.AssetEntryLocalServiceImpl"
+		  p:assetEntryPersistence-ref="com.liferay.portlet.asset.service.persistence.AssetEntryPersistence"
+		  p:groupLocalService-ref="com.liferay.portal.service.GroupLocalService"
+	      p:assetTagLocalService-ref="com.liferay.portlet.asset.service.AssetTagLocalService"
+		  p:socialActivityLocalService-ref="com.liferay.portlet.social.service.SocialActivityLocalService"
+	      p:systemEventLocalService-ref="com.liferay.portal.service.SystemEventLocalService"
+	      p:assetLinkLocalService-ref="com.liferay.portlet.asset.service.AssetLinkLocalService">
+		<property name="userPersistence" ref="userPersistence"/>
+		<property name="counterLocalService" ref="counterLocalService"/>
+	</bean>
+	<bean name="com.liferay.portlet.asset.service.AssetTagLocalService" class="com.liferay.portlet.asset.service.impl.AssetTagLocalServiceImpl"
+		  p:assetEntryPersistence-ref="com.liferay.portlet.asset.service.persistence.AssetEntryPersistence"
+		  p:groupLocalService-ref="com.liferay.portal.service.GroupLocalService">
+		<property name="userPersistence" ref="userPersistence"/>
+		<property name="counterLocalService" ref="counterLocalService"/>
+	</bean>
     <bean id="com.liferay.portal.service.ResourceLocalService"
           class="com.liferay.portal.service.impl.ResourceLocalServiceImpl">
         <property name="resourcePermissionPersistence">
@@ -461,11 +523,8 @@
         </property>
     </bean>
     <bean id="com.liferay.portlet.ratings.service.RatingsEntryLocalService"
-          class="com.liferay.portlet.ratings.service.impl.RatingsEntryLocalServiceImpl">
-        <property name="ratingsEntryPersistence">
-            <bean class="com.liferay.portlet.ratings.service.persistence.RatingsEntryPersistenceImpl"
-                  p:sessionFactory-ref="userSessionFactory"/>
-        </property>
+          class="com.liferay.portlet.ratings.service.impl.RatingsEntryLocalServiceImpl"
+	      p:ratingsEntryPersistence-ref="com.liferay.portlet.ratings.service.persistence.RatingsEntryPersistence">
     </bean>
     <bean id="com.liferay.portlet.documentlibrary.store.DLStore"
           class="com.liferay.portal.patch.DLStoreImplPatch">
@@ -498,7 +557,10 @@
           class="com.liferay.portal.service.impl.SubscriptionLocalServiceImpl"
           p:userPersistence-ref="userPersistence"
           p:counterLocalService-ref="counterLocalService"
-          p:assetEntryLocalService-ref="assetEntryLocanLservice">
+          p:assetEntryLocalService-ref="assetEntryLocalService"
+		  p:socialActivityLocalService-ref="com.liferay.portlet.social.service.SocialActivityLocalService"
+	      p:MBThreadLocalService-ref="com.liferay.portlet.messageboards.service.MBThreadLocalService"
+	      p:assetEntryPersistence-ref="com.liferay.portlet.asset.service.persistence.AssetEntryPersistence">
         <property name="subscriptionPersistence">
             <bean class="com.liferay.portal.service.persistence.SubscriptionPersistenceImpl"
                   p:sessionFactory-ref="userPersistence"/>
@@ -507,7 +569,36 @@
     <bean name="com.liferay.portal.service.OrganizationLocalService"
           class="com.liferay.portal.service.impl.OrganizationLocalServiceImpl"
           p:userPersistence-ref="userPersistence"></bean>
-    <bean name="com.liferay.portal.service.UserGroupLocalService"
-          class="com.liferay.portal.service.impl.UserGroupLocalServiceImpl"
-          p:userPersistence-ref="userPersistence"></bean>
+	<bean name="com.liferay.portal.service.UserGroupLocalService"
+		  class="com.liferay.portal.service.impl.UserGroupLocalServiceImpl"
+		  p:userPersistence-ref="userPersistence"></bean>
+	<bean name="com.liferay.portlet.social.service.SocialActivitySettingLocalService"
+		  class="com.liferay.portlet.social.service.impl.SocialActivitySettingLocalServiceImpl"
+		  p:userPersistence-ref="userPersistence">
+		<property name="socialActivitySettingPersistence">
+			<bean  class="com.liferay.portlet.social.service.persistence.SocialActivitySettingPersistenceImpl"
+				   p:sessionFactory-ref="userPersistence"/>
+		</property>
+	</bean>
+	<bean name="com.liferay.portlet.social.service.SocialActivityCounterLocalService"
+		  class="com.liferay.portlet.social.service.impl.SocialActivityCounterLocalServiceImpl"
+		  p:socialActivitySettingLocalService-ref="com.liferay.portlet.social.service.SocialActivitySettingLocalService"
+		  p:socialActivityCounterPersistence-ref="com.liferay.portlet.social.service.persistence.SocialActivityCounterPersistence"
+		  p:socialActivityLimitPersistence-ref="com.liferay.portlet.social.service.persistence.SocialActivityLimitPersistence"
+		  p:userPersistence-ref="userPersistence"></bean>
+	<bean name="com.liferay.portlet.social.service.SocialActivityLocalService"
+		  class="com.liferay.portlet.social.service.impl.SocialActivityLocalServiceImpl"
+	      p:userPersistence-ref="userPersistence"
+	      p:groupLocalService-ref="com.liferay.portal.service.GroupLocalService"
+		  p:counterLocalService-ref="counterLocalService"
+		  p:socialActivityLocalService-ref="com.liferay.portlet.social.service.SocialActivityLocalService"
+	      p:socialActivitySettingLocalService-ref="com.liferay.portlet.social.service.SocialActivitySettingLocalService"
+	      p:socialActivityCounterLocalService-ref="com.liferay.portlet.social.service.SocialActivityCounterLocalService"
+	      p:assetEntryPersistence-ref="com.liferay.portlet.asset.service.persistence.AssetEntryPersistence"
+	      p:socialActivityCounterPersistence-ref="com.liferay.portlet.social.service.persistence.SocialActivityCounterPersistence">
+		<property name="socialActivityPersistence">
+			<bean  class="com.liferay.portlet.social.service.persistence.SocialActivityPersistenceImpl"
+				   p:sessionFactory-ref="userPersistence"/>
+		</property>
+	</bean>
 </beans>

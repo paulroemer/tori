@@ -239,4 +239,22 @@
 			<bean class="com.liferay.portal.util.HtmlImpl"/>
 		</property>
 	</bean>
+
+	<bean class="com.liferay.portal.kernel.transaction.TransactionCommitCallbackRegistryUtil">
+		<property name="transactionCallbackRegistry">
+			<bean class="com.liferay.portal.spring.transaction.TransactionCommitCallbackRegistryImpl"/>
+		</property>
+	</bean>
+
+	<bean class="com.liferay.portlet.social.util.SocialConfigurationUtil">
+		<property name="socialConfiguration">
+			<bean class="com.liferay.portlet.social.util.SocialConfigurationImpl"/>
+		</property>
+	</bean>
+
+	<bean class="com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil">
+		<property name="restrictionsFactory">
+			<bean class="com.liferay.portal.dao.orm.hibernate.RestrictionsFactoryImpl"/>
+		</property>
+	</bean>
 </beans>

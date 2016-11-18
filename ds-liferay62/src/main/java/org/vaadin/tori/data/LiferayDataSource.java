@@ -743,7 +743,7 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
             return getPost(newPost.getMessageId());
         } catch (final NestableException e) {
             LOG.error("Couldn't save post.", e);
-            if ("FileNameException".equals(e.getClass().getSimpleName())) {
+            if ("FileNameException".equals(e.getClass().getSimpleName()) || "FileExtensionException".equals(e.getClass().getSimpleName())) {
                 throw new org.vaadin.tori.exception.FileNameException(e);
             } else {
                 throw new DataSourceException(e);

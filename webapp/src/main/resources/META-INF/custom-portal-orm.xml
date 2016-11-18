@@ -1378,7 +1378,7 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
-	<!--mapped-superclass class="com.liferay.portal.model.impl.SystemEventModelImpl">
+	<mapped-superclass class="com.liferay.portal.model.impl.SystemEventModelImpl">
 		<attributes>
 			<id name="systemEventId" />
 			<basic name="groupId" />
@@ -1397,15 +1397,24 @@
 			<basic name="type">
 				<column name="TYPE_" />
 			</basic>
-			<basic name="extraData" />
+			<basic name="extraData"><column column-definition="LONGTEXT"></column> </basic>
 			<transient name="className" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalClassNameId" />
+			<transient name="originalClassPK" />
+			<transient name="originalGroupId" />
+			<transient name="originalSystemEventSetKey" />
+			<transient name="originalType" />
+			<transient name="expandoBridge" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portal.model.impl.TeamModelImpl">
+	<!--mapped-superclass class="com.liferay.portal.model.impl.TeamModelImpl">
 		<attributes>
 			<id name="teamId" />
 			<basic name="companyId" />
@@ -1535,7 +1544,6 @@
 			<transient name="originalPortraitId" />
 			<transient name="originalScreenName" />
 			<transient name="originalStatus" />
-			<transient name="originalOpenId" />
 			<transient name="originalOpenId" />
 		</attributes>
 	</mapped-superclass>
@@ -1934,7 +1942,7 @@
 			<basic name="classNameId" />
 			<basic name="classPK" />
 			<basic name="classUuid" />
-			<basic name="classTypeId" />
+			<basic name="classTypeId"><column nullable="true"></column> </basic>
 			<basic name="visible"><column column-definition="TINYINT"/> </basic>
 			<basic name="startDate">
 				<temporal>TIMESTAMP</temporal>
@@ -1989,7 +1997,7 @@
 			<transient name="titleCurrentValue" />
 		</attributes>
 	</mapped-superclass>
-	<!--mapped-superclass class="com.liferay.portlet.asset.model.impl.AssetLinkModelImpl">
+	<mapped-superclass class="com.liferay.portlet.asset.model.impl.AssetLinkModelImpl">
 		<attributes>
 			<id name="linkId" />
 			<basic name="companyId" />
@@ -2008,9 +2016,16 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalType" />
+			<transient name="originalEntryId1" />
+			<transient name="originalEntryId2" />
+			<transient name="expandoBridge" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portlet.asset.model.impl.AssetTagModelImpl">
+	<!--mapped-superclass class="com.liferay.portlet.asset.model.impl.AssetTagModelImpl">
 		<attributes>
 			<id name="tagId" />
 			<basic name="groupId" />
@@ -2901,7 +2916,7 @@
 			<transient name="originalTableId" />
 		</attributes>
 	</mapped-superclass>
-	<!--mapped-superclass class="com.liferay.portlet.expando.model.impl.ExpandoRowModelImpl">
+	<mapped-superclass class="com.liferay.portlet.expando.model.impl.ExpandoRowModelImpl">
 		<attributes>
 			<id name="rowId">
 				<column name="ROWID_" />
@@ -2915,8 +2930,13 @@
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalClassPK" />
+			<transient name="originalTableId" />
 		</attributes>
-	</mapped-superclass-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portlet.expando.model.impl.ExpandoTableModelImpl">
 		<attributes>
 			<id name="tableId" />
@@ -3395,10 +3415,9 @@
 			<transient name="stagedModelType" />
 			<transient name="originalParentMessageId" />
 			<transient name="originalThreadId" />
-
 		</attributes>
 	</mapped-superclass>
-	<!--mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBStatsUserModelImpl">
+	<mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBStatsUserModelImpl">
 		<attributes>
 			<id name="statsUserId" />
 			<basic name="groupId" />
@@ -3413,8 +3432,15 @@
 			<transient name="statsUserUuid" />
 			<transient name="userUuid" />
 			<transient name="expandoBridge" />
+
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalGroupId" />
+			<transient name="originalUserId" />
+			<transient name="originalMessageCount" />
 		</attributes>
-	</mapped-superclass-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBThreadModelImpl">
 		<attributes>
 			<id name="threadId" />
@@ -4037,6 +4063,7 @@
 			<transient name="expandoBridge" />
 		</attributes>
 	</mapped-superclass>
+	-->
 	<mapped-superclass class="com.liferay.portlet.social.model.impl.SocialActivityModelImpl">
 		<attributes>
 			<id name="activityId" />
@@ -4053,8 +4080,9 @@
 			<basic name="type">
 				<column name="TYPE_" />
 			</basic>
-			<basic name="extraData" />
+			<basic name="extraData"><column column-definition="LONGTEXT"></column> </basic>
 			<basic name="receiverUserId" />
+			<transient name="columnBitmask" />
 			<transient name="className" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
@@ -4062,8 +4090,24 @@
 			<transient name="receiverUserUuid" />
 			<transient name="userUuid" />
 			<transient name="expandoBridge" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalActivitySetId" />
+			<transient name="originalClassNameId" />
+			<transient name="originalClassPK" />
+			<transient name="originalGroupId" />
+			<transient name="originalType" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalType" />
+			<transient name="originalUserId" />
+			<transient name="originalCreateDate" />
+			<transient name="originalMirrorActivityId" />
+			<transient name="originalReceiverUserId" />
 		</attributes>
 	</mapped-superclass>
+	<!--
 	<mapped-superclass class="com.liferay.portlet.social.model.impl.SocialActivityAchievementModelImpl">
 		<attributes>
 			<id name="activityAchievementId" />
@@ -4079,7 +4123,7 @@
 			<transient name="userUuid" />
 			<transient name="expandoBridge" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.social.model.impl.SocialActivityCounterModelImpl">
 		<attributes>
 			<id name="activityCounterId" />
@@ -4095,16 +4139,26 @@
 			<basic name="startPeriod" />
 			<basic name="endPeriod" />
 			<basic name="active">
-				<column name="ACTIVE_" />
+				<column name="ACTIVE_" column-definition="TINYINT"/>
 			</basic>
 			<transient name="className" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="expandoBridge" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalClassNameId" />
+			<transient name="originalClassPK" />
+			<transient name="originalGroupId" />
+			<transient name="originalEndPeriod" />
+			<transient name="originalName" />
+			<transient name="originalOwnerType" />
+			<transient name="originalStartPeriod" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portlet.social.model.impl.SocialActivityLimitModelImpl">
+	<!--mapped-superclass class="com.liferay.portlet.social.model.impl.SocialActivityLimitModelImpl">
 		<attributes>
 			<id name="activityLimitId" />
 			<basic name="groupId" />
@@ -4146,6 +4200,7 @@
 			<transient name="expandoBridge" />
 		</attributes>
 	</mapped-superclass>
+	-->
 	<mapped-superclass class="com.liferay.portlet.social.model.impl.SocialActivitySettingModelImpl">
 		<attributes>
 			<id name="activitySettingId" />
@@ -4160,8 +4215,16 @@
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="expandoBridge" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalClassNameId" />
+			<transient name="originalGroupId" />
+			<transient name="originalActivityType" />
+			<transient name="originalName" />
 		</attributes>
 	</mapped-superclass>
+	<!--
 	<mapped-superclass class="com.liferay.portlet.social.model.impl.SocialRelationModelImpl">
 		<attributes>
 			<id name="relationId" />
@@ -4957,13 +5020,13 @@
 		<table name="Subscription" />
 		<attributes />
 	</entity>
-	<!--entity class="com.liferay.portal.model.impl.SystemEventImpl" name="SystemEvent">
+	<entity class="com.liferay.portal.model.impl.SystemEventImpl" name="SystemEvent">
 		<table name="SystemEvent" />
 		<attributes>
 			<transient name="referrerClassName" />
 		</attributes>
 	</entity>
-	<entity class="com.liferay.portal.model.impl.TeamImpl" name="Team">
+	<!--entity class="com.liferay.portal.model.impl.TeamImpl" name="Team">
 		<table name="Team" />
 		<attributes />
 	</entity>
@@ -5103,11 +5166,11 @@
 			<transient name="tagNames"/>
 		</attributes>
 	</entity>
-	<!--entity class="com.liferay.portlet.asset.model.impl.AssetLinkImpl" name="AssetLink">
+	<entity class="com.liferay.portlet.asset.model.impl.AssetLinkImpl" name="AssetLink">
 		<table name="AssetLink" />
 		<attributes />
 	</entity>
-	<entity class="com.liferay.portlet.asset.model.impl.AssetTagImpl" name="AssetTag">
+	<!--entity class="com.liferay.portlet.asset.model.impl.AssetTagImpl" name="AssetTag">
 		<table name="AssetTag" />
 		<attributes />
 	</entity>
@@ -5282,10 +5345,10 @@
 			<transient name="defaultValue" />
 		</attributes>
 	</entity>
-	<!--entity class="com.liferay.portlet.expando.model.impl.ExpandoRowImpl" name="ExpandoRow">
+	<entity class="com.liferay.portlet.expando.model.impl.ExpandoRowImpl" name="ExpandoRow">
 		<table name="ExpandoRow" />
 		<attributes />
-	</entity-->
+	</entity>
 	<entity class="com.liferay.portlet.expando.model.impl.ExpandoTableImpl" name="ExpandoTable">
 		<table name="ExpandoTable" />
 		<attributes>
@@ -5389,10 +5452,10 @@
 			<transient name="root" />
 		</attributes>
 	</entity>
-	<!--entity class="com.liferay.portlet.messageboards.model.impl.MBStatsUserImpl" name="MBStatsUser">
+	<entity class="com.liferay.portlet.messageboards.model.impl.MBStatsUserImpl" name="MBStatsUser">
 		<table name="MBStatsUser" />
 		<attributes />
-	</entity-->
+	</entity>
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBThreadImpl" name="MBThread">
 		<table name="MBThread" />
 		<attributes>
@@ -5484,22 +5547,24 @@
 		<table name="ShoppingOrderItem" />
 		<attributes />
 	</entity>
+	-->
 	<entity class="com.liferay.portlet.social.model.impl.SocialActivityImpl" name="SocialActivity">
 		<table name="SocialActivity" />
 		<attributes>
 			<transient name="assetEntry" />
-			<transient name="extraDataValue" />
+			<transient name="extraDataJSONObject" />
 		</attributes>
 	</entity>
+	<!--
 	<entity class="com.liferay.portlet.social.model.impl.SocialActivityAchievementImpl" name="SocialActivityAchievement">
 		<table name="SocialActivityAchievement" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.social.model.impl.SocialActivityCounterImpl" name="SocialActivityCounter">
 		<table name="SocialActivityCounter" />
 		<attributes />
 	</entity>
-	<entity class="com.liferay.portlet.social.model.impl.SocialActivityLimitImpl" name="SocialActivityLimit">
+	<!--entity class="com.liferay.portlet.social.model.impl.SocialActivityLimitImpl" name="SocialActivityLimit">
 		<table name="SocialActivityLimit" />
 		<attributes>
 			<transient name="count" />
@@ -5509,10 +5574,12 @@
 		<table name="SocialActivitySet" />
 		<attributes />
 	</entity>
+	-->
 	<entity class="com.liferay.portlet.social.model.impl.SocialActivitySettingImpl" name="SocialActivitySetting">
 		<table name="SocialActivitySetting" />
 		<attributes />
 	</entity>
+	<!--
 	<entity class="com.liferay.portlet.social.model.impl.SocialRelationImpl" name="SocialRelation">
 		<table name="SocialRelation" />
 		<attributes />
