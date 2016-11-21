@@ -314,11 +314,8 @@
 
     <bean name="com.liferay.portlet.ratings.service.RatingsStatsLocalService"
           class="com.liferay.portal.patch.RatingsStatsLocalServiceImplPatch"
+		  p:ratingsStatsPersistence-ref="com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistence"
 	      p:ratingsEntryPersistence-ref="com.liferay.portlet.ratings.service.persistence.RatingsEntryPersistence">
-        <property name="ratingsStatsPersistence">
-            <bean class="com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistenceImpl"
-                  p:sessionFactory-ref="userSessionFactory"/>
-        </property>
         <property name="persistedModelLocalServiceRegistry" ref="persistedModelLocalServiceRegistry"/>
         <property name="counterLocalService" ref="counterLocalService"/>
     </bean>
@@ -384,6 +381,9 @@
 		  p:sessionFactory-ref="userSessionFactory"/>
 	<bean name="com.liferay.portlet.social.service.persistence.SocialActivityLimitPersistence"
 		  class="com.liferay.portlet.social.service.persistence.SocialActivityLimitPersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory"/>
+	<bean name="com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistence"
+		  class="com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistenceImpl"
 		  p:sessionFactory-ref="userSessionFactory"/>
 
     <bean name="com.liferay.portlet.messageboards.service.MBMessageService"
@@ -524,7 +524,13 @@
     </bean>
     <bean id="com.liferay.portlet.ratings.service.RatingsEntryLocalService"
           class="com.liferay.portlet.ratings.service.impl.RatingsEntryLocalServiceImpl"
-	      p:ratingsEntryPersistence-ref="com.liferay.portlet.ratings.service.persistence.RatingsEntryPersistence">
+	      p:ratingsEntryPersistence-ref="com.liferay.portlet.ratings.service.persistence.RatingsEntryPersistence"
+		  p:ratingsStatsPersistence-ref="com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistence"
+		  p:ratingsStatsLocalService-ref="com.liferay.portlet.ratings.service.RatingsStatsLocalService"
+		  p:socialActivityLocalService-ref="com.liferay.portlet.social.service.SocialActivityLocalService"
+		  p:assetEntryLocalService-ref="assetEntryLocalService"
+		  p:counterLocalService-ref="counterLocalService"
+	      p:userPersistence-ref="userPersistence">
     </bean>
     <bean id="com.liferay.portlet.documentlibrary.store.DLStore"
           class="com.liferay.portal.patch.DLStoreImplPatch">
@@ -600,5 +606,14 @@
 			<bean  class="com.liferay.portlet.social.service.persistence.SocialActivityPersistenceImpl"
 				   p:sessionFactory-ref="userPersistence"/>
 		</property>
+	</bean>
+	<bean name="com.liferay.portlet.ratings.service.RatingsEntryService"
+		  class="com.liferay.portlet.ratings.service.impl.RatingsEntryServiceImpl"
+		  p:ratingsEntryLocalService-ref="com.liferay.portlet.ratings.service.RatingsEntryLocalService"
+		  p:userPersistence-ref="userPersistence">
+	</bean>
+	<bean name="com.liferay.portlet.flags.service.FlagsEntryService"
+		  class="com.liferay.portlet.flags.service.impl.FlagsEntryServiceImpl"
+		  p:userPersistence-ref="userPersistence">
 	</bean>
 </beans>

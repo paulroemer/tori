@@ -257,4 +257,6 @@
 			<bean class="com.liferay.portal.dao.orm.hibernate.RestrictionsFactoryImpl"/>
 		</property>
 	</bean>
+
+
 </beans>

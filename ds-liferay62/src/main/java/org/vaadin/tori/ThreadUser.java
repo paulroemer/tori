@@ -13,7 +13,7 @@ public class ThreadUser {
 	}
 
 	public static String get() {
-		Long userId = USER.get();
+ 		Long userId = USER.get();
 		if (userId != null) {
 			return userId.toString();
 		} else {
