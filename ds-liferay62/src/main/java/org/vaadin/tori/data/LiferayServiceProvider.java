@@ -42,18 +42,7 @@ public class LiferayServiceProvider implements ServiceProvider {
     }
     @Override
     public DataSource createDataSource() {
-        return new LiferayDataSource() {
-            private Configuration configuration = new Configuration() {
-				@Override
-				public boolean isShowThreadsOnDashboard() {
-					return true;
-				}
-			};
-            @Override
-            public Configuration getConfiguration() {
-                return configuration;
-            }
-        };
+        return new LiferayDataSource();
     }
 
     @Override

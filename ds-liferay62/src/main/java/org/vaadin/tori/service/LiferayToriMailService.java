@@ -1,12 +1,12 @@
 /*
  * Copyright 2014 Vaadin Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -19,16 +19,10 @@ package org.vaadin.tori.service;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.mail.internet.InternetAddress;
-import javax.portlet.PortletPreferences;
-import javax.portlet.PortletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -36,29 +30,26 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import org.apache.log4j.Logger;
 import org.fit.cssbox.css.CSSNorm;
 import org.fit.cssbox.css.DOMAnalyzer;
 import org.jsoup.Jsoup;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.vaadin.tori.HttpServletRequestAware;
-import org.vaadin.tori.PortletRequestAware;
 import org.vaadin.tori.data.LiferayDataSource;
 import org.vaadin.tori.data.entity.LiferayEntityFactoryUtil;
-import org.vaadin.tori.patch.PortletPreferencesFactoryUtilPatch;
 import org.vaadin.tori.patch.ServiceContextReflectionFactory;
 import org.vaadin.tori.util.DOMBuilder;
 import org.vaadin.tori.util.ToriMailService;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import com.liferay.mail.service.MailServiceUtil;
 import com.liferay.portal.NoSuchUserException;
 import com.liferay.portal.kernel.exception.NestableException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.mail.Account;
-import com.liferay.portal.kernel.mail.MailMessage;
-import com.liferay.portal.kernel.mail.SMTPAccount;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -70,26 +61,32 @@ import com.liferay.portal.model.Subscription;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.CompanyLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
-import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.SubscriptionLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.PortletPreferencesFactoryUtil;
-import com.liferay.portlet.messageboards.model.MBMailingList;
 import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.model.MBMessageConstants;
 import com.liferay.portlet.messageboards.model.MBThread;
-import com.liferay.portlet.messageboards.service.MBMailingListLocalServiceUtil;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
 
 public class LiferayToriMailService implements ToriMailService,
 		HttpServletRequestAware {
+
+	private static final Logger LOG = Logger.getLogger(LiferayDataSource.class);
 
 	private String mailTemplateHtml;
 	private String mailThemeCss;
 	private String imagePath;
 	private ServiceContext mbMessageServiceContext;
 	private HttpServletRequest request;
+
+	private MailSender mailSender;
+	private MailTemplateConfiguration mailTemplateConfiguration;
+
+	public LiferayToriMailService() {
+		mailSender = (MailSender) PortalBeanLocatorUtil.getBeanLocator().locate("mailSender");
+		mailTemplateConfiguration = (MailTemplateConfiguration) PortalBeanLocatorUtil.getBeanLocator().locate("mailTemplateConfiguration");
+	}
 
 	@Override
 	public void setMailTheme(final String mailThemeCss) {
@@ -99,33 +96,6 @@ public class LiferayToriMailService implements ToriMailService,
 	@Override
 	public void setPostMailTemplate(final String mailTemplateHtml) {
 		this.mailTemplateHtml = mailTemplateHtml;
-	}
-
-	private SMTPAccount getSMTPAccout(final MBMessage mbMessage) {
-		SMTPAccount account = null;
-		try {
-
-			MBMailingList mailingList = MBMailingListLocalServiceUtil
-					.getCategoryMailingList(mbMessage.getGroupId(),
-							mbMessage.getCategoryId());
-			if (mailingList.isOutCustom()) {
-				String protocol = Account.PROTOCOL_SMTP;
-
-				if (mailingList.isOutUseSSL()) {
-					protocol = Account.PROTOCOL_SMTPS;
-				}
-
-				account = (SMTPAccount) Account.getInstance(protocol,
-						mailingList.getOutServerPort());
-
-				account.setHost(mailingList.getOutServerName());
-				account.setUser(mailingList.getOutUserName());
-				account.setPassword(mailingList.getOutPassword());
-			}
-		} catch (NestableException e) {
-			getLogger().warn("Exception while determining SMTPAccount", e);
-		}
-		return account;
 	}
 
 	private String formMailBody(final MBMessage mbMessage,
@@ -159,10 +129,9 @@ public class LiferayToriMailService implements ToriMailService,
 		}
 		userDisplayName = stripTags(userDisplayName);
 
-		String headerImage = getPreferenceValue(
-				LiferayDataSource.PREFS_EMAIL_HEADER_IMAGE_URL, null);
+		String headerImage = mailTemplateConfiguration.getEmailHeaderImageUrl();
 
-		String threadUrl = mbMessageServiceContext.getLayoutFullURL()
+		String threadUrl = mailTemplateConfiguration.getBaseThreadUrl()
 				+ "#!/thread/" + mbMessage.getThreadId();
 
 		String permaLink = threadUrl + "/" + mbMessage.getMessageId();
@@ -335,26 +304,20 @@ public class LiferayToriMailService implements ToriMailService,
 						.getCompanyId());
 				String companyEmail = company.getEmailAddress();
 
-				String fromAddress = getPreferenceValue(
-						LiferayDataSource.PREFS_EMAIL_FROM_ADDRESS, null);
+				String fromAddress = mailTemplateConfiguration.getEmailFromAddress();
 				if (fromAddress == null) {
 					fromAddress = companyEmail;
 				}
 
-				String fromName = getPreferenceValue(
-						LiferayDataSource.PREFS_EMAIL_FROM_NAME, null);
+				String fromName = mailTemplateConfiguration.getEmailFromName();
 				if (fromName == null) {
 					fromName = company.getName() + " forums";
 				}
 
-				String replyToAddress = getPreferenceValue(
-						LiferayDataSource.PREFS_EMAIL_REPLY_TO_ADDRESS,
-						null);
+				String replyToAddress = mailTemplateConfiguration.getEmailReplyToAddress();
 				if (replyToAddress == null) {
 					replyToAddress = fromAddress;
 				}
-
-				SMTPAccount account = getSMTPAccout(mbMessage);
 
 				String inReplyTo = null;
 				if (mbMessage.getParentMessageId() != MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID) {
@@ -372,15 +335,17 @@ public class LiferayToriMailService implements ToriMailService,
 				InternetAddress replyTo = new InternetAddress(replyToAddress,
 						replyToAddress);
 
-				MailMessage message = new MailMessage(from, to, subject, body,
-						true);
-				message.setBulkAddresses(bulkAddresses);
-				message.setMessageId(mailId);
-				message.setInReplyTo(inReplyTo);
-				message.setReplyTo(new InternetAddress[]{replyTo});
-				message.setSMTPAccount(account);
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
 
-				MailServiceUtil.sendEmail(message);
+				Set<String> toAddresses = Arrays.asList(bulkAddresses).stream().map(InternetAddress::toString).collect(Collectors.toSet());
+
+				mailMessage.setFrom(from.toString());
+				mailMessage.setTo(toAddresses.toString());
+				mailMessage.setReplyTo(replyTo.toString());
+				mailMessage.setSubject(subject);
+				mailMessage.setText(body);
+
+				mailSender.send(mailMessage);
 			}
 		} catch (Exception e) {
 			getLogger().warn("Unable to form email notification", e);
@@ -434,21 +399,6 @@ public class LiferayToriMailService implements ToriMailService,
 		} catch (NullPointerException e) {
 			getLogger().error("Unable to initialize mail service", e);
 		}
-	}
-
-	private String getPreferenceValue(final String preferenceKey,
-									  final String defaultValue) {
-		String result = defaultValue;
-		PortletPreferences portletPreferences;
-		try {
-			portletPreferences = PortletPreferencesFactoryUtilPatch
-					.getPortletSetup(request);
-			result = portletPreferences.getValue(preferenceKey, defaultValue);
-		} catch (NestableException e) {
-			getLogger().error("Unable to get PortletPreferences", e);
-			e.printStackTrace();
-		}
-		return result;
 	}
 
 	private String stripTags(final String html) {

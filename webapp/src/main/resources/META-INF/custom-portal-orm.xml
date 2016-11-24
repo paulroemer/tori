@@ -3295,7 +3295,7 @@
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
 		</attributes>
-	</mapped-superclass>
+	</mapped-superclass-->
 	<mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBMailingListModelImpl">
 		<attributes>
 			<id name="mailingListId" />
@@ -3317,28 +3317,45 @@
 			<basic name="inProtocol" />
 			<basic name="inServerName" />
 			<basic name="inServerPort" />
-			<basic name="inUseSSL" />
+			<basic name="inUseSSL">
+				<column column-definition="TINYINT"/>
+			</basic>
 			<basic name="inUserName" />
 			<basic name="inPassword" />
 			<basic name="inReadInterval" />
 			<basic name="outEmailAddress" />
-			<basic name="outCustom" />
+			<basic name="outCustom">
+				<column column-definition="TINYINT"/>
+			</basic>
 			<basic name="outServerName" />
 			<basic name="outServerPort" />
-			<basic name="outUseSSL" />
+			<basic name="outUseSSL">
+				<column column-definition="TINYINT"/>
+			</basic>
 			<basic name="outUserName" />
 			<basic name="outPassword" />
-			<basic name="allowAnonymous" />
+			<basic name="allowAnonymous">
+				<column column-definition="TINYINT"/>
+			</basic>
 			<basic name="active">
-				<column name="ACTIVE_" />
+				<column name="ACTIVE_" column-definition="TINYINT"/>
 			</basic>
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="userUuid" />
 			<transient name="expandoBridge" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalUuid" />
+			<transient name="originalActive" />
+			<transient name="originalCategoryId" />
+			<transient name="stagedModelType" />
 		</attributes>
-	</mapped-superclass-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portlet.messageboards.model.impl.MBMessageModelImpl">
 		<attributes>
 			<id name="messageId" />
@@ -5427,11 +5444,11 @@
 	<!--entity class="com.liferay.portlet.messageboards.model.impl.MBDiscussionImpl" name="MBDiscussion">
 		<table name="MBDiscussion" />
 		<attributes />
-	</entity>
+	</entity-->
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBMailingListImpl" name="MBMailingList">
 		<table name="MBMailingList" />
 		<attributes />
-	</entity-->
+	</entity>
 	<entity class="com.liferay.portlet.messageboards.model.impl.MBMessageImpl" name="MBMessage">
 		<table name="MBMessage" />
 		<attributes>

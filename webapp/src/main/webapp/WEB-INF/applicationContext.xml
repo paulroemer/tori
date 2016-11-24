@@ -15,6 +15,10 @@
     <import resource="spring-security.xml"/>
     <import resource="staticLiferayUtilBeans.xml"/>
 
+	<context:annotation-config/>
+	<bean class="org.vaadin.tori.config.SpringConfig"/>
+	<bean class="org.vaadin.tori.config.MailConfiguration"/>
+
     <bean name="permissionChecker" class="com.vaadin.auth.ClonablePermissionchecker"/>
 
     <bean class="com.liferay.portal.security.permission.PermissionThreadLocalPatch"
@@ -385,6 +389,9 @@
 	<bean name="com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistence"
 		  class="com.liferay.portlet.ratings.service.persistence.RatingsStatsPersistenceImpl"
 		  p:sessionFactory-ref="userSessionFactory"/>
+	<bean name="com.liferay.portlet.messageboards.service.persistence.MBMailingListPersistence"
+		  class="com.liferay.portlet.messageboards.service.persistence.MBMailingListPersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory"/>
 
     <bean name="com.liferay.portlet.messageboards.service.MBMessageService"
           class="com.liferay.portal.patch.MBMessageServiceImplPatch" c:permissionChecker-ref="permissionChecker">
@@ -615,5 +622,13 @@
 	<bean name="com.liferay.portlet.flags.service.FlagsEntryService"
 		  class="com.liferay.portlet.flags.service.impl.FlagsEntryServiceImpl"
 		  p:userPersistence-ref="userPersistence">
+	</bean>
+	<bean name="com.liferay.portlet.messageboards.service.MBMailingListLocalService"
+		  class="com.liferay.portlet.messageboards.service.impl.MBMailingListLocalServiceImpl"
+		  p:MBMailingListPersistence-ref="com.liferay.portlet.messageboards.service.persistence.MBMailingListPersistence"
+		  p:userPersistence-ref="userPersistence">
+	</bean>
+	<bean name="com.liferay.mail.service.MailService"
+		  class="com.liferay.mail.service.impl.MailServiceImpl">
 	</bean>
 </beans>

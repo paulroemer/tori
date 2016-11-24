@@ -26,8 +26,8 @@ public class PortletPreferencesFactoryImplPatch extends PortletPreferencesFactor
 
 			@Override
 			public String getValue(String key, String def) {
-				System.out.println("# # # # getValue for key: " + key + " and def: " + def);
-				return "";
+				System.out.println("# # # # getValue for key: " + key + " and def: " + def + " (returning default)");
+				return def;
 			}
 
 			@Override
