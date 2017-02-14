@@ -25,9 +25,9 @@ import com.vaadin.client.ui.AbstractComponentConnector;
 public class PostWidget extends Composite {
 
     @UiField
-    public AnchorElement avatar;
+    public SpanElement avatar;
     @UiField
-    public AnchorElement authorName;
+    public SpanElement authorName;
     @UiField
     public DivElement bodyText;
 
@@ -66,8 +66,8 @@ public class PostWidget extends Composite {
 
     public void updatePostData(final PostPrimaryData data) {
         authorName.setInnerText(data.authorName);
-        authorName.setHref(data.authorLink);
-        avatar.setHref(data.authorLink);
+        //authorName.setHref(data.authorLink);
+        //avatar.setHref(data.authorLink);
         if (data.authorLink == null) {
             authorName.addClassName("nolink");
         }
