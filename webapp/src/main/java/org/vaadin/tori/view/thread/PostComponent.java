@@ -1,12 +1,12 @@
 /*
  * Copyright 2014 Vaadin Ltd.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -101,7 +101,7 @@ public class PostComponent extends AbstractComponentContainer implements
         data.attachments = post.getAttachments();
         data.authorName = post.getAuthorName();
         data.authorAvatarUrl = post.getAuthorAvatarUrl();
-        data.authorLink = post.getAuthorLink();
+        data.authorLink = null; //post.getAuthorLink();
         data.postBody = post.getFormattedBody(true);
         getRpcProxy(PostComponentClientRpc.class).setPostPrimaryData(data);
     }
@@ -240,8 +240,8 @@ public class PostComponent extends AbstractComponentContainer implements
     private static String getPermaLinkUrl(final PostData post) {
         // @formatter:off
         final String linkUrl = String.format(
-                "#%s/%s/%s",
-                ToriNavigator.ApplicationView.THREADS.getUrl(), 
+                "forum/#%s/%s/%s",
+                ToriNavigator.ApplicationView.THREADS.getUrl(),
                 post.getThreadId(),
                 post.getId()
                 );
