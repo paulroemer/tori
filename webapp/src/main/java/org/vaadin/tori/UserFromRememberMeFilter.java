@@ -6,6 +6,8 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.security.auth.CompanyThreadLocal;
 import com.liferay.portal.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.security.permission.PermissionThreadLocal;
+import com.liferay.portal.security.permission.PermissionThreadLocalPatch;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.util.PortalInstances;
 import org.springframework.context.ApplicationContext;
@@ -22,12 +24,15 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * Created by wolfgang on 22/06/16.
  * Used to communicate to RememberMeService from within a filter (where VaadinService's currentRequest/response aren't valid yet
  */
 public class UserFromRememberMeFilter extends GenericFilterBean {
+
+	private final ReentrantReadWriteLock permissionCheckerLock = new ReentrantReadWriteLock(true);
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -43,8 +48,12 @@ public class UserFromRememberMeFilter extends GenericFilterBean {
 			if (ctx != null) {
 				PermissionChecker permissionChecker = ctx.getBean(PermissionChecker.class);
 				try {
+					permissionCheckerLock.writeLock().lock();
 					User user = UserLocalServiceUtil.getUserById(userId);
 					permissionChecker.init(user);
+					PermissionChecker threadLocalChecker = permissionChecker.clone();
+					PermissionThreadLocal.setPermissionChecker(threadLocalChecker);
+					PermissionThreadLocalPatch.setPermissionChecker(threadLocalChecker);
 					PrincipalThreadLocal.setName(userId);
 					PortalInstances.addCompanyId(user.getCompanyId());
 					CompanyThreadLocal.setCompanyId(user.getCompanyId());
@@ -52,6 +61,8 @@ public class UserFromRememberMeFilter extends GenericFilterBean {
 					e.printStackTrace();
 				} catch (SystemException e) {
 					e.printStackTrace();
+				} finally {
+					permissionCheckerLock.writeLock().unlock();
 				}
 			}
 		}
