@@ -740,6 +740,7 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
                     attachments, getThread(threadId),
                     getRootMessageId(threadId));
             markThreadRead(threadId);
+            updateLastPostDate(threadId, newPost.getCreateDate());
             return getPost(newPost.getMessageId());
         } catch (final NestableException e) {
             LOG.error("Couldn't save post.", e);
@@ -751,7 +752,18 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
         }
     }
 
-    @Override
+	private void updateLastPostDate(long threadId, Date lastPostDate) throws DataSourceException {
+		try {
+			final MBThread thread = MBThreadLocalServiceUtil.getMBThread(threadId);
+			thread.setLastPostDate(lastPostDate);
+			MBThreadLocalServiceUtil.updateMBThread(thread);
+		} catch (final NestableException e) {
+			LOG.error(String.format("Couldn't update lastPostDate of thread %d.", threadId), e);
+			throw new DataSourceException(e);
+		}
+	}
+
+	@Override
     public void moveThread(final long threadId, final Long destinationCategoryId)
             throws DataSourceException {
         try {
