@@ -24,9 +24,21 @@
     <bean class="com.liferay.portal.security.permission.PermissionThreadLocalPatch"
           c:permissionChecker-ref="permissionChecker"/>
 
+	<bean class="com.liferay.portal.security.permission.PermissionThreadLocal"
+		  p:permissionChecker-ref="permissionChecker"/>
+
     <bean name="com.liferay.portlet.messageboards.service.MBCategoryLocalService"
           class="com.liferay.portlet.messageboards.service.impl.MBCategoryLocalServiceImpl"
-          p:MBCategoryPersistence-ref="MBCategoryPersistence"/>
+          p:MBCategoryPersistence-ref="MBCategoryPersistence"
+		  p:userPersistence-ref="userPersistence"
+		  p:counterLocalService-ref="counterLocalService"
+	      p:MBCategoryLocalService-ref="com.liferay.portlet.messageboards.service.MBCategoryLocalService"
+	      p:MBThreadLocalService-ref="com.liferay.portlet.messageboards.service.MBThreadLocalService"
+		  p:subscriptionLocalService-ref="com.liferay.portal.service.SubscriptionLocalService"
+		  p:expandoRowLocalService-ref="com.liferay.portlet.expando.service.ExpandoRowLocalService"
+		  p:resourceLocalService-ref="com.liferay.portal.service.ResourceLocalService"
+		  p:trashEntryLocalService-ref="com.liferay.portlet.trash.service.impl.TrashEntryLocalService"
+	      p:MBMailingListLocalService-ref="com.liferay.portlet.messageboards.service.MBMailingListLocalService"/>
     <bean name="classLoaderRef" class="org.vaadin.tori.PortalClassLoaderInitializer"/>
     <bean name="portalExecutorManager" class="com.liferay.portal.executor.PortalExecutorManagerImpl"/>
     <bean id="finderCache" class="com.liferay.portal.dao.orm.common.FinderCacheImpl">
@@ -110,9 +122,20 @@
         <property name="hibernateSessionFactory" ref="hibernateJpaSessionFactoryBean"/>
     </bean>
     <bean name="com.liferay.portlet.messageboards.service.MBThreadLocalService"
-          class="com.liferay.portlet.messageboards.service.impl.MBThreadLocalServiceImpl"
+          class="com.liferay.portal.patch.MBThreadLocalServiceImplPatch"
 		  p:assetEntryLocalService-ref="assetEntryLocalService"
-		  p:counterLocalService-ref="counterLocalService">
+		  p:counterLocalService-ref="counterLocalService"
+		  p:MBThreadPersistence-ref="threadPersistence"
+		  p:MBMessagePersistence-ref="com.liferay.portlet.messageboards.service.persistence.MBMessagePersistence"
+		  p:subscriptionLocalService-ref="com.liferay.portal.service.SubscriptionLocalService"
+		  p:MBThreadFlagPersistence-ref="com.liferay.portlet.messageboards.service.persistence.MBThreadFlagPersistence"
+		  p:ratingsStatsLocalService-ref="com.liferay.portlet.ratings.service.RatingsStatsLocalService"
+		  p:resourceLocalService-ref="com.liferay.portal.service.ResourceLocalService"
+		  p:MBStatsUserLocalService-ref="com.liferay.portlet.messageboards.service.MBStatsUserLocalService"
+		  p:workflowInstanceLinkLocalService-ref="com.liferay.portal.service.WorkflowInstanceLinkLocalService"
+		  p:MBCategoryPersistence-ref="MBCategoryPersistence"
+		  p:trashEntryLocalService-ref="com.liferay.portlet.trash.service.impl.TrashEntryLocalService"
+	      p:persistedModelLocalServiceRegistry-ref="persistedModelLocalServiceRegistry">
         <property name="MBThreadPersistence" ref="threadPersistence"/>
     </bean>
     <bean name="threadPersistence" class="com.liferay.portal.patch.MBThreadPersistenceImplPatch"
@@ -147,6 +170,7 @@
     <bean name="com.liferay.portlet.messageboards.service.MBCategoryService"
           class="com.liferay.portlet.messageboards.service.impl.MBCategoryServiceImpl">
         <property name="MBCategoryPersistence" ref="MBCategoryPersistence"/>
+		<property name="MBCategoryLocalService" ref="com.liferay.portlet.messageboards.service.MBCategoryLocalService"/>
     </bean>
 
     <bean name="com.liferay.portal.service.ResourceBlockLocalService"
@@ -276,19 +300,31 @@
         </property>
     </bean>
     <bean name="com.liferay.portlet.documentlibrary.service.DLFolderLocalService"
-          class="com.liferay.portlet.documentlibrary.service.impl.DLFolderLocalServiceImpl"
+          class="com.liferay.portal.patch.DLFolderLocalServiceImplPatch"
           p:userPersistence-ref="userPersistence"
           p:counterLocalService-ref="counterLocalService"
           p:resourceLocalService-ref="com.liferay.portal.service.ResourceLocalService"
           p:DLFileEntryLocalService-ref="com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService"
+		  p:DLFileEntryTypeLocalService-ref="fileEntryTypeLocalService"
+		  p:DLFileShortcutLocalService-ref="com.liferay.portlet.documentlibrary.service.impl.DLFileShortcutLocalService"
+		  p:expandoRowLocalService-ref="com.liferay.portlet.expando.service.ExpandoRowLocalService"
+		  p:workflowDefinitionLinkLocalService-ref="com.liferay.portal.service.impl.WorkflowDefinitionLinkLocalService"
           p:DLFolderPersistence-ref="dlFolderPersistence"
+		  p:persistedModelLocalServiceRegistry-ref="persistedModelLocalServiceRegistry"
           p:DLAppHelperLocalService-ref="dlAppHelperLocalService"/>
 
+	<bean name="com.liferay.portal.service.impl.WorkflowDefinitionLinkLocalService" class="com.liferay.portal.service.impl.WorkflowDefinitionLinkLocalServiceImpl"/>
     <bean id="dlAppHelperLocalService"
           class="com.liferay.portlet.documentlibrary.service.impl.DLAppHelperLocalServiceImpl"/>
     <bean name="dlFolderPersistence"
           class="com.liferay.portlet.documentlibrary.service.persistence.DLFolderPersistenceImpl"
           p:sessionFactory-ref="userPersistence"/>
+	<bean name="com.liferay.portal.service.impl.WebDAVPropsLocalService" class="com.liferay.portal.service.impl.WebDAVPropsLocalServiceImpl"
+		  p:webDAVPropsPersistence-ref="com.liferay.portal.service.persistence.WebDAVPropsPersistence"/>
+	<bean name="com.liferay.portal.service.persistence.WebDAVPropsPersistence" class="com.liferay.portal.service.persistence.WebDAVPropsPersistenceImpl"/>
+	<bean name="com.liferay.portlet.documentlibrary.service.impl.DLFileShortcutLocalService" class="com.liferay.portlet.documentlibrary.service.impl.DLFileShortcutLocalServiceImpl"
+		  p:DLFileShortcutPersistence-ref="com.liferay.portlet.documentlibrary.service.persistence.DLFileShortcutPersistence"/>
+	<bean name="com.liferay.portlet.documentlibrary.service.persistence.DLFileShortcutPersistence" class="com.liferay.portlet.documentlibrary.service.persistence.DLFileShortcutPersistenceImpl"/>
 
     <bean name="com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService"
           class="com.liferay.portlet.documentlibrary.service.impl.DLFileEntryLocalServiceImpl"
@@ -471,6 +507,16 @@
         <property name="resourcePermissionLocalService"
                   ref="com.liferay.portal.service.ResourcePermissionLocalService"/>
     </bean>
+	<bean name="com.liferay.portlet.trash.service.impl.TrashEntryLocalService"
+		  class="com.liferay.portlet.trash.service.impl.TrashEntryLocalServiceImpl"
+		  p:trashEntryPersistence-ref="com.liferay.portlet.trash.service.persistence.TrashEntryPersistence"
+		  p:userPersistence-ref="userPersistence"
+		  p:counterLocalService-ref="counterLocalService"/>
+
+	<bean name="com.liferay.portlet.trash.service.persistence.TrashEntryPersistence" class="com.liferay.portlet.trash.service.persistence.TrashEntryPersistenceImpl"
+		  p:sessionFactory-ref="userSessionFactory"
+	/>
+
     <bean name="com.liferay.portal.service.ResourcePermissionLocalService"
           class="com.liferay.portal.service.impl.ResourcePermissionLocalServiceImpl">
         <property name="resourcePermissionPersistence">
@@ -560,12 +606,11 @@
     <bean name="com.liferay.portlet.messageboards.service.MBThreadFlagLocalService"
           class="com.liferay.portlet.messageboards.service.impl.MBThreadFlagLocalServiceImpl"
           p:userPersistence-ref="userPersistence"
+		  p:MBThreadFlagPersistence-ref="com.liferay.portlet.messageboards.service.persistence.MBThreadFlagPersistence"
           p:counterLocalService-ref="counterLocalService">
-        <property name="MBThreadFlagPersistence">
-            <bean class="com.liferay.portlet.messageboards.service.persistence.MBThreadFlagPersistenceImpl"
-                  p:sessionFactory-ref="userPersistence"/>
-        </property>
     </bean>
+	<bean name="com.liferay.portlet.messageboards.service.persistence.MBThreadFlagPersistence" class="com.liferay.portlet.messageboards.service.persistence.MBThreadFlagPersistenceImpl"
+		  p:sessionFactory-ref="userPersistence"/>
     <bean name="com.liferay.portal.service.SubscriptionLocalService"
           class="com.liferay.portal.service.impl.SubscriptionLocalServiceImpl"
           p:userPersistence-ref="userPersistence"
@@ -598,7 +643,9 @@
 		  p:socialActivitySettingLocalService-ref="com.liferay.portlet.social.service.SocialActivitySettingLocalService"
 		  p:socialActivityCounterPersistence-ref="com.liferay.portlet.social.service.persistence.SocialActivityCounterPersistence"
 		  p:socialActivityLimitPersistence-ref="com.liferay.portlet.social.service.persistence.SocialActivityLimitPersistence"
-		  p:userPersistence-ref="userPersistence"></bean>
+		  p:groupPersistence-ref="com.liferay.portal.service.persistence.GroupPersistence"
+		  p:counterLocalService-ref="counterLocalService"
+		  p:userPersistence-ref="userPersistence"/>
 	<bean name="com.liferay.portlet.social.service.SocialActivityLocalService"
 		  class="com.liferay.portlet.social.service.impl.SocialActivityLocalServiceImpl"
 	      p:userPersistence-ref="userPersistence"
@@ -625,6 +672,7 @@
 	</bean>
 	<bean name="com.liferay.portlet.messageboards.service.MBMailingListLocalService"
 		  class="com.liferay.portlet.messageboards.service.impl.MBMailingListLocalServiceImpl"
+		  p:counterLocalService-ref="counterLocalService"
 		  p:MBMailingListPersistence-ref="com.liferay.portlet.messageboards.service.persistence.MBMailingListPersistence"
 		  p:userPersistence-ref="userPersistence">
 	</bean>
