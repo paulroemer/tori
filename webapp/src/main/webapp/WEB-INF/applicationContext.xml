@@ -309,6 +309,7 @@
 		  p:DLFileShortcutLocalService-ref="com.liferay.portlet.documentlibrary.service.impl.DLFileShortcutLocalService"
 		  p:expandoRowLocalService-ref="com.liferay.portlet.expando.service.ExpandoRowLocalService"
 		  p:workflowDefinitionLinkLocalService-ref="com.liferay.portal.service.impl.WorkflowDefinitionLinkLocalService"
+		  p:webDAVPropsLocalService-ref="com.liferay.portal.service.impl.WebDAVPropsLocalService"
           p:DLFolderPersistence-ref="dlFolderPersistence"
 		  p:persistedModelLocalServiceRegistry-ref="persistedModelLocalServiceRegistry"
           p:DLAppHelperLocalService-ref="dlAppHelperLocalService"/>

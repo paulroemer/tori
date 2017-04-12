@@ -235,10 +235,11 @@ public class MBMailingListLocalServiceImpl
 		mailingListRequest.setInPassword(mailingList.getInPassword());
 		mailingListRequest.setAllowAnonymous(mailingList.getAllowAnonymous());
 
-		SchedulerEngineHelperUtil.schedule(
-			trigger, StorageType.PERSISTED, null,
-			DestinationNames.MESSAGE_BOARDS_MAILING_LIST, mailingListRequest,
-			0);
+		// TODO: Mailinglist support needed for Forum?
+//		SchedulerEngineHelperUtil.schedule(
+//			trigger, StorageType.PERSISTED, null,
+//			DestinationNames.MESSAGE_BOARDS_MAILING_LIST, mailingListRequest,
+//			0);
 	}
 
 	protected void unscheduleMailingList(MBMailingList mailingList)
@@ -247,7 +248,7 @@ public class MBMailingListLocalServiceImpl
 		String groupName = getSchedulerGroupName(mailingList);
 
 		// TODO: Mailinglist support needed for Forum?
-		SchedulerEngineHelperUtil.unschedule(groupName, StorageType.PERSISTED);
+		//SchedulerEngineHelperUtil.unschedule(groupName, StorageType.PERSISTED);
 	}
 
 	protected void validate(
