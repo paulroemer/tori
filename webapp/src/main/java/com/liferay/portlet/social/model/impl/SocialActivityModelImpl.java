@@ -44,6 +44,7 @@ import java.util.Map;
 
 /**
  * Null value was assigned to a property of primitive type setter of com.liferay.portlet.social.model.impl.SocialActivityModelImpl.activitySetId
+ * Null value was assigned to a property of primitive type setter of com.liferay.portlet.social.model.impl.SocialActivityModelImpl.parentClassNameId
  */
 
 /**
@@ -551,6 +552,14 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 		return _originalClassPK;
 	}
 
+	public Long getParentClassNameIdL() {
+		return _parentClassNameId;
+	}
+
+	public void setParentClassNameIdL(Long parentClassNameId) {
+		_parentClassNameId = parentClassNameId == null ? 0 : parentClassNameId;
+	}
+
 	@JSON
 	@Override
 	public long getParentClassNameId() {
@@ -560,6 +569,14 @@ public class SocialActivityModelImpl extends BaseModelImpl<SocialActivity>
 	@Override
 	public void setParentClassNameId(long parentClassNameId) {
 		_parentClassNameId = parentClassNameId;
+	}
+
+	public Long getParentClassPKL() {
+		return _parentClassPK;
+	}
+
+	public void setParentClassPKL(Long parentClassPK) {
+		_parentClassPK = parentClassPK == null ? 0 : parentClassPK;
 	}
 
 	@JSON

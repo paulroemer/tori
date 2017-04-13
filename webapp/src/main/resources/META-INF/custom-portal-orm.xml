@@ -1696,6 +1696,7 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	-->
 	<mapped-superclass class="com.liferay.portal.model.impl.WebDAVPropsModelImpl">
 		<attributes>
 			<id name="webDavPropsId" />
@@ -1708,14 +1709,20 @@
 			</basic>
 			<basic name="classNameId" />
 			<basic name="classPK" />
-			<basic name="props" />
+			<transient name="props"/>
 			<transient name="className" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+			<transient name="expandoBridge" />
+			<transient name="columnBitmask" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalClassNameId" />
+			<transient name="originalClassPK" />
 		</attributes>
 	</mapped-superclass>
-	<mapped-superclass class="com.liferay.portal.model.impl.WebsiteModelImpl">
+	<!--mapped-superclass class="com.liferay.portal.model.impl.WebsiteModelImpl">
 		<attributes>
 			<id name="websiteId" />
 			<basic name="uuid">
@@ -2407,7 +2414,7 @@
 			<transient name="status" />
 		</attributes>
 	</mapped-superclass>
-	<!--mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataModelImpl">
+	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataModelImpl">
 		<attributes>
 			<id name="fileEntryMetadataId" />
 			<basic name="uuid">
@@ -2421,8 +2428,21 @@
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
+
+			<transient name="originalUuid" />
+			<transient name="originalFileEntryTypeId" />
+			<transient name="originalUuid" />
+			<transient name="originalDDMStructureId" />
+
+			<transient name="originalFileEntryId" />
+			<transient name="originalFileVersionId" />
+
+			<transient name="columnBitmask" />
+			<transient name="expandoBridge" />
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
 		</attributes>
-	</mapped-superclass-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryTypeModelImpl">
 		<attributes>
 			<id name="fileEntryTypeId" />
@@ -2484,6 +2504,7 @@
 			<transient name="userUuid" />
 		</attributes>
 	</mapped-superclass>
+	-->
 	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileShortcutModelImpl">
 		<attributes>
 			<id name="fileShortcutId" />
@@ -2503,9 +2524,9 @@
 			<basic name="repositoryId" />
 			<basic name="folderId" />
 			<basic name="toFileEntryId" />
-			<basic name="treePath" />
+			<basic name="treePath"><column column-definition="LONGTEXT"/> </basic>
 			<basic name="active">
-				<column name="ACTIVE_" />
+				<column name="ACTIVE_" column-definition="TINYINT"/>
 			</basic>
 			<basic name="status" />
 			<basic name="statusByUserId" />
@@ -2513,13 +2534,41 @@
 			<basic name="statusDate">
 				<temporal>TIMESTAMP</temporal>
 			</basic>
+			<transient name="modelClass" />
+			<transient name="modelClassName" />
+			<transient name="originalCompanyId" />
+			<transient name="originalGroupId" />
+			<transient name="originalUuid" />
+			<transient name="originalActive" />
+			<transient name="inactive" />
+			<transient name="incomplete" />
+			<transient name="inTrashContainer" />
+			<transient name="inTrash" />
+			<transient name="approved" />
+			<transient name="denied" />
+			<transient name="expired" />
+			<transient name="draft" />
+			<transient name="columnBitmask" />
+			<transient name="trashHandler" />
 			<transient name="modelAttributes" />
 			<transient name="primaryKey" />
 			<transient name="primaryKeyObj" />
 			<transient name="statusByUserUuid" />
 			<transient name="userUuid" />
+			<transient name="originalCompanyId" />
+			<transient name="originalFolderId" />
+			<transient name="originalGroupId" />
+			<transient name="originalStatus" />
+			<transient name="originalUuid" />
+			<transient name="pending" />
+			<transient name="scheduled" />
+			<transient name="expandoBridge" />
+			<transient name="stagedModelType" />
+			<transient name="originalToFileEntryId" />
+			<transient name="trashEntry" />
+			<transient name="trashEntryClassPK" />
 		</attributes>
-	</mapped-superclass-->
+	</mapped-superclass>
 	<mapped-superclass class="com.liferay.portlet.documentlibrary.model.impl.DLFileVersionModelImpl">
 		<attributes>
 			<id name="fileVersionId" />
@@ -4100,14 +4149,16 @@
 			<basic name="mirrorActivityId" />
 			<basic name="classNameId" />
 			<basic name="classPK" />
-			<basic name="parentClassNameId" />
-			<basic name="parentClassPK" />
+			<basic name="parentClassNameIdL" ><column name="parentClassNameId"/> </basic>
+			<basic name="parentClassPKL" ><column name="parentClassPK"/> </basic>
 			<basic name="type">
 				<column name="TYPE_" />
 			</basic>
 			<basic name="extraData"><column column-definition="LONGTEXT"></column> </basic>
 			<basic name="receiverUserId" />
 			<transient name="activitySetId"/>
+			<transient name="parentClassPK"/>
+			<transient name="parentClassNameId"/>
 			<transient name="columnBitmask" />
 			<transient name="className" />
 			<transient name="modelAttributes" />
@@ -5165,11 +5216,15 @@
 		<table name="VirtualHost" />
 		<attributes />
 	</entity>
+	-->
 	<entity class="com.liferay.portal.model.impl.WebDAVPropsImpl" name="WebDAVProps">
 		<table name="WebDAVProps" />
-		<attributes />
+		<attributes>
+			<basic name="props"><column column-definition="LONGTEXT"/> </basic>
+			<transient name="propsSet"/>
+		</attributes>
 	</entity>
-	<entity class="com.liferay.portal.model.impl.WebsiteImpl" name="Website">
+	<!--entity class="com.liferay.portal.model.impl.WebsiteImpl" name="Website">
 		<table name="Website" />
 		<attributes />
 	</entity>
@@ -5298,10 +5353,14 @@
 
 		</attributes>
 	</entity>
-	<!--entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataImpl" name="DLFileEntryMetadata">
+	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryMetadataImpl" name="DLFileEntryMetadata">
 		<table name="DLFileEntryMetadata" />
-		<attributes />
-	</entity-->
+		<attributes>
+			<transient name="DDMStructure" />
+			<transient name="fileEntryType" />
+			<transient name="fileVersion" />
+		</attributes>
+	</entity>
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileEntryTypeImpl" name="DLFileEntryType">
 		<table name="DLFileEntryType" />
 		<attributes>
@@ -5313,10 +5372,16 @@
 		<table name="DLFileRank" />
 		<attributes />
 	</entity>
+	-->
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileShortcutImpl" name="DLFileShortcut">
 		<table name="DLFileShortcut" />
-		<attributes />
-	</entity-->
+		<attributes >
+			<transient name="DLFolder" />
+			<transient name="folder" />
+			<transient name="inHiddenFolder" />
+			<transient name="toTitle" />
+		</attributes>
+	</entity>
 	<entity class="com.liferay.portlet.documentlibrary.model.impl.DLFileVersionImpl" name="DLFileVersion">
 		<table name="DLFileVersion" />
 		<attributes>
