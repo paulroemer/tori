@@ -163,7 +163,9 @@
         </property>
     </bean>
     <bean name="com.liferay.portlet.messageboards.service.MBThreadService"
-          class="com.liferay.portlet.messageboards.service.impl.MBThreadServiceImpl">
+          class="com.liferay.portlet.messageboards.service.impl.MBThreadServiceImpl"
+		  p:lockLocalService-ref="com.liferay.portal.service.LockLocalService"
+		  p:MBThreadLocalService-ref="com.liferay.portlet.messageboards.service.MBThreadLocalService">
         <property name="MBCategoryService" ref="com.liferay.portlet.messageboards.service.MBCategoryService"/>
         <property name="MBThreadPersistence" ref="threadPersistence"/>
         <property name="MBMessageFinder">
@@ -461,6 +463,8 @@
 		  p:MBMessageLocalService-ref="com.liferay.portlet.messageboards.service.MBMessageLocalService"/>
 
 	<bean name="com.liferay.portal.service.LockLocalService" class="com.liferay.portal.service.impl.LockLocalServiceImpl"
+		  p:userPersistence-ref="userPersistence"
+		  p:counterLocalService-ref="counterLocalService"
 		  p:lockPersistence-ref="com.liferay.portal.service.persistence.LockPersistence"/>
 
 	<bean name="com.liferay.portlet.messageboards.service.MBMessageLocalService"
