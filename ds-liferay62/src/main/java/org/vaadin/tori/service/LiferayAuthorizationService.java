@@ -87,10 +87,12 @@ public class LiferayAuthorizationService implements AuthorizationService,
         } catch (final NestableException e) {
             LOG.error(e);
         }
-        return mbThread != null
+        boolean isAllowed = mbThread != null
                 && !mbThread.isLocked()
                 && hasCategoryPermission(CategoryAction.REPLY_TO_MESSAGE,
                         mbThread.getCategoryId());
+
+        return isAllowed;
     }
 
     @Override
