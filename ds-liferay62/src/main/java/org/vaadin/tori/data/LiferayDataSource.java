@@ -1085,100 +1085,51 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
         return toriConfiguration;
     }
 
-    private Configuration mapConfiguration(final HttpServletRequest request) {
+	private Configuration mapConfiguration(final HttpServletRequest request) {
 
-        Configuration configuration = new Configuration();
+		Configuration configuration = new Configuration();
 
-        try {
-            PortletPreferences portletPreferences = PortletPreferencesFactoryUtilPatch
-                    .getPortletSetup(request);
+		// Post body replacements
+		configuration.setReplacements(new HashMap<String, String>());
+		configuration.getReplacements().put("(\\[youtube=(.*)\\]\\[/youtube\\])", "<iframe width=\\\"785\\\" height=\\\"543\\\" src=\\\"//www.youtube.com/embed/$2\\\" frameborder=\\\"0\\\" allowfullscreen></iframe>");
+		configuration.getReplacements().put("(embedyoutube=([^\\s^<]+))", "<iframe width=\\\"785\\\" height=\\\"543\\\" src=\\\"//www.youtube.com/embed/$2\\\" frameborder=\\\"0\\\" allowfullscreen></iframe>");
+		configuration.getReplacements().put("vaadin.com/old-forum", "vaadin.com/forum");
 
-            // Post body replacements
-            configuration.setReplacements(new HashMap<String, String>());
-            final String[] values = portletPreferences.getValues(
-                    PREFS_REPLACEMENTS_KEY, new String[0]);
-            if (values != null) {
-                for (final String value : values) {
-                    final String[] split = value.split(REPLACEMENT_SEPARATOR);
-                    if (split.length == 2) {
-                        configuration.getReplacements().put(split[0], split[1]);
-                    }
-                }
-            }
-            // Replace message boards links
-            Boolean replace = Boolean
-                    .valueOf(portletPreferences.getValue(
-                            PREFS_REPLACE_MESSAGE_BOARDS_LINKS,
-                            Boolean.toString(true)));
-            configuration.setReplaceMessageBoardsLinks(replace);
+		// Replace message boards links
+		configuration.setReplaceMessageBoardsLinks(true);
 
-            // Update page title
-            Boolean updatePageTitle = Boolean.valueOf(portletPreferences
-                    .getValue(PREFS_UPDATE_PAGE_TITLE, Boolean.toString(true)));
-            configuration.setUpdatePageTitle(updatePageTitle);
+		// Update page title
+		configuration.setUpdatePageTitle(true);
 
-            // Page title
-            configuration.setPageTitlePrefix(portletPreferences.getValue(
-                    PREFS_PAGE_TITLE_PREFIX, null));
+		// Page title
+		configuration.setPageTitlePrefix("Vaadin Forum");
 
-            // Use Tori mail service
-            Boolean useToriMailService = Boolean.valueOf(portletPreferences
-                    .getValue(PREFS_USE_TORI_MAIL_SERVICE,
-                            Boolean.toString(true)));
-            configuration.setUseToriMailService(useToriMailService);
+		// Use Tori mail service
+		configuration.setUseToriMailService(false);
 
-            // Email from address
-            configuration.setEmailFromAddress(portletPreferences.getValue(
-                    PREFS_EMAIL_FROM_ADDRESS, null));
+		// Email from address
+		configuration.setEmailFromAddress("no-reply@vaadin.com");
 
-            // Email from name
-            configuration.setEmailFromName(portletPreferences.getValue(
-                    PREFS_EMAIL_FROM_NAME, null));
+		// Email from name
+		configuration.setEmailFromName("Vaadin Forums");
 
-            // Email reply-to address
-            configuration.setEmailReplyToAddress(portletPreferences.getValue(
-                    PREFS_EMAIL_REPLY_TO_ADDRESS, null));
+		// Email reply-to address
+		configuration.setEmailReplyToAddress("no-reply@vaadin.com");
 
-            // Email content header image url
-            configuration.setEmailHeaderImageUrl(portletPreferences.getValue(
-                    PREFS_EMAIL_HEADER_IMAGE_URL, null));
+		// Email content header image url
+		configuration.setEmailHeaderImageUrl("https://vaadin.com/image/image_gallery?uuid=ffe33c78-700d-41ca-8100-c64483e8021b&groupId=10187&t=1396612041402");
 
-            // May not reply note
-            configuration.setMayNotReplyNote(portletPreferences.getValue(
-                    PREFS_MAY_NOT_REPLY_NOTE, null));
+		// May not reply note
+		configuration.setMayNotReplyNote("");
 
-            // GA tracker id
-            configuration.setGoogleAnalyticsTrackerId(portletPreferences
-                    .getValue(PREFS_ANALYTICS_ID, null));
+		// GA tracker id
+		configuration.setGoogleAnalyticsTrackerId("UA-658457-8");
 
-            // Show threads on dashboard
-            Boolean showThreadsOnDashboard = Boolean.valueOf(portletPreferences
-                    .getValue(PREFS_SHOW_THREADS_ON_DASHBOARD,
-                            Boolean.toString(true)));
-            configuration.setShowThreadsOnDashboard(showThreadsOnDashboard);
+		// Show threads on dashboard
+		configuration.setShowThreadsOnDashboard(false);
 
-            String defaultEmailsEnabled = Boolean.toString(!useToriMailService);
-            portletPreferences.setValue("email-message-added-enabled",
-                    defaultEmailsEnabled);
-            portletPreferences.setValue("email-message-updated-enabled",
-                    defaultEmailsEnabled);
-            portletPreferences.setValue("emailMessageAddedEnabled",
-                    defaultEmailsEnabled);
-            portletPreferences.setValue("emailMessageUpdatedEnabled",
-                    defaultEmailsEnabled);
-            portletPreferences.store();
-        } catch (final NestableException e) {
-            LOG.error("Couldn't load PortletPreferences.", e);
-        } catch (final ReadOnlyException e) {
-            LOG.error("Couldn't update PortletPreferences.", e);
-        } catch (final ValidatorException e) {
-            LOG.error("Couldn't update PortletPreferences.", e);
-        } catch (final IOException e) {
-            LOG.error("Couldn't update PortletPreferences.", e);
-        }
-
-        return configuration;
-    }
+		return configuration;
+	}
 
     @Override
     public void followThread(final long threadId) throws DataSourceException {
