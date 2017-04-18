@@ -919,7 +919,15 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
 
     @Override
     public boolean isLoggedInUser() {
-        return currentUserId != 0;
+		try {
+			return !UserLocalServiceUtil.getUser(currentUserId).isDefaultUser();
+		} catch (PortalException e) {
+			e.printStackTrace();
+		} catch (SystemException e) {
+			e.printStackTrace();
+		}
+
+		return false;
     }
 
     @Override
