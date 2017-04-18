@@ -1120,7 +1120,7 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
 		configuration.setEmailHeaderImageUrl("https://vaadin.com/image/image_gallery?uuid=ffe33c78-700d-41ca-8100-c64483e8021b&groupId=10187&t=1396612041402");
 
 		// May not reply note
-		configuration.setMayNotReplyNote("");
+		configuration.setMayNotReplyNote("Please, login to reply.");
 
 		// GA tracker id
 		configuration.setGoogleAnalyticsTrackerId("UA-658457-8");

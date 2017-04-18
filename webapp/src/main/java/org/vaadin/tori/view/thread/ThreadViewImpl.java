@@ -262,19 +262,19 @@ public class ThreadViewImpl extends AbstractView<ThreadView, ThreadPresenter>
                             });
 
                     layout.addComponent(reply);
-//
-//                    // Fade in
-//                    reply.addStyleName(STYLE_REPLY_HIDDEN);
-//                    ToriScheduler.get().scheduleDeferred(
-//                            new ScheduledCommand() {
-//                                @Override
-//                                public void execute() {
-//                                    if (oldReply != null) {
-//                                        layout.removeComponent(oldReply);
-//                                    }
-//                                    reply.removeStyleName(STYLE_REPLY_HIDDEN);
-//                                }
-//                            });
+
+                    // Fade in
+                    reply.addStyleName(STYLE_REPLY_HIDDEN);
+                    ToriScheduler.get().scheduleDeferred(
+                            new ScheduledCommand() {
+                                @Override
+                                public void execute() {
+                                    if (oldReply != null) {
+                                        layout.removeComponent(oldReply);
+                                    }
+                                    reply.removeStyleName(STYLE_REPLY_HIDDEN);
+                                }
+                            });
                 }
             });
         } else {

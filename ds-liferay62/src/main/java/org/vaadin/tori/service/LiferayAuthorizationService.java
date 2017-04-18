@@ -16,28 +16,21 @@
 
 package org.vaadin.tori.service;
 
-import com.liferay.portal.kernel.exception.NestableException;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
-import com.liferay.portal.kernel.util.ReflectionUtil;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.security.permission.PermissionChecker;
-import com.liferay.portal.security.permission.PermissionThreadLocalPatch;
+import com.liferay.portal.model.Role;
+import com.liferay.portal.model.User;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
-import com.liferay.portlet.messageboards.model.MBThread;
+import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.service.MBBanLocalServiceUtil;
-import com.liferay.portlet.messageboards.service.MBThreadLocalServiceUtil;
+import com.liferay.portlet.messageboards.service.MBMessageServiceUtil;
 import org.apache.log4j.Logger;
 import org.vaadin.tori.HttpServletRequestAware;
 import org.vaadin.tori.ThreadUser;
-import org.vaadin.tori.data.LiferayDataSource;
-import org.vaadin.tori.exception.DataSourceException;
-import org.vaadin.tori.service.LiferayAuthorizationConstants.CategoryAction;
-import org.vaadin.tori.service.LiferayAuthorizationConstants.MbAction;
-import org.vaadin.tori.service.LiferayAuthorizationConstants.MessageAction;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
 
 public class LiferayAuthorizationService implements AuthorizationService,
         HttpServletRequestAware {
@@ -46,12 +39,12 @@ public class LiferayAuthorizationService implements AuthorizationService,
             .getLogger(LiferayAuthorizationService.class);
     private long scopeGroupId = -1;
 
-    private String currentUser;
+    private User currentUser;
     private boolean banned;
 
     @Override
     public boolean mayEditCategories() {
-        return hasPermission(MbAction.ADD_CATEGORY);
+		return isForumAdmin();
     }
 
     @Override
@@ -61,64 +54,84 @@ public class LiferayAuthorizationService implements AuthorizationService,
 
     @Override
     public boolean mayFollowCategory(final Long categoryId) {
-        return hasCategoryPermission(CategoryAction.SUBSCRIBE, categoryId);
-    }
-
-    @Override
-    public boolean mayDeleteCategory(final Long categoryId) {
-        return hasCategoryPermission(CategoryAction.DELETE, categoryId);
-    }
-
-    @Override
-    public boolean mayEditCategory(final Long categoryId) {
-        return hasCategoryPermission(CategoryAction.UPDATE, categoryId);
-    }
-
-    @Override
-    public boolean mayEditPost(final long postId) {
-        return hasMessagePermission(MessageAction.UPDATE, postId);
-    }
-
-    @Override
-    public boolean mayReplyInThread(final long threadid) {
-        MBThread mbThread = null;
-        try {
-            mbThread = MBThreadLocalServiceUtil.getThread(threadid);
-        } catch (final NestableException e) {
-            LOG.error(e);
-        }
-        boolean isAllowed = mbThread != null
-                && !mbThread.isLocked()
-                && hasCategoryPermission(CategoryAction.REPLY_TO_MESSAGE,
-                        mbThread.getCategoryId());
-
-        return isAllowed;
-    }
-
-    @Override
-    public boolean mayAddFilesInCategory(final Long categoryId) {
-        return hasCategoryPermission(CategoryAction.ADD_FILE, categoryId);
-    }
-
-    @Override
-    public boolean mayBan() {
-        return hasPermission(MbAction.BAN_USER);
-    }
-
-    @Override
-    public boolean mayFollowThread(final long threadId) {
-        try {
-            return hasMessagePermission(MessageAction.SUBSCRIBE,
-                    LiferayDataSource.getRootMessageId(threadId));
-        } catch (final DataSourceException e) {
-            LOG.error(e);
-        }
+    	// this feature is not available
         return false;
     }
 
     @Override
+    public boolean mayDeleteCategory(final Long categoryId) {
+		return isForumAdmin();
+    }
+
+    private boolean isForumAdmin() {
+    	if(currentUser != null) {
+			try {
+				for (Role role : currentUser.getRoles()) {
+					final String name = role.getName();
+
+					if (name.equals("Adminstrator") ||
+							name.equals("Forum Administrator")) {
+						return true;
+					}
+				}
+			} catch (SystemException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+
+    @Override
+    public boolean mayEditCategory(final Long categoryId) {
+		return isForumAdmin();
+    }
+
+    @Override
+    public boolean mayEditPost(final long postId) {
+    	if(isForumAdmin()) { return true; }
+		return isPostOwner(postId);
+    }
+
+    private boolean isPostOwner(final long postId) {
+    	if(currentUser != null) {
+			try {
+				MBMessage message = MBMessageServiceUtil.getMessage(postId);
+				return message.getUserId() == currentUser.getUserId();
+
+			} catch (PortalException e) {
+				e.printStackTrace();
+			} catch (SystemException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return false;
+	}
+    @Override
+    public boolean mayReplyInThread(final long threadid) {
+        return isLoggedIn() && !isBanned();
+    }
+
+    @Override
+    public boolean mayAddFilesInCategory(final Long categoryId) {
+		return isLoggedIn() && !isBanned();
+    }
+
+    @Override
+    public boolean mayBan() {
+        return isForumAdmin();
+    }
+
+    @Override
+    public boolean mayFollowThread(final long threadId) {
+        return isLoggedIn() && !isBanned();
+    }
+
+    @Override
     public boolean mayDeletePost(final long postId) {
-        return hasMessagePermission(MessageAction.DELETE, postId);
+		if(isForumAdmin()) { return true; }
+		return isPostOwner(postId);
     }
 
     @Override
@@ -128,121 +141,27 @@ public class LiferayAuthorizationService implements AuthorizationService,
 
     @Override
     public boolean mayMoveThreadInCategory(final Long categoryId) {
-        return hasCategoryPermission(CategoryAction.MOVE_THREAD, categoryId);
+        return isForumAdmin();
     }
 
     @Override
     public boolean mayStickyThreadInCategory(final Long categoryId) {
-        return hasCategoryPermission(CategoryAction.UPDATE_THREAD_PRIORITY,
-                categoryId);
+		return isForumAdmin();
     }
 
     @Override
     public boolean mayLockThreadInCategory(final Long categoryId) {
-        return hasCategoryPermission(CategoryAction.LOCK_THREAD, categoryId);
+		return isForumAdmin();
     }
 
     @Override
     public boolean mayDeleteThread(final long threadId) {
-        try {
-            return hasMessagePermission(MessageAction.DELETE,
-                    LiferayDataSource.getRootMessageId(threadId));
-        } catch (final DataSourceException e) {
-            LOG.error(e);
-        }
-        return false;
+		return isForumAdmin();
     }
 
     @Override
     public boolean mayCreateThreadInCategory(final Long categoryId) {
-        return hasCategoryPermission(CategoryAction.ADD_MESSAGE, categoryId);
-    }
-
-    private PermissionChecker getPermissionChecker() {
-        final PermissionChecker pc = PermissionThreadLocalPatch
-                .getPermissionChecker();
-        if (pc == null) {
-            throw new IllegalStateException(
-                    "PermissionChecker is not initialized.");
-        }
-        return pc;
-    }
-
-    private static final Method CATEGORY_PERMISSION_CONTAINS = getCategoryPermissionContainsMethod();
-    private static final Method MESSAGE_PERMISSION_CONTAINS = getMessagePermissionContainsMethod();
-
-    private static Method getMessagePermissionContainsMethod() {
-        Method result = null;
-        try {
-            Class<?> mbMessagePermissionClass = PortalClassLoaderUtil
-                    .getClassLoader()
-                    .loadClass(
-                            "com.liferay.portlet.messageboards.service.permission.MBMessagePermission");
-            result = ReflectionUtil.getDeclaredMethod(mbMessagePermissionClass,
-                    "contains", PermissionChecker.class, long.class,
-                    String.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    private static Method getCategoryPermissionContainsMethod() {
-        Method result = null;
-        try {
-            Class<?> mbCategoryPermissionClass = PortalClassLoaderUtil
-                    .getClassLoader()
-                    .loadClass(
-                            "com.liferay.portlet.messageboards.service.permission.MBCategoryPermission");
-            result = ReflectionUtil.getDeclaredMethod(
-                    mbCategoryPermissionClass, "contains",
-                    PermissionChecker.class, long.class, long.class,
-                    String.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    private boolean hasCategoryPermission(final CategoryAction action,
-            final Long categoryId) {
-        if (isBanned()) {
-            return false;
-        }
-        try {
-            long normalizeCategoryId = LiferayDataSource
-                    .normalizeCategoryId(categoryId);
-            Object result = CATEGORY_PERMISSION_CONTAINS.invoke(null,
-                    getPermissionChecker(), scopeGroupId, normalizeCategoryId,
-                    action.toString());
-            return (Boolean) result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private boolean hasMessagePermission(final MessageAction action,
-            final long messageId) {
-        if (isBanned()) {
-            return false;
-        }
-        try {
-            Object result = MESSAGE_PERMISSION_CONTAINS.invoke(null,
-                    getPermissionChecker(), messageId, action.toString());
-            return (Boolean) result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private boolean hasPermission(final MbAction action) {
-        if (isBanned()) {
-            return false;
-        }
-        return getPermissionChecker().hasPermission(scopeGroupId,
-                MbAction.getScope(), scopeGroupId, action.toString());
+		return isLoggedIn() && !isBanned();
     }
 
     private boolean isBanned() {
@@ -250,16 +169,17 @@ public class LiferayAuthorizationService implements AuthorizationService,
     }
 
     private boolean isLoggedIn() {
-        return currentUser != null;
-    }
+		return currentUser != null && !currentUser.isDefaultUser();
+	}
 
-    private void setCurrentUser(final String user) {
-        if (currentUser == null && (user != null && user.length() > 0) || currentUser != null
-                && !currentUser.equals(user)) {
-            // user has changed
-            currentUser = user;
-            LOG.debug(String.format("Current user is now %s.", currentUser));
-        }
+    private void setCurrentUser(final User user) {
+    	if(user != null) {
+    		if(currentUser == null || !currentUser.equals(user)) {
+				// user has changed
+				currentUser = user;
+				LOG.debug(String.format("Current user is now %s.", currentUser));
+			}
+		}
     }
 
     private void setBannedStatus() {
@@ -267,7 +187,7 @@ public class LiferayAuthorizationService implements AuthorizationService,
         if (currentUser != null) {
             try {
                 banned = MBBanLocalServiceUtil.hasBan(scopeGroupId,
-                        Long.valueOf(currentUser));
+                        Long.valueOf(currentUser.getUserId()));
             } catch (final SystemException e) {
                 LOG.error("Cannot check ban status for user " + currentUser, e);
                 e.printStackTrace();
@@ -287,30 +207,33 @@ public class LiferayAuthorizationService implements AuthorizationService,
                 LOG.debug("Using groupId " + scopeGroupId + " as the scope.");
             }
         }
-        setCurrentUser(ThreadUser.get());
+
+        User user = null;
+		try {
+			user = UserLocalServiceUtil.getUser(Long.parseLong(ThreadUser.get()));
+		} catch (PortalException e) {
+			e.printStackTrace();
+		} catch (SystemException e) {
+			e.printStackTrace();
+		}
+
+		setCurrentUser(user);
         setBannedStatus();
     }
 
     @Override
     public boolean mayViewCategory(final Long categoryId) {
-        return hasCategoryPermission(CategoryAction.VIEW, categoryId);
+        return true;
     }
 
     @Override
     public boolean mayViewThread(final long threadId) {
-        boolean result = false;
-        try {
-            result = hasMessagePermission(MessageAction.VIEW,
-                    LiferayDataSource.getRootMessageId(threadId));
-        } catch (DataSourceException e) {
-            LOG.error(e);
-        }
-        return result;
+        return true;
     }
 
     @Override
     public boolean mayViewPost(final long postId) {
-        return hasMessagePermission(MessageAction.VIEW, postId);
+        return true;
     }
 
 }
