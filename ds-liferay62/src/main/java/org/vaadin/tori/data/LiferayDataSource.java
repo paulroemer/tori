@@ -1105,7 +1105,7 @@ public class LiferayDataSource implements DataSource, HttpServletRequestAware {
 		configuration.setPageTitlePrefix("Vaadin Forum");
 
 		// Use Tori mail service
-		configuration.setUseToriMailService(false);
+		configuration.setUseToriMailService(true);
 
 		// Email from address
 		configuration.setEmailFromAddress("no-reply@vaadin.com");

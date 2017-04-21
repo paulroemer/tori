@@ -16,46 +16,13 @@
 
 package org.vaadin.tori.service;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import javax.mail.internet.InternetAddress;
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
-import org.apache.log4j.Logger;
-import org.fit.cssbox.css.CSSNorm;
-import org.fit.cssbox.css.DOMAnalyzer;
-import org.jsoup.Jsoup;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
-import org.vaadin.tori.HttpServletRequestAware;
-import org.vaadin.tori.data.LiferayDataSource;
-import org.vaadin.tori.data.entity.LiferayEntityFactoryUtil;
-import org.vaadin.tori.patch.ServiceContextReflectionFactory;
-import org.vaadin.tori.util.DOMBuilder;
-import org.vaadin.tori.util.ToriMailService;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.liferay.portal.NoSuchUserException;
+import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.exception.NestableException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringPool;
-import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.util.*;
 import com.liferay.portal.model.Company;
 import com.liferay.portal.model.Subscription;
 import com.liferay.portal.model.User;
@@ -65,41 +32,154 @@ import com.liferay.portal.service.SubscriptionLocalServiceUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.messageboards.model.MBMessage;
-import com.liferay.portlet.messageboards.model.MBMessageConstants;
 import com.liferay.portlet.messageboards.model.MBThread;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
+import com.mashape.unirest.http.*;
+import com.mashape.unirest.http.async.Callback;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import org.apache.log4j.Logger;
+import org.vaadin.tori.HttpServletRequestAware;
+import org.vaadin.tori.data.LiferayDataSource;
+import org.vaadin.tori.data.entity.LiferayEntityFactoryUtil;
+import org.vaadin.tori.patch.ServiceContextReflectionFactory;
+import org.vaadin.tori.util.ToriMailService;
+import org.xml.sax.SAXException;
+
+import javax.mail.internet.InternetAddress;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.*;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 public class LiferayToriMailService implements ToriMailService,
 		HttpServletRequestAware {
 
 	private static final Logger LOG = Logger.getLogger(LiferayDataSource.class);
 
-	private String mailTemplateHtml;
-	private String mailThemeCss;
 	private String imagePath;
 	private ServiceContext mbMessageServiceContext;
-	private HttpServletRequest request;
 
-	private MailSender mailSender;
 	private MailTemplateConfiguration mailTemplateConfiguration;
 
+	private static final String POP_PORTLET_PREFIX = "mb.";
+
 	public LiferayToriMailService() {
-		mailSender = (MailSender) PortalBeanLocatorUtil.getBeanLocator().locate("mailSender");
 		mailTemplateConfiguration = (MailTemplateConfiguration) PortalBeanLocatorUtil.getBeanLocator().locate("mailTemplateConfiguration");
+
+		Unirest.setObjectMapper(new ObjectMapper() {
+			private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
+					= new com.fasterxml.jackson.databind.ObjectMapper();
+
+			public <T> T readValue(String value, Class<T> valueType) {
+				try {
+					return jacksonObjectMapper.readValue(value, valueType);
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+
+			public String writeValue(Object value) {
+				try {
+					return jacksonObjectMapper.writeValueAsString(value);
+				} catch (JsonProcessingException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
 	}
 
 	@Override
 	public void setMailTheme(final String mailThemeCss) {
-		this.mailThemeCss = mailThemeCss;
 	}
 
 	@Override
 	public void setPostMailTemplate(final String mailTemplateHtml) {
-		this.mailTemplateHtml = mailTemplateHtml;
 	}
 
-	private String formMailBody(final MBMessage mbMessage,
-								final String formattedPostBody) throws IOException, SAXException,
+
+	@Override
+	public void sendUserAuthored(final long postId,
+								 final String formattedPostBody) {
+		try {
+			MBMessage mbMessage = MBMessageLocalServiceUtil
+					.getMBMessage(postId);
+
+			InternetAddress[] bulkAddresses = parseAddresses(mbMessage);
+
+			if (bulkAddresses.length > 0) {
+				String mailId = getMailId(mbMessage.getCompanyId(),
+						mbMessage.getCategoryId(), mbMessage.getMessageId());
+
+				String subject = "[" + mbMessage.getCategory().getName() + "] "
+						+ mbMessage.getSubject();
+				Company company = CompanyLocalServiceUtil.getCompany(mbMessage
+						.getCompanyId());
+				String companyEmail = company.getEmailAddress();
+
+				String fromAddress = mailTemplateConfiguration.getEmailFromAddress();
+				if (fromAddress == null) {
+					fromAddress = companyEmail;
+				}
+
+				String fromName = mailTemplateConfiguration.getEmailFromName();
+				if (fromName == null) {
+					fromName = company.getName() + " forums";
+				}
+
+				// not supported by the email community portlet
+//				String replyToAddress = mailTemplateConfiguration.getEmailReplyToAddress();
+//				if (replyToAddress == null) {
+//					replyToAddress = fromAddress;
+//				}
+
+				String toAddresses = Arrays.stream(bulkAddresses).map(InternetAddress::toString).collect(Collectors.joining(" "));
+
+				Map<String, String> replacementsMap = buildReplacementsMap(mbMessage, formattedPostBody);
+
+				RestMailMessage restMailMessage = new RestMailMessage();
+				restMailMessage.emailFromAddress = fromAddress;
+				restMailMessage.emailFromName = fromName;
+				restMailMessage.emailRecipientAddrs = toAddresses;
+				restMailMessage.emailSubject = subject;
+				restMailMessage.emailType = "";
+				restMailMessage.webContentUrlTitle = "community-emails-forum-post-reply";
+				restMailMessage.emailRecipientIds = "";
+				restMailMessage.replacements = replacementsMap;
+
+				Future<HttpResponse<JsonNode>> future = Unirest.post("http://vaadin.com/delegates/community-email-portlet")
+						.header("accept", "application/json")
+						.field("param1", "value1")
+						.field("param2", "value2")
+						.asJsonAsync(new Callback<JsonNode>() {
+
+							public void failed(UnirestException e) {
+								System.out.println("The request has failed");
+							}
+
+							public void completed(HttpResponse<JsonNode> response) {
+								int code = response.getStatus();
+								Headers headers = response.getHeaders();
+								JsonNode body = response.getBody();
+								InputStream rawBody = response.getRawBody();
+
+								// ignore and just be happy
+							}
+
+							public void cancelled() {
+								System.out.println("The request has been cancelled");
+							}
+						});
+			}
+		} catch (Exception e) {
+			getLogger().warn("Unable to form email notification", e);
+		}
+	}
+
+	private Map<String, String> buildReplacementsMap(final MBMessage mbMessage,
+													 final String formattedPostBody) throws IOException, SAXException,
 			PortalException, SystemException {
 
 		User user = null;
@@ -129,96 +209,27 @@ public class LiferayToriMailService implements ToriMailService,
 		}
 		userDisplayName = stripTags(userDisplayName);
 
-		String headerImage = mailTemplateConfiguration.getEmailHeaderImageUrl();
-
 		String threadUrl = mailTemplateConfiguration.getBaseThreadUrl()
 				+ "#!/thread/" + mbMessage.getThreadId();
 
 		String permaLink = threadUrl + "/" + mbMessage.getMessageId();
 
-		String postHtml = populateTemplate(mailTemplateHtml, avatarUrl,
-				threadTopic, userDisplayName, formattedPostBody, headerImage,
-				threadUrl, permaLink);
-		return formatInlineCSS(postHtml, mailThemeCss);
+		Map<String, String> result = new HashMap<>();
 
-	}
-
-	static String populateTemplate(final String htmlTemplate,
-								   final String avatarUrl, final String threadTopic,
-								   final String userDisplayName, final String bodyFormatted,
-								   final String headerImage, final String threadUrl,
-								   final String permaLink) {
-		// @formatter:off
-		return StringUtil.replace(htmlTemplate, new String[]{
-				"[$MESSAGE_USER_AVATAR_URL$]",
-				"[$MESSAGE_USER_NAME$]",
-				"[$MESSAGE_BODY$]",
-				"[$MESSAGE_THREAD_TOPIC$]",
-				"[$MESSAGE_HEADER_IMAGE$]",
-				"[$MESSAGE_THREAD_URL$]",
-				"[$MESSAGE_PERMALINK$]",
-				"[$MESSAGE_USER_ANONYMOUS$]",
-				"[$MESSAGE_HEADER_DEFAULT_IMAGE$]"
-		}, new String[]{
-				avatarUrl,
-				userDisplayName,
-				bodyFormatted,
-				threadTopic,
-				headerImage != null ? headerImage : "",
-				threadUrl,
-				permaLink,
-				Boolean.toString(avatarUrl == null || avatarUrl.isEmpty()),
-				Boolean.toString(headerImage == null || headerImage.isEmpty())
-		});
-		// @formatter:on
-	}
-
-	static String formatInlineCSS(final String html, final String css)
-			throws IOException, SAXException {
-		org.jsoup.nodes.Document parsed = Jsoup.parse(html, "UTF-8");
-		parsed.outputSettings().charset("UTF-8");
-		Document doc = DOMBuilder.jsoup2DOM(parsed);
-
-		DOMAnalyzer da = new DOMAnalyzer(doc);
-		da.attributesToStyles();
-		da.addStyleSheet(null, CSSNorm.stdStyleSheet(),
-				DOMAnalyzer.Origin.AGENT);
-		da.addStyleSheet(null, css, null);
-
-		da.getStyleSheets();
-
-		da.stylesToDomInherited();
-
-		String result = toString(doc);
-
-		result = result.replaceAll("class=\"topiclinkwrapper\" style=\"",
-				"class=\"topiclinkwrapper\" style=\"text-overflow: ellipsis;");
-
-		// Remove all line breaks
-		result = result.replaceAll("\\n", "");
+		result.put(RestMailMessage.REPLACEMENTS_RECIPIENT_FIRSTNAME, user != null ? user.getFirstName() : "Unknown");
+		result.put(RestMailMessage.REPLACEMENTS_RECIPIENT_LASTNAME, user != null ? user.getLastName() : "Unknown");
+		result.put(RestMailMessage.REPLACEMENTS_RECIPIENT_USERNAME, userDisplayName);
+		result.put(RestMailMessage.REPLACEMENTS_FORUM_THREAD_URL, threadUrl);
+		result.put(RestMailMessage.REPLACEMENTS_FORUM_THREAD_TITLE, threadTopic);
+		result.put(RestMailMessage.REPLACEMENTS_FORUM_REPLY_PERMALINK, permaLink);
+		result.put(RestMailMessage.REPLACEMENTS_FORUM_REPLY_BODY, formattedPostBody);
+		result.put(RestMailMessage.REPLACEMENTS_FORUM_REPLY_USER_AVATAR_URL, avatarUrl);
+		result.put(RestMailMessage.REPLACEMENTS_FORUM_REPLY_USER_NAME, rootMessage.getUserName());
 
 		return result;
 	}
 
-	public static String toString(final Document doc) {
-		try {
-			StringWriter sw = new StringWriter();
-			TransformerFactory tf = TransformerFactory.newInstance();
-			Transformer transformer = tf.newTransformer();
-			transformer
-					.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-
-			transformer.transform(new DOMSource(doc), new StreamResult(sw));
-			return sw.toString();
-		} catch (Exception ex) {
-			throw new RuntimeException("Error converting to String", ex);
-		}
-	}
-
-	protected InternetAddress[] parseAddresses(final MBMessage mbMessage) {
+	private InternetAddress[] parseAddresses(final MBMessage mbMessage) {
 
 		List<Subscription> subscriptions = new ArrayList<Subscription>();
 
@@ -269,11 +280,7 @@ public class LiferayToriMailService implements ToriMailService,
 				} catch (NestableException e) {
 					getLogger().warn("Unable to delete subscription", e);
 				}
-			} catch (NestableException e) {
-				getLogger().warn(
-						"Unable to parse address for userId "
-								+ subscribedUserId, e);
-			} catch (UnsupportedEncodingException e) {
+			} catch (NestableException | UnsupportedEncodingException e) {
 				getLogger().warn(
 						"Unable to parse address for userId "
 								+ subscribedUserId, e);
@@ -283,76 +290,6 @@ public class LiferayToriMailService implements ToriMailService,
 		return addresses.toArray(new InternetAddress[addresses.size()]);
 
 	}
-
-	@Override
-	public void sendUserAuthored(final long postId,
-								 final String formattedPostBody) {
-		try {
-			MBMessage mbMessage = MBMessageLocalServiceUtil
-					.getMBMessage(postId);
-
-			InternetAddress[] bulkAddresses = parseAddresses(mbMessage);
-
-			if (bulkAddresses.length > 0) {
-				String mailId = getMailId(mbMessage.getCompanyId(),
-						mbMessage.getCategoryId(), mbMessage.getMessageId());
-				String body = formMailBody(mbMessage, formattedPostBody);
-
-				String subject = "[" + mbMessage.getCategory().getName() + "] "
-						+ mbMessage.getSubject();
-				Company company = CompanyLocalServiceUtil.getCompany(mbMessage
-						.getCompanyId());
-				String companyEmail = company.getEmailAddress();
-
-				String fromAddress = mailTemplateConfiguration.getEmailFromAddress();
-				if (fromAddress == null) {
-					fromAddress = companyEmail;
-				}
-
-				String fromName = mailTemplateConfiguration.getEmailFromName();
-				if (fromName == null) {
-					fromName = company.getName() + " forums";
-				}
-
-				String replyToAddress = mailTemplateConfiguration.getEmailReplyToAddress();
-				if (replyToAddress == null) {
-					replyToAddress = fromAddress;
-				}
-
-				String inReplyTo = null;
-				if (mbMessage.getParentMessageId() != MBMessageConstants.DEFAULT_PARENT_MESSAGE_ID) {
-					inReplyTo = getMailId(mbMessage.getCompanyId(),
-							mbMessage.getCategoryId(),
-							mbMessage.getParentMessageId());
-				}
-
-				InternetAddress from = new InternetAddress(fromAddress,
-						fromName);
-
-				InternetAddress to = new InternetAddress(replyToAddress,
-						replyToAddress);
-
-				InternetAddress replyTo = new InternetAddress(replyToAddress,
-						replyToAddress);
-
-				SimpleMailMessage mailMessage = new SimpleMailMessage();
-
-				Set<String> toAddresses = Arrays.asList(bulkAddresses).stream().map(InternetAddress::toString).collect(Collectors.toSet());
-
-				mailMessage.setFrom(from.toString());
-				mailMessage.setTo(toAddresses.toString());
-				mailMessage.setReplyTo(replyTo.toString());
-				mailMessage.setSubject(subject);
-				mailMessage.setText(body);
-
-				mailSender.send(mailMessage);
-			}
-		} catch (Exception e) {
-			getLogger().warn("Unable to form email notification", e);
-		}
-	}
-
-	public static final String POP_PORTLET_PREFIX = "mb.";
 
 	private static String getMailId(final long companyId,
 									final long categoryId, final long messageId)
@@ -387,9 +324,6 @@ public class LiferayToriMailService implements ToriMailService,
 
 	@Override
 	public void setRequest(final HttpServletRequest request) {
-		this.request = request;
-
-
 		try {
 			imagePath = ((ThemeDisplay) request
 					.getAttribute(WebKeys.THEME_DISPLAY)).getPathImage();
