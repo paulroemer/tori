@@ -3,9 +3,9 @@ package org.vaadin.tori.service;
 import java.util.Map;
 
 /**
- * Created by vaadin on 21.04.17.
+ * Mail message object for communication to REST endpoint
  */
-public class RestMailMessage {
+public class RESTMailMessage {
 	public final static String REPLACEMENTS_RECIPIENT_FIRSTNAME = "[$recipientFirstName$]";
 	public final static String REPLACEMENTS_RECIPIENT_LASTNAME = "[$recipientLastName$]";
 	public final static String REPLACEMENTS_RECIPIENT_USERNAME = "[$recipientUserName$]";

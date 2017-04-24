@@ -34,9 +34,10 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.model.MBThread;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
-import com.mashape.unirest.http.*;
-import com.mashape.unirest.http.async.Callback;
-import com.mashape.unirest.http.exceptions.UnirestException;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.ObjectMapper;
+import com.mashape.unirest.http.Unirest;
 import org.apache.log4j.Logger;
 import org.vaadin.tori.HttpServletRequestAware;
 import org.vaadin.tori.data.LiferayDataSource;
@@ -48,10 +49,8 @@ import org.xml.sax.SAXException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
-import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 public class LiferayToriMailService implements ToriMailService,
@@ -92,15 +91,6 @@ public class LiferayToriMailService implements ToriMailService,
 	}
 
 	@Override
-	public void setMailTheme(final String mailThemeCss) {
-	}
-
-	@Override
-	public void setPostMailTemplate(final String mailTemplateHtml) {
-	}
-
-
-	@Override
 	public void sendUserAuthored(final long postId,
 								 final String formattedPostBody) {
 		try {
@@ -139,7 +129,7 @@ public class LiferayToriMailService implements ToriMailService,
 
 				Map<String, String> replacementsMap = buildReplacementsMap(mbMessage, formattedPostBody);
 
-				RestMailMessage restMailMessage = new RestMailMessage();
+				RESTMailMessage restMailMessage = new RESTMailMessage();
 				restMailMessage.emailFromAddress = fromAddress;
 				restMailMessage.emailFromName = fromName;
 				restMailMessage.emailRecipientAddrs = toAddresses;
@@ -149,11 +139,18 @@ public class LiferayToriMailService implements ToriMailService,
 				restMailMessage.emailRecipientIds = "";
 				restMailMessage.replacements = replacementsMap;
 
-				Future<HttpResponse<JsonNode>> future = Unirest.post("http://vaadin.com/delegates/community-email-portlet")
+				HttpResponse<JsonNode> response = Unirest.post(mailTemplateConfiguration.getRESTEndpointUrl())
 						.header("accept", "application/json")
 						.field("param1", "value1")
 						.field("param2", "value2")
-						.asJsonAsync(new Callback<JsonNode>() {
+						.asJson();
+
+				if(!String.valueOf(response.getStatus()).startsWith("2")) {
+					LOG.warn("Error sending mail via REST endpoint: " + response.getStatus() + " | " + response.getStatusText() + "\n"
+							+ new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(restMailMessage.toString()));
+				}
+
+				/*Async(new Callback<JsonNode>() {
 
 							public void failed(UnirestException e) {
 								System.out.println("The request has failed");
@@ -172,6 +169,7 @@ public class LiferayToriMailService implements ToriMailService,
 								System.out.println("The request has been cancelled");
 							}
 						});
+						*/
 			}
 		} catch (Exception e) {
 			getLogger().warn("Unable to form email notification", e);
@@ -216,15 +214,15 @@ public class LiferayToriMailService implements ToriMailService,
 
 		Map<String, String> result = new HashMap<>();
 
-		result.put(RestMailMessage.REPLACEMENTS_RECIPIENT_FIRSTNAME, user != null ? user.getFirstName() : "Unknown");
-		result.put(RestMailMessage.REPLACEMENTS_RECIPIENT_LASTNAME, user != null ? user.getLastName() : "Unknown");
-		result.put(RestMailMessage.REPLACEMENTS_RECIPIENT_USERNAME, userDisplayName);
-		result.put(RestMailMessage.REPLACEMENTS_FORUM_THREAD_URL, threadUrl);
-		result.put(RestMailMessage.REPLACEMENTS_FORUM_THREAD_TITLE, threadTopic);
-		result.put(RestMailMessage.REPLACEMENTS_FORUM_REPLY_PERMALINK, permaLink);
-		result.put(RestMailMessage.REPLACEMENTS_FORUM_REPLY_BODY, formattedPostBody);
-		result.put(RestMailMessage.REPLACEMENTS_FORUM_REPLY_USER_AVATAR_URL, avatarUrl);
-		result.put(RestMailMessage.REPLACEMENTS_FORUM_REPLY_USER_NAME, rootMessage.getUserName());
+		result.put(RESTMailMessage.REPLACEMENTS_RECIPIENT_FIRSTNAME, user != null ? user.getFirstName() : "Unknown");
+		result.put(RESTMailMessage.REPLACEMENTS_RECIPIENT_LASTNAME, user != null ? user.getLastName() : "Unknown");
+		result.put(RESTMailMessage.REPLACEMENTS_RECIPIENT_USERNAME, userDisplayName);
+		result.put(RESTMailMessage.REPLACEMENTS_FORUM_THREAD_URL, threadUrl);
+		result.put(RESTMailMessage.REPLACEMENTS_FORUM_THREAD_TITLE, threadTopic);
+		result.put(RESTMailMessage.REPLACEMENTS_FORUM_REPLY_PERMALINK, permaLink);
+		result.put(RESTMailMessage.REPLACEMENTS_FORUM_REPLY_BODY, formattedPostBody);
+		result.put(RESTMailMessage.REPLACEMENTS_FORUM_REPLY_USER_AVATAR_URL, avatarUrl);
+		result.put(RESTMailMessage.REPLACEMENTS_FORUM_REPLY_USER_NAME, rootMessage.getUserName());
 
 		return result;
 	}

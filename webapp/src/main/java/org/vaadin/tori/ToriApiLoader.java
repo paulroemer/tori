@@ -186,71 +186,71 @@ public class ToriApiLoader implements Serializable, SessionDestroyListener {
         ToriMailService result = null;
         if (request != null) {
             result = spi.createToriMailService();
-            try {
-                String themeName = UI.getCurrent().getTheme();
-
-                InputStream postTemplateStream = VaadinService.getCurrent()
-                        .getThemeResourceAsStream(UI.getCurrent(), "tori",
-                                "toripostmailtemplate.xhtml");
-                InputStream themeStream = VaadinService.getCurrent()
-                        .getThemeResourceAsStream(UI.getCurrent(), themeName,
-                                "styles.css");
-
-                if (postTemplateStream != null && themeStream != null) {
-                    result.setPostMailTemplate(readStream(postTemplateStream));
-
-                    String themeCss = readStream(themeStream);
-                    String imagesUrl = getToriThemeImagesURL(request);
-                    String quoteImageUrl = imagesUrl + "emailquote.png";
-                    String anonymousImageUrl = imagesUrl + "emailanonymous.png";
-                    String defaultHeaderImageUrl = imagesUrl + "tori-icon.png";
-
-                    //@formatter:off
-                    String quoteRule = "\n\n"
-                        + ".v-app blockquote cite, .v-app .quote-title { \n"
-                                + "background-image: url('" + quoteImageUrl + "'); \n"
-                                + "background-repeat: no-repeat; \n"
-                        + "}";
-
-                    String anonymousRule = "\n\n"
-                        + ".avatar.anonymous-true { \n"
-                                + "background-image: url('" + anonymousImageUrl + "'); \n"
-                                + "height: 100%; \n"
-                        + "}"
-                        + "\n\n"
-                        + ".avatar.anonymous-true img { \n"
-                                + "display: none; \n"
-                        + "}";
-
-                    String customHeaderImageRule = "\n\n"
-                            + ".defaultheaderimage-true { \n"
-                                    + "background-image: url('" + defaultHeaderImageUrl + "'); \n"
-                                    + "background-repeat: no-repeat; \n"
-                            + "}"
-                            + "\n\n"
-                            + ".defaultheaderimage-true .headerimageplaceholder { \n"
-                                    + "width: 160px; \n"
-                                    + "height: 40px; \n"
-                            + "}";
-                    //@formatter:on
-                    result.setMailTheme(themeCss + quoteRule + anonymousRule
-                            + customHeaderImageRule);
-
-                    getLogger().debug(
-                            String.format("Using %s implementation: %s",
-                                    ToriMailService.class.getSimpleName(),
-                                    result.getClass().getName()));
-                } else {
-                    getLogger().error("Unable to set mail service resources");
-                    result = null;
-                }
-            } catch (IOException e) {
-                getLogger().warn("Exception while closing input stream", e);
-            } catch (Exception e) {
-                getLogger().error("Exception while initiating ToriMailService",
-                        e);
-                result = null;
-            }
+//            try {
+//                String themeName = UI.getCurrent().getTheme();
+//
+//                InputStream postTemplateStream = VaadinService.getCurrent()
+//                        .getThemeResourceAsStream(UI.getCurrent(), "tori",
+//                                "toripostmailtemplate.xhtml");
+//                InputStream themeStream = VaadinService.getCurrent()
+//                        .getThemeResourceAsStream(UI.getCurrent(), themeName,
+//                                "styles.css");
+//
+//                if (postTemplateStream != null && themeStream != null) {
+//                    result.setPostMailTemplate(readStream(postTemplateStream));
+//
+//                    String themeCss = readStream(themeStream);
+//                    String imagesUrl = getToriThemeImagesURL(request);
+//                    String quoteImageUrl = imagesUrl + "emailquote.png";
+//                    String anonymousImageUrl = imagesUrl + "emailanonymous.png";
+//                    String defaultHeaderImageUrl = imagesUrl + "tori-icon.png";
+//
+//                    //@formatter:off
+//                    String quoteRule = "\n\n"
+//                        + ".v-app blockquote cite, .v-app .quote-title { \n"
+//                                + "background-image: url('" + quoteImageUrl + "'); \n"
+//                                + "background-repeat: no-repeat; \n"
+//                        + "}";
+//
+//                    String anonymousRule = "\n\n"
+//                        + ".avatar.anonymous-true { \n"
+//                                + "background-image: url('" + anonymousImageUrl + "'); \n"
+//                                + "height: 100%; \n"
+//                        + "}"
+//                        + "\n\n"
+//                        + ".avatar.anonymous-true img { \n"
+//                                + "display: none; \n"
+//                        + "}";
+//
+//                    String customHeaderImageRule = "\n\n"
+//                            + ".defaultheaderimage-true { \n"
+//                                    + "background-image: url('" + defaultHeaderImageUrl + "'); \n"
+//                                    + "background-repeat: no-repeat; \n"
+//                            + "}"
+//                            + "\n\n"
+//                            + ".defaultheaderimage-true .headerimageplaceholder { \n"
+//                                    + "width: 160px; \n"
+//                                    + "height: 40px; \n"
+//                            + "}";
+//                    //@formatter:on
+//                    result.setMailTheme(themeCss + quoteRule + anonymousRule
+//                            + customHeaderImageRule);
+//
+//                    getLogger().debug(
+//                            String.format("Using %s implementation: %s",
+//                                    ToriMailService.class.getSimpleName(),
+//                                    result.getClass().getName()));
+//                } else {
+//                    getLogger().error("Unable to set mail service resources");
+//                    result = null;
+//                }
+//            } catch (IOException e) {
+//                getLogger().warn("Exception while closing input stream", e);
+//            } catch (Exception e) {
+//                getLogger().error("Exception while initiating ToriMailService",
+//                        e);
+//                result = null;
+//            }
         }
 
         return result;
