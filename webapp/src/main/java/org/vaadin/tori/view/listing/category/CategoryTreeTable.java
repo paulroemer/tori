@@ -92,8 +92,8 @@ public class CategoryTreeTable extends TreeTable {
         });
 
         setColumnExpandRatio(PROPERTY_ID_CATEGORY, 1.0f);
-        setColumnWidth(PROPERTY_ID_UNREAD, 120);
-        setColumnWidth(PROPERTY_ID_THREADS, 100);
+        setColumnWidth(PROPERTY_ID_UNREAD, 100);
+        setColumnWidth(PROPERTY_ID_THREADS, 150);
 
         setColumnAlignment(PROPERTY_ID_UNREAD, Align.RIGHT);
         setColumnAlignment(PROPERTY_ID_THREADS, Align.RIGHT);

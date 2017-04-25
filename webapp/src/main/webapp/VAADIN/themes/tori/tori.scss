@@ -22,7 +22,7 @@
 	    
 	    .v-widget {
 	        font-family: inherit;
-	        font-size: 22;
+	        /*font-size: 22px; */
 	        color: inherit;
 	    }
 	    
@@ -136,7 +136,8 @@
 	    
 	    .headerlayout {
             @include type-heading-sub($color: $stainless);
-            border-bottom: 1px solid $aluminium;			
+            /*border-bottom: 1px solid $aluminium;			*/
+            background: $alloy;
 		}
 		
 		.v-shadow-window,

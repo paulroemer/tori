@@ -71,15 +71,29 @@
 	                
 	        .v-table-row,
 	        .v-table-row-odd {
-                background: #fff;
                 transition: all 200ms;
 	            font-size: 15px;
 	            height: 65px;
-	            
+	            background: $snow;
 	            .v-table-cell-content {
-	                padding: 2em 1em;
-	                border-right: none;
-	                font-family: $font-family-secondary;
+	            	padding: 1em 0;
+	            	border-right: none;
+	            	vertical-align: middle;
+	            	font-family: $font-family-secondary;
+
+	            	&.v-table-cell-content-category {
+
+	            	}
+
+	            	&.v-table-cell-content-unread {
+	            		font-size: 2rem; 
+	            		font-weight: 100;
+	            		padding-right: 1em;
+	            	}
+
+	            	&.v-table-cell-content-threads {
+						font-size: 2rem;
+						font-weight: 100;	            	}
 	            }
 	            
 	           	.v-table-cell-content {
