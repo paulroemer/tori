@@ -69,7 +69,7 @@ public class LiferayAuthorizationService implements AuthorizationService,
 				for (Role role : currentUser.getRoles()) {
 					final String name = role.getName();
 
-					if (name.equals("Adminstrator") ||
+					if (name.equals("Administrator") ||
 							name.equals("Forum Administrator")) {
 						return true;
 					}
