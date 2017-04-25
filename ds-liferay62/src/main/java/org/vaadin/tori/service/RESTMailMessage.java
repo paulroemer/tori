@@ -1,5 +1,6 @@
 package org.vaadin.tori.service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,8 +20,8 @@ public class RESTMailMessage {
 	public String webContentUrlTitle;
 	public String emailType;
 	public String emailSubject;
-	public String emailRecipientIds;
-	public String emailRecipientAddrs;
+	public List<String> emailRecipientIds;
+	public List<String> emailRecipientAddrs;
 	public String emailFromName;
 	public String emailFromAddress;
 

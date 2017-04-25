@@ -125,29 +125,26 @@ public class LiferayToriMailService implements ToriMailService,
 //					replyToAddress = fromAddress;
 //				}
 
-				String toAddresses = Arrays.stream(bulkAddresses).map(InternetAddress::toString).collect(Collectors.joining(" "));
-
 				Map<String, String> replacementsMap = buildReplacementsMap(mbMessage, formattedPostBody);
 
 				RESTMailMessage restMailMessage = new RESTMailMessage();
 				restMailMessage.emailFromAddress = fromAddress;
 				restMailMessage.emailFromName = fromName;
-				restMailMessage.emailRecipientAddrs = toAddresses;
+				restMailMessage.emailRecipientAddrs = Arrays.stream(bulkAddresses).map(InternetAddress::toString).collect(Collectors.toList());
 				restMailMessage.emailSubject = subject;
 				restMailMessage.emailType = "";
 				restMailMessage.webContentUrlTitle = "community-emails-forum-post-reply";
-				restMailMessage.emailRecipientIds = "";
+				restMailMessage.emailRecipientIds = new ArrayList<>();
 				restMailMessage.replacements = replacementsMap;
 
 				HttpResponse<JsonNode> response = Unirest.post(mailTemplateConfiguration.getRESTEndpointUrl())
 						.header("accept", "application/json")
-						.field("param1", "value1")
-						.field("param2", "value2")
+						.body(restMailMessage)
 						.asJson();
 
 				if(!String.valueOf(response.getStatus()).startsWith("2")) {
 					LOG.warn("Error sending mail via REST endpoint: " + response.getStatus() + " | " + response.getStatusText() + "\n"
-							+ new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(restMailMessage.toString()));
+							+ new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(restMailMessage));
 				}
 
 				/*Async(new Callback<JsonNode>() {
