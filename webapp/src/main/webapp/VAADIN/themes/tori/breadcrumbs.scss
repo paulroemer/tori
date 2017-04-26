@@ -8,6 +8,9 @@
 
 			.dropdown .v-menubar-menuitem {
 				font-size: 16px;
+				border: 1px solid $aluminium !important;
+				border-radius: 50% !important;
+				margin-left: 5px;
 			}
 
 			.categorylink {
@@ -32,7 +35,7 @@
 			text-overflow: ellipsis;
 
 			span {
-				font-size: 12px;
+				font-size: 16px;
 			}
 		}
 
