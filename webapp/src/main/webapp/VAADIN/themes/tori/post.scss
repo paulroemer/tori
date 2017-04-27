@@ -1,7 +1,6 @@
 @mixin post {
     .v-app.tori {
     .post {
-        @include type-body-primary($color: $charcoal);
 	    width: 100%;
 	    position: relative;
 	    -webkit-font-smoothing: antialiased;
@@ -64,7 +63,6 @@
         }
 
         .authorname {
-            @include type-body-sub($color: $charcoal);
             font-size: rem(20);
         	text-overflow: ellipsis;
 
@@ -103,7 +101,6 @@
         }
 
         .prettytime {
-        	@include type-body-secondary($color: $stainless);
 			line-height: 22px;
 			height: 22px;
             margin-top: 5px;

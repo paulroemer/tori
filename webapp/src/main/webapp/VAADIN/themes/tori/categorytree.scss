@@ -13,9 +13,15 @@
 	    
 	        .categoryLink,
 	        .categoryLink span {
-                @include type-heading-sub($color: $charcoal);
 	            display: block;
                 margin-bottom: 0.4em;
+   				font-size: 1.8rem;
+    			font-weight: 100;
+				
+				&:hover {
+					color: $water;
+				}
+
 	        }
 	        
 	        .settingsmenu {
@@ -26,6 +32,7 @@
 	    
 	    	.description {
 				color: $stainless;
+				font-size: 1.1rem;
 	    	}
 	    	
 	    	.v-popupbutton {
@@ -56,12 +63,12 @@
 	        	}
 	        }
 	        
-            .v-table-row:FIRST-CHILD .v-table-cell-content-unread .v-table-cell-wrapper:before{
+            /*.v-table-row:FIRST-CHILD .v-table-cell-content-unread .v-table-cell-wrapper:before{
 	        	content: "UNREAD";
 	        }
 	        .v-table-row:FIRST-CHILD .v-table-cell-content-threads .v-table-cell-wrapper:before{
 	        	content: "TOPICS";
-	        }
+	        }*/
             
 	    
 	  		.settingsmenu .v-menubar-menuitem {
@@ -102,7 +109,6 @@
 	            }
 	            
 	            &:hover {
-                    background-color: lighten($aluminium,6%);
                     transition: all 200ms;
 	                .settingsmenu .v-menubar-menuitem {
 	                	visibility: visible;
@@ -112,8 +118,8 @@
 	        }
 	        
 	        .v-treetable-treespacer {
-	            top: 4px;
-	            left: -2px;
+	            top: 10px;
+	            left: -10px;
 	        }
 	        
 	        .threadCount {

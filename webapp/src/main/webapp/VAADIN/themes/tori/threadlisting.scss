@@ -4,7 +4,10 @@
 		width: 100%;
 	    display: block !important;
 
-        a {color: $stainless;}
+        a {
+        	color: $stainless;
+        	font-size: 1.2rem;
+    	}
 
 		.threadlistingrow {
 			height: 50px;
@@ -47,8 +50,13 @@
 		    }
 
 		    &:hover {
+
+		    	.topicname {
+		    		color: $water;
+		    	}
+
 		    	&:after{
-			    	opacity: .4;
+			    	opacity: 1;
 					transition: all 200ms;
 				}
 
@@ -72,7 +80,7 @@
 				left: 0;
 				bottom: 0;
 				height: 50px;
-				border-bottom: 2px solid $water;
+				border-bottom: 1px solid $water;
                 z-index: -1;
 
 				/*.v-sa:not(.v-ch) & {
@@ -178,15 +186,15 @@
 					font-family: "Tori-Icons";
 					position: absolute;
 					font-size: 22px;
-					left: 7px;
+					left: 6px;
 					top: -4px;
-					color: #D7D7D7;
-					background-color: #fff;
+					color: $stainless;
+					background-color: $snow;
 					z-index: -1;
 		    	}
 
 		    	.replycount:BEFORE {
-		    		left: 5px;
+		    		left: 4px;
 					top: -6px;
 		    	}
 
@@ -226,7 +234,7 @@
 				padding-left: 36px;
 				margin-left: -36px;
 				text-decoration: none;
-					overflow: hidden;
+				overflow: hidden;
 		    }
 
 		    .startedby,
@@ -237,6 +245,7 @@
 				font-weight: 300;
 				padding: 0 5px 0 3px;
 				white-space: nowrap;
+				font-size: 1rem;
 		    }
 
 
