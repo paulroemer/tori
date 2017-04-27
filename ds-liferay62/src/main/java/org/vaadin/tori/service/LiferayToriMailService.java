@@ -34,7 +34,10 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portlet.messageboards.model.MBMessage;
 import com.liferay.portlet.messageboards.model.MBThread;
 import com.liferay.portlet.messageboards.service.MBMessageLocalServiceUtil;
-import com.mashape.unirest.http.*;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.ObjectMapper;
+import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.async.Callback;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.apache.log4j.Logger;
@@ -48,7 +51,6 @@ import org.xml.sax.SAXException;
 import javax.mail.internet.InternetAddress;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -138,7 +140,8 @@ public class LiferayToriMailService implements ToriMailService,
 				restMailMessage.replacements = replacementsMap;
 
 				Unirest.post(mailTemplateConfiguration.getRESTEndpointUrl())
-						.header("accept", "application/json")
+						.header("accept", "application/text")
+						.header("Content-Type", "application/json; charset=utf8")
 						.body(restMailMessage)
 						.asJsonAsync(new Callback<JsonNode>() {
 							public void failed(UnirestException e) {
@@ -159,7 +162,7 @@ public class LiferayToriMailService implements ToriMailService,
 							public void cancelled() {
 								LOG.debug("REST call cancelled");
 							}
-						});
+						}).get();
 			}
 		} catch (Exception e) {
 			getLogger().warn("Unable to form email notification", e);
