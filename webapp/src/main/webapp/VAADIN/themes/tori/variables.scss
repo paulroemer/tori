@@ -8,13 +8,17 @@ $lava:        #ff3a49;
 // For highlights
 $salmon:      #e61e6d;
 $gold:        #ffc13f;
+$grass:       #2acc47;
 
 // For contrast and text
-$charcoal:    #33383a; // Secondary backgrounds, titles on light background
+$charcoal:    #34373b; // Secondary backgrounds, titles on light background
 $graphite:    #404549; // Secondary backgrounds, custom styling
 $stainless:   #829191; // Paragraph text (works on light and dark backgrounds)
-$aluminium:   #e5e8e8; // Secondary backgrounds, custom styling
-$snow:        #f8f8f8; // Main background, titles on dark background
+$aluminium:   #d3dce0; // Secondary backgrounds, custom styling
+$alloy:       #f3f4f5; // framework feature pages sidebar background
+$light-alloy: lighten($alloy, 1%); // framework feature pages, background for tables and inset blocks
+$snow:        #fafbfc; // Main background, titles on dark background
+
 
 // Other colors
 // =================================================================================================

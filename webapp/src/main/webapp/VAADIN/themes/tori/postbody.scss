@@ -6,7 +6,7 @@
 	color: $postbody-quote-quotationmark-color;
 	line-height: 69px;
 	left: 11px;
-	top: -3px;
+	top: 15px;
 }
 
 @mixin postbody {
@@ -15,7 +15,7 @@
 	.quote-title {
 		background-color: $snow;
 		padding-left: 50px;
-        margin-top: 10px;
+        padding-top: 20px;
 		line-height: 35px;
 		position: relative;
 		display: block;

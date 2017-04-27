@@ -108,7 +108,7 @@ public class ToriUI extends UI implements ToriUIServerRpc {
 
 		addControlPanelIfInDevelopment();
 		recentBar = new RecentBar();
-		mainLayout.addComponent(recentBar);
+		// mainLayout.addComponent(recentBar);
 		mainLayout.addComponent(breadcrumbs);
 		mainLayout.addComponent(navigatorContent);
 

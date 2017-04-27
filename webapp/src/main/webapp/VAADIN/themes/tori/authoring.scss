@@ -21,7 +21,7 @@
 		}
 		
         .v-button {
-            background-color: #B0E4B6;
+            background-color: #B0E4B6;  
             color: #1E982E;
             padding: 1em 1.6em;
         	font-size: rem(18);
@@ -113,6 +113,8 @@
 			
 			.cke_contents {
 				min-height: 200px;
+				border: 1px solid $aluminium;
+				border-radius: 3px;
 			}
 		}
 	}

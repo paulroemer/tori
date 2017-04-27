@@ -22,7 +22,7 @@
 	    
 	    .v-widget {
 	        font-family: inherit;
-	        font-size: 22;
+	        /*font-size: 22px; */
 	        color: inherit;
 	    }
 	    
@@ -135,8 +135,31 @@
 	    }
 	    
 	    .headerlayout {
-            @include type-heading-sub($color: $stainless);
-            border-bottom: 1px solid $aluminium;			
+            /*@include type-heading-sub($color: $stainless);*/
+            /*border-bottom: 1px solid $aluminium;			*/
+            background: $alloy;
+            text-transform: uppercase;
+   			position: relative;
+			
+			&:before {
+   				content: "";
+   				position: absolute;
+   				background: $alloy;
+   				width: 1000px;
+   				top: 0;
+   				bottom: 0;
+   				left: -1000px;
+   			}
+
+   			&:after {
+   				content: "";
+   				position: absolute;
+   				background: $alloy;
+   				width: 1000px;
+   				top: 0;
+   				bottom: 0;
+   				right: 0;
+   			}
 		}
 		
 		.v-shadow-window,

@@ -56,3 +56,39 @@ $prefixes: -moz-, -webkit-, -ms-, -o-, "";
 		#{$pref}box-sizing: border-box;
 	}
 }
+// FONT SIZING
+// =================================================================================================
+// Standard Font Size Reference
+// 54px == 3.375rem == 2.8125vw
+// 32px == 2rem     == 1.6667vw
+// 28px == 1.75rem  == 1.4583vw
+// 24px == 1.5rem   == 1.25vw
+// 20px == 1.25rem  == 1.0416vw
+// 18px == 1.125rem == 0.9375vw
+
+$base-font-size: 16;
+$base-viewport-width: 1920;
+
+/**
+ * Given a unitless number and an optional context, calculate a size in rem.
+ *
+ * @param  {number} $size    A unitless number to convert to a size in rem
+ * @param  {number} $context A unitless number that acts as the divisor
+ * @return {number}          The size in rem
+ */
+@function rem($size, $context: $base-font-size) {
+  @return ($size / $context) * 1rem;
+}
+
+/**
+ * Given a unitless number and an optional context, calculate a size in vw.
+ * NOTE: This uses 1920 as the default context because that was the width used
+ * in the original designs, and all standard px font sizes are based on it.
+ *
+ * @param  {number} $size    A unitless number to convert to a size in vw
+ * @param  {number} $context A unitless number that acts as the divisor
+ * @return {number}          The size in vw
+ */
+@function vw($size, $context: $base-viewport-width) {
+  @return ($size / $context * 100) * 1vw;
+}

@@ -4,10 +4,14 @@
 		width: 100%;
 	    display: block !important;
 
-        a {color: $charcoal;}
+        a {
+        	color: $stainless;
+        	font-size: 1.2rem;
+    	}
 
 		.threadlistingrow {
-			height: 40px;
+			height: 50px;
+			margin: 10px 0;
 			white-space: nowrap;
 			-webkit-transform: translatez(0);
 			position: relative;
@@ -46,8 +50,13 @@
 		    }
 
 		    &:hover {
+
+		    	.topicname {
+		    		color: $water;
+		    	}
+
 		    	&:after{
-			    	opacity: .4;
+			    	opacity: 1;
 					transition: all 200ms;
 				}
 
@@ -70,8 +79,8 @@
 				position: absolute;
 				left: 0;
 				bottom: 0;
-				height: 40px;
-				background: $aluminium;
+				height: 50px;
+				border-bottom: 1px solid $water;
                 z-index: -1;
 
 				/*.v-sa:not(.v-ch) & {
@@ -137,7 +146,7 @@
 				-webkit-transform: translatez(0);
 		    	font-size: rem(20);
 				padding-left: 20px;
-				line-height: 40px;
+				line-height: 50px;
 				color: #2698E0;
 				width: 55%;
 				margin: 0;
@@ -177,15 +186,15 @@
 					font-family: "Tori-Icons";
 					position: absolute;
 					font-size: 22px;
-					left: 7px;
+					left: 6px;
 					top: -4px;
-					color: #D7D7D7;
-					background-color: #fff;
+					color: $stainless;
+					background-color: $snow;
 					z-index: -1;
 		    	}
 
 		    	.replycount:BEFORE {
-		    		left: 5px;
+		    		left: 4px;
 					top: -6px;
 		    	}
 
@@ -225,7 +234,7 @@
 				padding-left: 36px;
 				margin-left: -36px;
 				text-decoration: none;
-					overflow: hidden;
+				overflow: hidden;
 		    }
 
 		    .startedby,
@@ -233,14 +242,14 @@
 				overflow: hidden;
 				text-overflow: ellipsis;
 				color: $font-color-secondary;
-				font-weight: normal;
+				font-weight: 300;
 				padding: 0 5px 0 3px;
 				white-space: nowrap;
+				font-size: 1rem;
 		    }
 
 
 			.startedtime, .latesttime {
-				padding: 0.3em 0.6em;
 				display: inline-block;
 				white-space: nowrap;
                 font-size: 10px;
@@ -248,13 +257,17 @@
 			}
 
 			 .startedtime {
-			 	background: $aluminium;
-				color: #888;
+			 	border: 1px solid #d3dce0;
+			 	border-radius: 20px;
+			 	padding: 5px 10px;
+			 	color: #888;
 			 }
 
 			 .latesttime {
-			 	background: #F0F8FC;
-				color: #3E8DB5;
+			 	border: 1px solid #d3dce0;
+			 	border-radius: 20px;
+			 	padding: 5px 10px;
+			 	color: #888;
 			 }
 
 			 .dropdown {
@@ -267,7 +280,7 @@
 		 }
 
 		.threadlisting-placeholder {
-			height: 40px;
+			height: 50px;
 			border-bottom: 1px solid $water;
 			position: relative;
 
@@ -275,7 +288,7 @@
 				padding-left: 26px;
 				content: "Loading Post...";
 				color: $font-color-primary;
-				line-height: 40px;
+				line-height: 50px;
 			}
 
 			&:after {

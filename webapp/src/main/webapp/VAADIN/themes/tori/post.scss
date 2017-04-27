@@ -1,13 +1,16 @@
 @mixin post {
     .v-app.tori {
     .post {
-        @include type-body-primary($color: $charcoal);
 	    width: 100%;
 	    position: relative;
 	    -webkit-font-smoothing: antialiased;
 	    transition: background 500ms;
 		-webkit-transition: background 500ms;
         font-weight: normal;
+	
+		&:not(:first-of-type){
+			padding-left: 2rem;
+		}
 
 	    table {
 	    	border-collapse: collapse;
@@ -24,8 +27,7 @@
 	    }
 
 	    .author {
-	        width: 153px;
-	        min-width: 153px;
+	        width: 250px;
 	        float: left;
 	        text-align: center;
 	        margin-top: 45px;
@@ -61,12 +63,12 @@
         }
 
         .authorname {
-            @include type-body-sub($color: $charcoal);
             font-size: rem(20);
         	text-overflow: ellipsis;
 
 			&.nolink {
-				color: $charcoal;
+				color: $graphite;
+				font-weight: 300;
 
 				&:HOVER{
 					text-decoration: none;
@@ -99,10 +101,11 @@
         }
 
         .prettytime {
-        	@include type-body-secondary($color: $stainless);
 			line-height: 22px;
 			height: 22px;
-            margin-bottom: 4px;
+            margin-top: 5px;
+    		color: $stainless;
+    		font-weight: 300;
         }
 
         .permalink {
@@ -123,6 +126,7 @@
 	        	visibility: visible;
 	        	opacity: 1;
 	        	z-index: 1;
+	        	padding: 2rem;
 	        }
 
 	        .bodytext {
@@ -169,26 +173,23 @@
 	    .body {
 	        padding-top: 1px;
 	        margin-right: 12px;
-	        margin-left: 153px;
+	        margin-left: 250px;
 	        position: relative;
-            border-left: 1px solid $aluminium;
+            background: #fff;
+    		margin-bottom: 2em;
+    		box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    		border-radius: 3px;
             &:before, &:after {
-                content: '';
-                position: absolute;
-                left: -6px;
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-                background-color: $aluminium;
+                
             }
             &:before {display: none;}
             &:after {bottom: -24px;}
 	    }
 
         &:first-of-type .body{
-            border-left-color: $water;
+            /*border-left-color: $water;
             &:before {background-color: $water; top: 12px; display: block;}
-            &:after {background-color: $water; bottom: 0;}
+            &:after {background-color: $water; bottom: 0;}*/
         }
 
         &:last-of-type {
@@ -210,12 +211,14 @@
 	    }
 
         .bodytext {
-        	margin-top: 40px;
-			padding: 0 3rem;
+			padding: 3rem;
 			min-height: 98px;
 			position: relative;
 			transition: visibility 500ms;
 			-webkit-transition: visibility 500ms;
+			color: $stainless;
+			font-weight: 300;
+    		line-height: 1.6;
         }
 
         .attachments {
@@ -260,11 +263,11 @@
 
         .body .footer {
 	        width: 100%;
-	        margin-top: 15px;
-	        padding: 1em 3rem;
+	        padding: 1.5em 3rem;
 	        -moz-box-sizing: border-box;
 			box-sizing: border-box;
     		line-height: 1;
+    		border-top: 1px solid $aluminium;
 
     		@include animation(fade-in 500ms);
 
@@ -280,11 +283,9 @@
 	            }
 
 	            &.upvote {
-	            	margin-top: -2px;
-
 	            	&:after {
 		            	content: "\e602";
-		            	font-size: 16px;
+		            	font-size: 20px;
 		            }
 		            &.done,
 	            	&:hover {
@@ -295,7 +296,7 @@
 	            &.downvote {
 	            	&:after {
 		            	content: "\e603";
-		            	font-size: 15px;
+		            	font-size: 20px;
 		            }
 		            &.done,
 	            	&:hover {
