@@ -52,7 +52,7 @@
 		    &:hover {
 
 		    	.topicname {
-		    		color: $water;
+		    		color: $charcoal;
 		    	}
 
 		    	&:after{
@@ -62,6 +62,14 @@
 
             &:active {
                 &:after {transition: all 50ms; background: $water;}
+                .startedby, .latestby {
+                	color: $charcoal;
+                	border-color: $charcoal;
+                }
+                .startedtime, .latesttime {
+                	color: $charcoal;
+                	border-color: $charcoal;
+                }
             }
 
 				.dropdown {
@@ -178,6 +186,7 @@
 				display: inline-block;
 				font-size: rem(16);
 				position: relative;
+				margin-left: 2em;
 
 				&:BEFORE,
 	    		.replycount:BEFORE,
@@ -219,6 +228,9 @@
 	    		}
 	    		.latestby{
 	    			color: $font-color-primary;
+	    			display: inline-block;
+   					width: calc(100% - 100px);
+   					vertical-align: middle;
 	    		}
 	    		.latesttime {
 	    			display: none;
@@ -246,6 +258,10 @@
 				padding: 0 5px 0 3px;
 				white-space: nowrap;
 				font-size: 1rem;
+				display: inline-block;
+				width: calc(100% - 100px);
+				vertical-align: middle;
+}
 		    }
 
 
@@ -261,6 +277,8 @@
 			 	border-radius: 20px;
 			 	padding: 5px 10px;
 			 	color: #888;
+			 	width: 80px;
+			 	text-align: center;
 			 }
 
 			 .latesttime {
@@ -268,6 +286,8 @@
 			 	border-radius: 20px;
 			 	padding: 5px 10px;
 			 	color: #888;
+			 	width: 80px;
+			 	text-align: center;
 			 }
 
 			 .dropdown {
