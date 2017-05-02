@@ -57,6 +57,35 @@ public class ComponentUtil {
         return result;
     }
 
+    public static HorizontalLayout getHeaderLayout(final String titleString, final String secondString, final String thirdString ) {
+        final HorizontalLayout result = new HorizontalLayout();
+        result.setWidth(100.0f, Unit.PERCENTAGE);
+        result.setHeight(56.0f, Unit.PIXELS);
+        result.setSpacing(true);
+        result.setMargin(true);
+        result.addStyleName("headerlayout");
+
+        Component title = getHeadingLabel(titleString, HeadingLevel.H2);
+        Component secondLabel = getHeadingLabel(secondString, HeadingLevel.H2);
+        Component thirdLabel = getHeadingLabel(thirdString, HeadingLevel.H2);
+        
+        title.setWidth(150.0f, Unit.PIXELS);
+        secondLabel.setWidth(150.0f, Unit.PIXELS);
+        thirdLabel.setWidth(150.0f, Unit.PIXELS);
+
+        result.addComponent(title);
+        result.addComponent(secondLabel);
+        result.addComponent(thirdLabel);
+
+        result.setExpandRatio(title, 1.0f);
+        
+        result.setComponentAlignment(title, Alignment.MIDDLE_LEFT);
+        result.setComponentAlignment(secondLabel, Alignment.MIDDLE_RIGHT);
+        result.setComponentAlignment(thirdLabel, Alignment.MIDDLE_RIGHT);
+
+        return result;
+    }
+
     public static MenuBar getDropdownMenu() {
         final MenuBar result = new MenuBar();
         MenuItem rootItem = result.addItem("", null);

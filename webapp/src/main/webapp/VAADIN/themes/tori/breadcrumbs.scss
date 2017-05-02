@@ -17,7 +17,7 @@
 
 				&:BEFORE {
 					color: $stainless;
-					content: "\2022";
+					content: "\2044";
 					font-family: sans-serif;
 					vertical-align: middle;
 					font-size: 16px;
@@ -50,7 +50,6 @@
 		}
 
 		.v-label.viewcaption {
-			@include type-heading-primary($color: $charcoal);
 			text-overflow: ellipsis;
 			position: relative;
 			width: auto !important;

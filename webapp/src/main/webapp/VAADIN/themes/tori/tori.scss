@@ -22,7 +22,6 @@
 	    
 	    .v-widget {
 	        font-family: inherit;
-	        /*font-size: 22px; */
 	        color: inherit;
 	    }
 	    
@@ -109,7 +108,6 @@
 	    
 	    
 	    .v-button {
-            @include type-heading-sub($color: $water);
 	        outline: none;
 	        cursor: pointer;
 	        position: relative;
@@ -135,8 +133,6 @@
 	    }
 	    
 	    .headerlayout {
-            /*@include type-heading-sub($color: $stainless);*/
-            /*border-bottom: 1px solid $aluminium;			*/
             background: $alloy;
             text-transform: uppercase;
    			position: relative;
