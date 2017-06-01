@@ -81,7 +81,6 @@
                 transition: all 200ms;
 	            font-size: 15px;
 	            height: 65px;
-	            background: $snow;
 	            .v-table-cell-content {
 	            	padding: 1.5em 0;
 	            	border-right: none;
@@ -105,7 +104,7 @@
 	            }
 	            
 	           	.v-table-cell-content {
-	                border-bottom: 1px solid $aluminium;
+	                border-bottom: 1px solid $alloy;
 	            }
 	            
 	            &:hover {

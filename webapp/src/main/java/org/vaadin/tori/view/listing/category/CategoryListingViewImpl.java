@@ -64,7 +64,7 @@ public class CategoryListingViewImpl extends
     }
 
     private Component buildCategoryHeader() {
-        HorizontalLayout result = ComponentUtil.getHeaderLayout("Categories", "Unread", "Topics");
+        HorizontalLayout result = ComponentUtil.getHeaderLayout("Categories");
         noCategoriesLabel = new Label("No categories");
         noCategoriesLabel.setVisible(false);
         noCategoriesLabel.setSizeUndefined();

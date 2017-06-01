@@ -115,6 +115,7 @@
             border: none;
             padding: 0.2em 0;
             border-bottom: 1px solid $water;
+            color: $water;
 	        
 	        &.secondarybutton {
 	        	color: $stainless;
@@ -133,29 +134,10 @@
 	    }
 	    
 	    .headerlayout {
+	    	margin-top: 1rem;
             background: $alloy;
             text-transform: uppercase;
    			position: relative;
-			
-			&:before {
-   				content: "";
-   				position: absolute;
-   				background: $alloy;
-   				width: 1000px;
-   				top: 0;
-   				bottom: 0;
-   				left: -1000px;
-   			}
-
-   			&:after {
-   				content: "";
-   				position: absolute;
-   				background: $alloy;
-   				width: 1000px;
-   				top: 0;
-   				bottom: 0;
-   				right: 0;
-   			}
 		}
 		
 		.v-shadow-window,
@@ -175,6 +157,10 @@
 			display: none !important;
 		}
 		
+		.v-table-table {
+			width: 100%;
+		}
+
 		.v-tooltip .popupContent {
 			border: 1px solid $water;
 			padding: 11px 12px;
