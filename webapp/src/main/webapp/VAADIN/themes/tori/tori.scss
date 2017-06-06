@@ -159,6 +159,10 @@
 		
 		.v-table-table {
 			width: 100%;
+
+			.v-table-row, .v-table-row-odd {
+				background: transparent;
+			}
 		}
 
 		.v-tooltip .popupContent {
