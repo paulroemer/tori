@@ -6,5 +6,4 @@ import org.springframework.beans.factory.InitializingBean;
 /**
  * Created by wolfgang on 23/05/16.
  */
-public class UserGroupPersistenceImplPatch extends UserGroupPersistenceImpl implements InitializingBean {
-}
+public class UserGroupPersistenceImplPatch extends UserGroupPersistenceImpl implements InitializingBean {}

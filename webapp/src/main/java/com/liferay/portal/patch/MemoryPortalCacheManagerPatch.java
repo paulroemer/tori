@@ -9,5 +9,4 @@ import org.springframework.beans.factory.InitializingBean;
  * but forgets to implement the InitializingBean interface. Guess tha class has never been used or tested
  * by the liferay people
  */
-public class MemoryPortalCacheManagerPatch extends MemoryPortalCacheManager implements InitializingBean {
-}
+public class MemoryPortalCacheManagerPatch extends MemoryPortalCacheManager implements InitializingBean {}
