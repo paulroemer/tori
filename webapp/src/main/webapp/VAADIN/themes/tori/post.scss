@@ -33,7 +33,6 @@
 	    }
         .avatar.avatar {
         	color: $post-anonymous-avatar-color;
-            margin-bottom: 9px;
             display: block;
             width: 62px;
             height: 62px;
@@ -111,6 +110,8 @@
 			font-size: rem(14);
 			color: $stainless;
 			line-height: 12px;
+			margin-bottom: 2em;
+  	 		display: inline-block;
 
 			&:hover {
     			color: $link-color;
@@ -175,7 +176,7 @@
 	        position: relative;
             background: #fff;
     		margin-bottom: 2em;
-    		box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    		box-shadow: 0 0 15px 5px rgba($graphite, 0.05);
     		border-radius: 3px;
 
             &:before, &:after {
@@ -215,7 +216,7 @@
 			position: relative;
 			transition: visibility 500ms;
 			-webkit-transition: visibility 500ms;
-			color: $stainless;
+			color: $graphite;
 			font-weight: 300;
     		line-height: 1.6;
         }
@@ -307,6 +308,7 @@
 	        }
 
     		.score {
+    			margin-left: 2em;
 	        	padding: 1.2em;
 	        	float: left;
 
