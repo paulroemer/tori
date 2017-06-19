@@ -175,7 +175,7 @@
 	        margin-left: 250px;
 	        position: relative;
             background: #fff;
-    		margin-bottom: 2em;
+    		margin-bottom: 3em;
     		box-shadow: 0 0 15px 5px rgba($graphite, 0.05);
     		border-radius: 3px;
 
@@ -206,6 +206,7 @@
 
         .settings {
 	    	position: absolute;
+	    	z-index: 1;
 			right: 17px;
 			top: 11px;
 	    }
@@ -326,14 +327,21 @@
 	        .quoteforreply, .flagpost {
 		    	cursor: pointer;
 		    	margin-left: 2em;
-		    	padding: 1em;
-		    	color: $stainless;
-                font-size: rem(20);
+		    	padding: 1.5em 0;
+		    	float: right;
+                font-size: 1rem;
+  				font-weight: 300;
+  				transition: all .2s;
 
 		    	&:hover {
 	    			color: $link-color;
 	    		}
 		    }
+
+			.quoteforreply {
+				margin-right: 2em;
+				color: $water;
+			}
 
 		    .quoteforreply:before {
 		    	font-family: "Tori-Icons";
@@ -344,17 +352,15 @@
 		    }
 
             .flagpost {
-                float: right;
-                margin-right: 2em;
+                
             }
 		    .flagpost .v-button {
 	    		padding: 0;
 	    		border: none;
-	    		color: $stainless;
+	    		color: #d3dce0;
                 text-transform: initial;
                 letter-spacing: 0;
 	    		background: transparent;
-                font-size: rem(20);
 
 	    		&:hover {
 	    			color: $link-color;
@@ -363,7 +369,7 @@
 	    		.v-button-caption,
 	    		.v-button-wrap {
 	    			vertical-align: baseline;
-	    			font-weight: normal;
+	    			font-weight: 300;
 	    		}
 
 	    		&:before {
