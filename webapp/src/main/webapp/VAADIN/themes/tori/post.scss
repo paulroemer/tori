@@ -177,7 +177,6 @@
     		margin-bottom: 2em;
     		box-shadow: 0 0 10px rgba(0,0,0,0.1);
     		border-radius: 3px;
-    		border: 1px solid $alloy;
 
             &:before, &:after {
                 
@@ -263,7 +262,6 @@
 
         .body .footer {
 	        width: 100%;
-	        padding: 1em 3em;
 	        -moz-box-sizing: border-box;
 			box-sizing: border-box;
     		line-height: 1;
@@ -276,13 +274,16 @@
 	            cursor: pointer !important;
 	            outline: none;
 	            float: left;
+	            font-size: 1.25rem;
 	            color: $post-vote-icon-color;
+	            padding: 1em .5em;
 
 	            &:after {
 	            	font-family: "Tori-Icons";
 	            }
 
 	            &.upvote {
+	            	margin-left: 2em;
 	            	&:after {
 		            	content: "\e602";
 		            	font-size: 20px;
@@ -306,9 +307,8 @@
 	        }
 
     		.score {
-	        	padding-left: 5px;
+	        	padding: 1.2em;
 	        	float: left;
-	        	line-height: 1;
 
 	        	&.negative {
 	        		color: #E6452A;
@@ -324,9 +324,9 @@
 	        .quoteforreply, .flagpost {
 		    	cursor: pointer;
 		    	margin-left: 2em;
+		    	padding: 1em;
 		    	color: $stainless;
                 font-size: rem(20);
-		    	line-height: 15px;
 
 		    	&:hover {
 	    			color: $link-color;
@@ -343,6 +343,7 @@
 
             .flagpost {
                 float: right;
+                margin-right: 2em;
             }
 		    .flagpost .v-button {
 	    		padding: 0;
