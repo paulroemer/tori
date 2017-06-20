@@ -48,7 +48,7 @@
 		    &:hover {
 
 		    	.topicname {
-		    		color: $charcoal;
+		    		
 		    	}
 
 		    	&:after{
@@ -62,8 +62,7 @@
 
                 }
                 .startedtime, .latesttime {
-                	color: $charcoal;
-                	border-color: $charcoal;
+
                 }
             }
 
@@ -187,8 +186,7 @@
 					font-size: 22px;
 					left: 6px;
 					top: -4px;
-					color: $alloy;
-					font-weight: bold;
+					color: $aluminium;
 					background-color: $snow;
 					z-index: -1;
 		    	}

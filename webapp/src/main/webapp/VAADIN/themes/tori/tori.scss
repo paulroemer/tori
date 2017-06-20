@@ -138,6 +138,10 @@
             background: $alloy;
             text-transform: uppercase;
    			position: relative;
+
+   			.no-categories {
+   				text-transform: capitalize;
+   			}
 		}
 		
 		.v-shadow-window,
