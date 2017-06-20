@@ -5,7 +5,6 @@
 	    display: block !important;
 
         a {
-        	color: $stainless;
         	font-size: 1.1rem;
     	}
 
@@ -18,7 +17,6 @@
 			-moz-box-sizing: border-box;
 			box-sizing: border-box;
 			padding-left: 5px;
-			padding-right: 50px;
 			overflow: hidden;
 			display: block;
 			cursor: pointer;
@@ -38,15 +36,13 @@
 		    }
 
 		    &:before {
-                /*
 		    	content: "";
 				position: absolute;
 				bottom: 0;
 				left: 0;
 				height: 1px;
 				width: 100%;
-				background: $threadlisting-row-border-bottom-color;
-                */
+				background: $alloy;
 		    }
 
 		    &:hover {
@@ -56,15 +52,14 @@
 		    	}
 
 		    	&:after{
-			    	opacity: 1;
-					transition: all 200ms;
+					width: 100%;
+    				transition: all 300ms;
 				}
 
             &:active {
-                &:after {transition: all 50ms; background: $water;}
+                &:after {transition: all 50ms;}
                 .startedby, .latestby {
-                	color: $charcoal;
-                	border-color: $charcoal;
+
                 }
                 .startedtime, .latesttime {
                 	color: $charcoal;
@@ -80,20 +75,14 @@
 		    }
 
 		    &:after {
-		    	width: 100%;
-                opacity: 0;
-				transition: all 300ms;
-				content: "";
-				position: absolute;
-				left: 0;
-				bottom: 0;
-				height: 50px;
-				border-bottom: 1px solid $water;
-                z-index: -1;
-
-				/*.v-sa:not(.v-ch) & {
-					height: 2px;
-				}*/
+		    	width: 0;
+		    	transition: all 460ms;
+		    	content: "";
+		    	position: absolute;
+		    	left: 0;
+		    	bottom: 0;
+		    	height: 1px;
+		    	background: $water;
 		    }
 
 		    .touch &:after {
@@ -156,7 +145,7 @@
 				padding-left: 20px;
 				line-height: 50px;
 				color: #2698E0;
-				width: 48%;
+				width: 50%;
 				margin: 0;
 				overflow: hidden;
 				text-overflow: ellipsis;
@@ -182,12 +171,13 @@
 		    .replycountwrapper {
 				text-align: center;
 				width: 36px;
-				color: $font-color-primary;
+				color: $graphite;
 				display: inline-block;
-				font-size: rem(16);
+				font-size: 0.75rem;
 				position: relative;
 				margin-left: 2em;
-
+				line-height: .95;
+    
 				&:BEFORE,
 	    		.replycount:BEFORE,
 	    		.replycount:AFTER {
@@ -197,7 +187,8 @@
 					font-size: 22px;
 					left: 6px;
 					top: -4px;
-					color: $stainless;
+					color: $alloy;
+					font-weight: bold;
 					background-color: $snow;
 					z-index: -1;
 		    	}
