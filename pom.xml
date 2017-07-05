@@ -10,9 +10,9 @@
 	<modules>
 		<module>webapp</module>
 		<module>common</module>
-		<module>ds-test</module>
+		<!--<module>ds-test</module>-->
 		<module>ds-liferay62</module>
-		<module>tori-services-vaadin</module>
+		<!--<module>tori-services-vaadin</module>-->
 	</modules>
 
 	<properties>
@@ -93,6 +93,11 @@
 				<groupId>${project.groupId}</groupId>
 				<artifactId>ds-liferay-common</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.vaadin</groupId>
+				<artifactId>datasource-factory</artifactId>
+				<version>2.0.0-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
